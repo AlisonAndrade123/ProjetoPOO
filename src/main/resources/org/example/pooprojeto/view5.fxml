@@ -63,13 +63,20 @@
                                         <Insets left="20.0" />
                                     </padding>
                                 </VBox>
-                                <HBox alignment="CENTER_RIGHT" spacing="15.0">
+                                <HBox alignment="CENTER_RIGHT" spacing="5.0">
                                     <children>
-                                        <Label text="Qtd: 1" textFill="#333333">
+                                        <Label text="Quantidade:" textFill="#333333">
                                             <font>
                                                 <Font size="15.0" />
                                             </font>
                                         </Label>
+                                        <VBox alignment="CENTER" spacing="2.0">
+                                            <children>
+                                                <Button mnemonicParsing="false" prefHeight="20.0" prefWidth="30.0" style="-fx-background-color: #00A60E; -fx-background-radius: 5; -fx-cursor: hand;" text="▲" textFill="WHITE" />
+                                                <TextField alignment="CENTER" prefHeight="30.0" prefWidth="40.0" text="1" />
+                                                <Button mnemonicParsing="false" prefHeight="20.0" prefWidth="30.0" style="-fx-background-color: #DC3545; -fx-background-radius: 5; -fx-cursor: hand;" text="▼" textFill="WHITE" />
+                                            </children>
+                                        </VBox>
                                         <Button mnemonicParsing="false" prefHeight="35.0" prefWidth="100.0" style="-fx-background-color: #DC3545; -fx-background-radius: 8; -fx-cursor: hand;" text="Remover" textFill="WHITE">
                                             <font>
                                                 <Font name="System Bold" size="14.0" />
@@ -88,6 +95,7 @@
                                 <Insets bottom="10.0" top="10.0" />
                             </padding>
                         </HBox>
+
                         <HBox alignment="CENTER_LEFT" prefHeight="110.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-color: #00A60E; -fx-border-width: 2; -fx-border-radius: 12; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 5);">
                             <children>
                                 <ImageView fitHeight="90.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true">
@@ -118,13 +126,20 @@
                                         <Insets left="20.0" />
                                     </padding>
                                 </VBox>
-                                <HBox alignment="CENTER_RIGHT" spacing="15.0">
+                                <HBox alignment="CENTER_RIGHT" spacing="5.0">
                                     <children>
-                                        <Label text="Qtd: 1" textFill="#333333">
+                                        <Label text="Quantidade:" textFill="#333333">
                                             <font>
                                                 <Font size="15.0" />
                                             </font>
                                         </Label>
+                                        <VBox alignment="CENTER" spacing="2.0">
+                                            <children>
+                                                <Button mnemonicParsing="false" prefHeight="20.0" prefWidth="30.0" style="-fx-background-color: #00A60E; -fx-background-radius: 5; -fx-cursor: hand;" text="▲" textFill="WHITE" />
+                                                <TextField alignment="CENTER" prefHeight="30.0" prefWidth="40.0" text="1" />
+                                                <Button mnemonicParsing="false" prefHeight="20.0" prefWidth="30.0" style="-fx-background-color: #DC3545; -fx-background-radius: 5; -fx-cursor: hand;" text="▼" textFill="WHITE" />
+                                            </children>
+                                        </VBox>
                                         <Button mnemonicParsing="false" prefHeight="35.0" prefWidth="100.0" style="-fx-background-color: #DC3545; -fx-background-radius: 8; -fx-cursor: hand;" text="Remover" textFill="WHITE">
                                             <font>
                                                 <Font name="System Bold" size="14.0" />
@@ -143,6 +158,7 @@
                                 <Insets bottom="10.0" top="10.0" />
                             </padding>
                         </HBox>
+
                         <HBox alignment="CENTER_LEFT" prefHeight="110.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-color: #00A60E; -fx-border-width: 2; -fx-border-radius: 12; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 5);">
                             <children>
                                 <ImageView fitHeight="90.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true">
@@ -173,13 +189,20 @@
                                         <Insets left="20.0" />
                                     </padding>
                                 </VBox>
-                                <HBox alignment="CENTER_RIGHT" spacing="15.0">
+                                <HBox alignment="CENTER_RIGHT" spacing="5.0">
                                     <children>
-                                        <Label text="Qtd: 1" textFill="#333333">
+                                        <Label text="Quantidade:" textFill="#333333">
                                             <font>
                                                 <Font size="15.0" />
                                             </font>
                                         </Label>
+                                        <VBox alignment="CENTER" spacing="2.0">
+                                            <children>
+                                                <Button mnemonicParsing="false" prefHeight="20.0" prefWidth="30.0" style="-fx-background-color: #00A60E; -fx-background-radius: 5; -fx-cursor: hand;" text="▲" textFill="WHITE" />
+                                                <TextField alignment="CENTER" prefHeight="30.0" prefWidth="40.0" text="1" />
+                                                <Button mnemonicParsing="false" prefHeight="20.0" prefWidth="30.0" style="-fx-background-color: #DC3545; -fx-background-radius: 5; -fx-cursor: hand;" text="▼" textFill="WHITE" />
+                                            </children>
+                                        </VBox>
                                         <Button mnemonicParsing="false" prefHeight="35.0" prefWidth="100.0" style="-fx-background-color: #DC3545; -fx-background-radius: 8; -fx-cursor: hand;" text="Remover" textFill="WHITE">
                                             <font>
                                                 <Font name="System Bold" size="14.0" />
@@ -198,6 +221,7 @@
                                 <Insets bottom="10.0" top="10.0" />
                             </padding>
                         </HBox>
+
                         <HBox alignment="CENTER_LEFT" prefHeight="110.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-color: #00A60E; -fx-border-width: 2; -fx-border-radius: 12; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 5);">
                             <children>
                                 <ImageView fitHeight="90.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true">
@@ -228,13 +252,20 @@
                                         <Insets left="20.0" />
                                     </padding>
                                 </VBox>
-                                <HBox alignment="CENTER_RIGHT" spacing="15.0">
+                                <HBox alignment="CENTER_RIGHT" spacing="5.0">
                                     <children>
-                                        <Label text="Qtd: 1" textFill="#333333">
+                                        <Label text="Quantidade:" textFill="#333333">
                                             <font>
                                                 <Font size="15.0" />
                                             </font>
                                         </Label>
+                                        <VBox alignment="CENTER" spacing="2.0">
+                                            <children>
+                                                <Button mnemonicParsing="false" prefHeight="20.0" prefWidth="30.0" style="-fx-background-color: #00A60E; -fx-background-radius: 5; -fx-cursor: hand;" text="▲" textFill="WHITE" />
+                                                <TextField alignment="CENTER" prefHeight="30.0" prefWidth="40.0" text="1" />
+                                                <Button mnemonicParsing="false" prefHeight="20.0" prefWidth="30.0" style="-fx-background-color: #DC3545; -fx-background-radius: 5; -fx-cursor: hand;" text="▼" textFill="WHITE" />
+                                            </children>
+                                        </VBox>
                                         <Button mnemonicParsing="false" prefHeight="35.0" prefWidth="100.0" style="-fx-background-color: #DC3545; -fx-background-radius: 8; -fx-cursor: hand;" text="Remover" textFill="WHITE">
                                             <font>
                                                 <Font name="System Bold" size="14.0" />
@@ -253,6 +284,7 @@
                                 <Insets bottom="10.0" top="10.0" />
                             </padding>
                         </HBox>
+
                         <HBox alignment="CENTER_LEFT" prefHeight="110.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-color: #00A60E; -fx-border-width: 2; -fx-border-radius: 12; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 5);">
                             <children>
                                 <ImageView fitHeight="90.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true">
@@ -283,13 +315,20 @@
                                         <Insets left="20.0" />
                                     </padding>
                                 </VBox>
-                                <HBox alignment="CENTER_RIGHT" spacing="15.0">
+                                <HBox alignment="CENTER_RIGHT" spacing="5.0">
                                     <children>
-                                        <Label text="Qtd: 1" textFill="#333333">
+                                        <Label text="Quantidade:" textFill="#333333">
                                             <font>
                                                 <Font size="15.0" />
                                             </font>
                                         </Label>
+                                        <VBox alignment="CENTER" spacing="2.0">
+                                            <children>
+                                                <Button mnemonicParsing="false" prefHeight="20.0" prefWidth="30.0" style="-fx-background-color: #00A60E; -fx-background-radius: 5; -fx-cursor: hand;" text="▲" textFill="WHITE" />
+                                                <TextField alignment="CENTER" prefHeight="30.0" prefWidth="40.0" text="1" />
+                                                <Button mnemonicParsing="false" prefHeight="20.0" prefWidth="30.0" style="-fx-background-color: #DC3545; -fx-background-radius: 5; -fx-cursor: hand;" text="▼" textFill="WHITE" />
+                                            </children>
+                                        </VBox>
                                         <Button mnemonicParsing="false" prefHeight="35.0" prefWidth="100.0" style="-fx-background-color: #DC3545; -fx-background-radius: 8; -fx-cursor: hand;" text="Remover" textFill="WHITE">
                                             <font>
                                                 <Font name="System Bold" size="14.0" />
@@ -308,6 +347,7 @@
                                 <Insets bottom="10.0" top="10.0" />
                             </padding>
                         </HBox>
+
                         <HBox alignment="CENTER_LEFT" prefHeight="110.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-color: #00A60E; -fx-border-width: 2; -fx-border-radius: 12; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 5);">
                             <children>
                                 <ImageView fitHeight="90.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true">
@@ -338,13 +378,20 @@
                                         <Insets left="20.0" />
                                     </padding>
                                 </VBox>
-                                <HBox alignment="CENTER_RIGHT" spacing="15.0">
+                                <HBox alignment="CENTER_RIGHT" spacing="5.0">
                                     <children>
-                                        <Label text="Qtd: 1" textFill="#333333">
+                                        <Label text="Quantidade:" textFill="#333333">
                                             <font>
                                                 <Font size="15.0" />
                                             </font>
                                         </Label>
+                                        <VBox alignment="CENTER" spacing="2.0">
+                                            <children>
+                                                <Button mnemonicParsing="false" prefHeight="20.0" prefWidth="30.0" style="-fx-background-color: #00A60E; -fx-background-radius: 5; -fx-cursor: hand;" text="▲" textFill="WHITE" />
+                                                <TextField alignment="CENTER" prefHeight="30.0" prefWidth="40.0" text="1" />
+                                                <Button mnemonicParsing="false" prefHeight="20.0" prefWidth="30.0" style="-fx-background-color: #DC3545; -fx-background-radius: 5; -fx-cursor: hand;" text="▼" textFill="WHITE" />
+                                            </children>
+                                        </VBox>
                                         <Button mnemonicParsing="false" prefHeight="35.0" prefWidth="100.0" style="-fx-background-color: #DC3545; -fx-background-radius: 8; -fx-cursor: hand;" text="Remover" textFill="WHITE">
                                             <font>
                                                 <Font name="System Bold" size="14.0" />
@@ -363,6 +410,7 @@
                                 <Insets bottom="10.0" top="10.0" />
                             </padding>
                         </HBox>
+
                         <HBox alignment="CENTER_LEFT" prefHeight="110.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-color: #00A60E; -fx-border-width: 2; -fx-border-radius: 12; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 5);">
                             <children>
                                 <ImageView fitHeight="90.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true">
@@ -393,13 +441,20 @@
                                         <Insets left="20.0" />
                                     </padding>
                                 </VBox>
-                                <HBox alignment="CENTER_RIGHT" spacing="15.0">
+                                <HBox alignment="CENTER_RIGHT" spacing="5.0">
                                     <children>
-                                        <Label text="Qtd: 1" textFill="#333333">
+                                        <Label text="Quantidade:" textFill="#333333">
                                             <font>
                                                 <Font size="15.0" />
                                             </font>
                                         </Label>
+                                        <VBox alignment="CENTER" spacing="2.0">
+                                            <children>
+                                                <Button mnemonicParsing="false" prefHeight="20.0" prefWidth="30.0" style="-fx-background-color: #00A60E; -fx-background-radius: 5; -fx-cursor: hand;" text="▲" textFill="WHITE" />
+                                                <TextField alignment="CENTER" prefHeight="30.0" prefWidth="40.0" text="1" />
+                                                <Button mnemonicParsing="false" prefHeight="20.0" prefWidth="30.0" style="-fx-background-color: #DC3545; -fx-background-radius: 5; -fx-cursor: hand;" text="▼" textFill="WHITE" />
+                                            </children>
+                                        </VBox>
                                         <Button mnemonicParsing="false" prefHeight="35.0" prefWidth="100.0" style="-fx-background-color: #DC3545; -fx-background-radius: 8; -fx-cursor: hand;" text="Remover" textFill="WHITE">
                                             <font>
                                                 <Font name="System Bold" size="14.0" />
@@ -418,6 +473,7 @@
                                 <Insets bottom="10.0" top="10.0" />
                             </padding>
                         </HBox>
+
                         <HBox alignment="CENTER_LEFT" prefHeight="110.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-color: #00A60E; -fx-border-width: 2; -fx-border-radius: 12; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 5);">
                             <children>
                                 <ImageView fitHeight="90.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true">
@@ -448,13 +504,20 @@
                                         <Insets left="20.0" />
                                     </padding>
                                 </VBox>
-                                <HBox alignment="CENTER_RIGHT" spacing="15.0">
+                                <HBox alignment="CENTER_RIGHT" spacing="5.0">
                                     <children>
-                                        <Label text="Qtd: 1" textFill="#333333">
+                                        <Label text="Quantidade:" textFill="#333333">
                                             <font>
                                                 <Font size="15.0" />
                                             </font>
                                         </Label>
+                                        <VBox alignment="CENTER" spacing="2.0">
+                                            <children>
+                                                <Button mnemonicParsing="false" prefHeight="20.0" prefWidth="30.0" style="-fx-background-color: #00A60E; -fx-background-radius: 5; -fx-cursor: hand;" text="▲" textFill="WHITE" />
+                                                <TextField alignment="CENTER" prefHeight="30.0" prefWidth="40.0" text="1" />
+                                                <Button mnemonicParsing="false" prefHeight="20.0" prefWidth="30.0" style="-fx-background-color: #DC3545; -fx-background-radius: 5; -fx-cursor: hand;" text="▼" textFill="WHITE" />
+                                            </children>
+                                        </VBox>
                                         <Button mnemonicParsing="false" prefHeight="35.0" prefWidth="100.0" style="-fx-background-color: #DC3545; -fx-background-radius: 8; -fx-cursor: hand;" text="Remover" textFill="WHITE">
                                             <font>
                                                 <Font name="System Bold" size="14.0" />
@@ -473,6 +536,7 @@
                                 <Insets bottom="10.0" top="10.0" />
                             </padding>
                         </HBox>
+
                         <HBox alignment="CENTER_LEFT" prefHeight="110.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-color: #00A60E; -fx-border-width: 2; -fx-border-radius: 12; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 5);">
                             <children>
                                 <ImageView fitHeight="90.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true">
@@ -503,343 +567,20 @@
                                         <Insets left="20.0" />
                                     </padding>
                                 </VBox>
-                                <HBox alignment="CENTER_RIGHT" spacing="15.0">
+                                <HBox alignment="CENTER_RIGHT" spacing="5.0">
                                     <children>
-                                        <Label text="Qtd: 1" textFill="#333333">
+                                        <Label text="Quantidade:" textFill="#333333">
                                             <font>
                                                 <Font size="15.0" />
                                             </font>
                                         </Label>
-                                        <Button mnemonicParsing="false" prefHeight="35.0" prefWidth="100.0" style="-fx-background-color: #DC3545; -fx-background-radius: 8; -fx-cursor: hand;" text="Remover" textFill="WHITE">
-                                            <font>
-                                                <Font name="System Bold" size="14.0" />
-                                            </font>
-                                            <HBox.margin>
-                                                <Insets right="15.0" />
-                                            </HBox.margin>
-                                        </Button>
-                                    </children>
-                                    <padding>
-                                        <Insets right="15.0" />
-                                    </padding>
-                                </HBox>
-                            </children>
-                            <padding>
-                                <Insets bottom="10.0" top="10.0" />
-                            </padding>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" prefHeight="110.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-color: #00A60E; -fx-border-width: 2; -fx-border-radius: 12; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 5);">
-                            <children>
-                                <ImageView fitHeight="90.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                        <Image url="@../images/fonte_energia.png" />
-                                    </image>
-                                    <HBox.margin>
-                                        <Insets left="15.0" />
-                                    </HBox.margin>
-                                </ImageView>
-                                <VBox HBox.hgrow="ALWAYS">
-                                    <children>
-                                        <Label text="Fonte de Energia 850W Gold" wrapText="true">
-                                            <font>
-                                                <Font name="System Bold" size="18.0" />
-                                            </font>
-                                            <VBox.margin>
-                                                <Insets bottom="5.0" />
-                                            </VBox.margin>
-                                        </Label>
-                                        <Label text="R$ 550,00" textFill="#00a60e">
-                                            <font>
-                                                <Font name="System Bold" size="16.0" />
-                                            </font>
-                                        </Label>
-                                    </children>
-                                    <padding>
-                                        <Insets left="20.0" />
-                                    </padding>
-                                </VBox>
-                                <HBox alignment="CENTER_RIGHT" spacing="15.0">
-                                    <children>
-                                        <Label text="Qtd: 1" textFill="#333333">
-                                            <font>
-                                                <Font size="15.0" />
-                                            </font>
-                                        </Label>
-                                        <Button mnemonicParsing="false" prefHeight="35.0" prefWidth="100.0" style="-fx-background-color: #DC3545; -fx-background-radius: 8; -fx-cursor: hand;" text="Remover" textFill="WHITE">
-                                            <font>
-                                                <Font name="System Bold" size="14.0" />
-                                            </font>
-                                            <HBox.margin>
-                                                <Insets right="15.0" />
-                                            </HBox.margin>
-                                        </Button>
-                                    </children>
-                                    <padding>
-                                        <Insets right="15.0" />
-                                    </padding>
-                                </HBox>
-                            </children>
-                            <padding>
-                                <Insets bottom="10.0" top="10.0" />
-                            </padding>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" prefHeight="110.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-color: #00A60E; -fx-border-width: 2; -fx-border-radius: 12; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 5);">
-                            <children>
-                                <ImageView fitHeight="90.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                        <Image url="@../images/gabinete.png" />
-                                    </image>
-                                    <HBox.margin>
-                                        <Insets left="15.0" />
-                                    </HBox.margin>
-                                </ImageView>
-                                <VBox HBox.hgrow="ALWAYS">
-                                    <children>
-                                        <Label text="Gabinete Mid Tower RGB" wrapText="true">
-                                            <font>
-                                                <Font name="System Bold" size="18.0" />
-                                            </font>
-                                            <VBox.margin>
-                                                <Insets bottom="5.0" />
-                                            </VBox.margin>
-                                        </Label>
-                                        <Label text="R$ 890,00" textFill="#00a60e">
-                                            <font>
-                                                <Font name="System Bold" size="16.0" />
-                                            </font>
-                                        </Label>
-                                    </children>
-                                    <padding>
-                                        <Insets left="20.0" />
-                                    </padding>
-                                </VBox>
-                                <HBox alignment="CENTER_RIGHT" spacing="15.0">
-                                    <children>
-                                        <Label text="Qtd: 1" textFill="#333333">
-                                            <font>
-                                                <Font size="15.0" />
-                                            </font>
-                                        </Label>
-                                        <Button mnemonicParsing="false" prefHeight="35.0" prefWidth="100.0" style="-fx-background-color: #DC3545; -fx-background-radius: 8; -fx-cursor: hand;" text="Remover" textFill="WHITE">
-                                            <font>
-                                                <Font name="System Bold" size="14.0" />
-                                            </font>
-                                            <HBox.margin>
-                                                <Insets right="15.0" />
-                                            </HBox.margin>
-                                        </Button>
-                                    </children>
-                                    <padding>
-                                        <Insets right="15.0" />
-                                    </padding>
-                                </HBox>
-                            </children>
-                            <padding>
-                                <Insets bottom="10.0" top="10.0" />
-                            </padding>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" prefHeight="110.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-color: #00A60E; -fx-border-width: 2; -fx-border-radius: 12; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 5);">
-                            <children>
-                                <ImageView fitHeight="90.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                        <Image url="@../images/cadeira_gamer.png" />
-                                    </image>
-                                    <HBox.margin>
-                                        <Insets left="15.0" />
-                                    </HBox.margin>
-                                </ImageView>
-                                <VBox HBox.hgrow="ALWAYS">
-                                    <children>
-                                        <Label text="Cadeira Gamer Reclinável" wrapText="true">
-                                            <font>
-                                                <Font name="System Bold" size="18.0" />
-                                            </font>
-                                            <VBox.margin>
-                                                <Insets bottom="5.0" />
-                                            </VBox.margin>
-                                        </Label>
-                                        <Label text="R$ 1200,00" textFill="#00a60e">
-                                            <font>
-                                                <Font name="System Bold" size="16.0" />
-                                            </font>
-                                        </Label>
-                                    </children>
-                                    <padding>
-                                        <Insets left="20.0" />
-                                    </padding>
-                                </VBox>
-                                <HBox alignment="CENTER_RIGHT" spacing="15.0">
-                                    <children>
-                                        <Label text="Qtd: 1" textFill="#333333">
-                                            <font>
-                                                <Font size="15.0" />
-                                            </font>
-                                        </Label>
-                                        <Button mnemonicParsing="false" prefHeight="35.0" prefWidth="100.0" style="-fx-background-color: #DC3545; -fx-background-radius: 8; -fx-cursor: hand;" text="Remover" textFill="WHITE">
-                                            <font>
-                                                <Font name="System Bold" size="14.0" />
-                                            </font>
-                                            <HBox.margin>
-                                                <Insets right="15.0" />
-                                            </HBox.margin>
-                                        </Button>
-                                    </children>
-                                    <padding>
-                                        <Insets right="15.0" />
-                                    </padding>
-                                </HBox>
-                            </children>
-                            <padding>
-                                <Insets bottom="10.0" top="10.0" />
-                            </padding>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" prefHeight="110.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-color: #00A60E; -fx-border-width: 2; -fx-border-radius: 12; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 5);">
-                            <children>
-                                <ImageView fitHeight="90.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                        <Image url="@../images/microfone.png" />
-                                    </image>
-                                    <HBox.margin>
-                                        <Insets left="15.0" />
-                                    </HBox.margin>
-                                </ImageView>
-                                <VBox HBox.hgrow="ALWAYS">
-                                    <children>
-                                        <Label text="Microfone Condensador Profissional" wrapText="true">
-                                            <font>
-                                                <Font name="System Bold" size="18.0" />
-                                            </font>
-                                            <VBox.margin>
-                                                <Insets bottom="5.0" />
-                                            </VBox.margin>
-                                        </Label>
-                                        <Label text="R$ 400,00" textFill="#00a60e">
-                                            <font>
-                                                <Font name="System Bold" size="16.0" />
-                                            </font>
-                                        </Label>
-                                    </children>
-                                    <padding>
-                                        <Insets left="20.0" />
-                                    </padding>
-                                </VBox>
-                                <HBox alignment="CENTER_RIGHT" spacing="15.0">
-                                    <children>
-                                        <Label text="Qtd: 1" textFill="#333333">
-                                            <font>
-                                                <Font size="15.0" />
-                                            </font>
-                                        </Label>
-                                        <Button mnemonicParsing="false" prefHeight="35.0" prefWidth="100.0" style="-fx-background-color: #DC3545; -fx-background-radius: 8; -fx-cursor: hand;" text="Remover" textFill="WHITE">
-                                            <font>
-                                                <Font name="System Bold" size="14.0" />
-                                            </font>
-                                            <HBox.margin>
-                                                <Insets right="15.0" />
-                                            </HBox.margin>
-                                        </Button>
-                                    </children>
-                                    <padding>
-                                        <Insets right="15.0" />
-                                    </padding>
-                                </HBox>
-                            </children>
-                            <padding>
-                                <Insets bottom="10.0" top="10.0" />
-                            </padding>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" prefHeight="110.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-color: #00A60E; -fx-border-width: 2; -fx-border-radius: 12; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 5);">
-                            <children>
-                                <ImageView fitHeight="90.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                        <Image url="@../images/placa_mae.png" />
-                                    </image>
-                                    <HBox.margin>
-                                        <Insets left="15.0" />
-                                    </HBox.margin>
-                                </ImageView>
-                                <VBox HBox.hgrow="ALWAYS">
-                                    <children>
-                                        <Label text="Placa Mãe Z690 Gaming" wrapText="true">
-                                            <font>
-                                                <Font name="System Bold" size="18.0" />
-                                            </font>
-                                            <VBox.margin>
-                                                <Insets bottom="5.0" />
-                                            </VBox.margin>
-                                        </Label>
-                                        <Label text="R$ 950,00" textFill="#00a60e">
-                                            <font>
-                                                <Font name="System Bold" size="16.0" />
-                                            </font>
-                                        </Label>
-                                    </children>
-                                    <padding>
-                                        <Insets left="20.0" />
-                                    </padding>
-                                </VBox>
-                                <HBox alignment="CENTER_RIGHT" spacing="15.0">
-                                    <children>
-                                        <Label text="Qtd: 1" textFill="#333333">
-                                            <font>
-                                                <Font size="15.0" />
-                                            </font>
-                                        </Label>
-                                        <Button mnemonicParsing="false" prefHeight="35.0" prefWidth="100.0" style="-fx-background-color: #DC3545; -fx-background-radius: 8; -fx-cursor: hand;" text="Remover" textFill="WHITE">
-                                            <font>
-                                                <Font name="System Bold" size="14.0" />
-                                            </font>
-                                            <HBox.margin>
-                                                <Insets right="15.0" />
-                                            </HBox.margin>
-                                        </Button>
-                                    </children>
-                                    <padding>
-                                        <Insets right="15.0" />
-                                    </padding>
-                                </HBox>
-                            </children>
-                            <padding>
-                                <Insets bottom="10.0" top="10.0" />
-                            </padding>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" prefHeight="110.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-color: #00A60E; -fx-border-width: 2; -fx-border-radius: 12; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 5);">
-                            <children>
-                                <ImageView fitHeight="90.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                        <Image url="@../images/cooler_cpu.png" />
-                                    </image>
-                                    <HBox.margin>
-                                        <Insets left="15.0" />
-                                    </HBox.margin>
-                                </ImageView>
-                                <VBox HBox.hgrow="ALWAYS">
-                                    <children>
-                                        <Label text="Cooler CPU Watercooler 240mm" wrapText="true">
-                                            <font>
-                                                <Font name="System Bold" size="18.0" />
-                                            </font>
-                                            <VBox.margin>
-                                                <Insets bottom="5.0" />
-                                            </VBox.margin>
-                                        </Label>
-                                        <Label text="R$ 220,00" textFill="#00a60e">
-                                            <font>
-                                                <Font name="System Bold" size="16.0" />
-                                            </font>
-                                        </Label>
-                                    </children>
-                                    <padding>
-                                        <Insets left="20.0" />
-                                    </padding>
-                                </VBox>
-                                <HBox alignment="CENTER_RIGHT" spacing="15.0">
-                                    <children>
-                                        <Label text="Qtd: 1" textFill="#333333">
-                                            <font>
-                                                <Font size="15.0" />
-                                            </font>
-                                        </Label>
+                                        <VBox alignment="CENTER" spacing="2.0">
+                                            <children>
+                                                <Button mnemonicParsing="false" prefHeight="20.0" prefWidth="30.0" style="-fx-background-color: #00A60E; -fx-background-radius: 5; -fx-cursor: hand;" text="▲" textFill="WHITE" />
+                                                <TextField alignment="CENTER" prefHeight="30.0" prefWidth="40.0" text="1" />
+                                                <Button mnemonicParsing="false" prefHeight="20.0" prefWidth="30.0" style="-fx-background-color: #DC3545; -fx-background-radius: 5; -fx-cursor: hand;" text="▼" textFill="WHITE" />
+                                            </children>
+                                        </VBox>
                                         <Button mnemonicParsing="false" prefHeight="35.0" prefWidth="100.0" style="-fx-background-color: #DC3545; -fx-background-radius: 8; -fx-cursor: hand;" text="Remover" textFill="WHITE">
                                             <font>
                                                 <Font name="System Bold" size="14.0" />
@@ -859,148 +600,141 @@
                             </padding>
                         </HBox>
                     </children>
-                    <opaqueInsets>
-                        <Insets />
-                    </opaqueInsets>
                 </VBox>
             </content>
-            <padding>
-                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-            </padding>
         </ScrollPane>
 
-        <VBox prefWidth="400.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-color: #00A60E; -fx-border-width: 2; -fx-border-radius: 12; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 5);" AnchorPane.bottomAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="100.0">
+        <VBox alignment="TOP_CENTER" layoutX="700.0" layoutY="100.0" prefHeight="500.0" prefWidth="400.0" spacing="10.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-color: #00A60E; -fx-border-width: 2; -fx-border-radius: 12; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 5);" AnchorPane.bottomAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="100.0">
             <children>
-                <HBox alignment="CENTER_LEFT" prefHeight="60.0" style="-fx-border-color: #00A60E; -fx-border-width: 0 0 1 0;">
-                    <children>
-                        <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@../images/icone_resumo.png" />
-                            </image>
-                            <HBox.margin>
-                                <Insets left="20.0" />
-                            </HBox.margin>
-                        </ImageView>
-                        <Label text="RESUMO DO PEDIDO" textFill="#00a60e">
-                            <font>
-                                <Font name="System Bold" size="22.0" />
-                            </font>
-                            <HBox.margin>
-                                <Insets left="15.0" />
-                            </HBox.margin>
-                        </Label>
-                    </children>
-                </HBox>
-
-                <VBox VBox.vgrow="ALWAYS">
-                    <children>
-                        <HBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="200.0">
-                            <children>
-                                <Label text="Subtotal:" textFill="#333333">
-                                    <font>
-                                        <Font size="17.0" />
-                                    </font>
-                                </Label>
-                                <Label alignment="CENTER_RIGHT" text="R$ 5720,00" textFill="#00a60e" HBox.hgrow="ALWAYS">
-                                    <font>
-                                        <Font name="System Bold" size="17.0" />
-                                    </font>
-                                </Label>
-                            </children>
-                            <VBox.margin>
-                                <Insets top="20.0" />
-                            </VBox.margin>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="200.0">
-                            <children>
-                                <Label text="Frete:" textFill="#333333">
-                                    <font>
-                                        <Font size="17.0" />
-                                    </font>
-                                </Label>
-                                <Label alignment="CENTER_RIGHT" text="R$ 0,00" textFill="#00a60e" HBox.hgrow="ALWAYS">
-                                    <font>
-                                        <Font name="System Bold" size="17.0" />
-                                    </font>
-                                </Label>
-                            </children>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0" style="-fx-border-color: #EEEEEE; -fx-border-width: 1 0 0 0;">
-                            <children>
-                                <Label text="Total:" textFill="#00a60e">
-                                    <font>
-                                        <Font name="System Bold" size="24.0" />
-                                    </font>
-                                </Label>
-                                <Label alignment="CENTER_RIGHT" text="R$ 5720,00" textFill="#00a60e" HBox.hgrow="ALWAYS">
-                                    <font>
-                                        <Font name="System Bold" size="24.0" />
-                                    </font>
-                                </Label>
-                            </children>
-                            <VBox.margin>
-                                <Insets top="15.0" />
-                            </VBox.margin>
-                            <padding>
-                                <Insets top="10.0" />
-                            </padding>
-                        </HBox>
-                    </children>
-                    <padding>
-                        <Insets left="20.0" right="20.0" />
-                    </padding>
-                </VBox>
-
-                <HBox alignment="CENTER_LEFT" prefHeight="60.0" style="-fx-border-color: #00A60E; -fx-border-width: 1 0 1 0;">
-                    <children>
-                        <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@../images/icone_entrega.png" />
-                            </image>
-                            <HBox.margin>
-                                <Insets left="20.0" />
-                            </HBox.margin>
-                        </ImageView>
-                        <Label text="INFORMAÇÕES DE ENTREGA" textFill="#00a60e">
-                            <font>
-                                <Font name="System Bold" size="22.0" />
-                            </font>
-                            <HBox.margin>
-                                <Insets left="15.0" />
-                            </HBox.margin>
-                        </Label>
-                    </children>
-                    <VBox.margin>
-                        <Insets top="25.0" />
-                    </VBox.margin>
-                </HBox>
-
-                <TextField promptText="Digite seu CEP..." style="-fx-background-radius: 10; -fx-border-color: #00A60E; -fx-border-width: 1; -fx-padding: 12;">
+                <Label text="RESUMO DO PEDIDO" textFill="#00a60e">
                     <font>
-                        <Font size="16.0" />
+                        <Font name="System Bold" size="20.0" />
                     </font>
                     <VBox.margin>
-                        <Insets left="20.0" right="20.0" top="20.0" />
+                        <Insets top="15.0" />
+                    </VBox.margin>
+                </Label>
+                <HBox alignment="CENTER" prefHeight="30.0" prefWidth="200.0" spacing="10.0">
+                    <children>
+                        <Label text="Subtotal:" textFill="#333333">
+                            <font>
+                                <Font size="16.0" />
+                            </font>
+                        </Label>
+                        <Label text="R$ 5720,00" textFill="#333333">
+                            <font>
+                                <Font name="System Bold" size="16.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </HBox>
+                <HBox alignment="CENTER" prefHeight="30.0" prefWidth="200.0" spacing="10.0">
+                    <children>
+                        <Label text="Frete:" textFill="#333333">
+                            <font>
+                                <Font size="16.0" />
+                            </font>
+                        </Label>
+                        <Label text="R$ 0,00" textFill="#333333">
+                            <font>
+                                <Font name="System Bold" size="16.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </HBox>
+                <Label text="Total: R$ 5720,00" textFill="#00a60e">
+                    <font>
+                        <Font name="System Bold" size="24.0" />
+                    </font>
+                    <VBox.margin>
+                        <Insets top="10.0" />
+                    </VBox.margin>
+                </Label>
+                <Label text="INFORMAÇÕES DE ENTREGA" textFill="#00a60e">
+                    <font>
+                        <Font name="System Bold" size="18.0" />
+                    </font>
+                    <VBox.margin>
+                        <Insets top="20.0" />
+                    </VBox.margin>
+                </Label>
+
+                <TextField promptText="CEP" style="-fx-background-radius: 8; -fx-border-color: #CCCCCC; -fx-border-radius: 8; -fx-padding: 10;">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                    <VBox.margin>
+                        <Insets left="20.0" right="20.0" />
                     </VBox.margin>
                 </TextField>
-
-                <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="55.0" style="-fx-background-color: #00A60E; -fx-background-radius: 12; -fx-cursor: hand;" text="Ir para o Pagamento" textFill="WHITE">
+                <TextField promptText="Rua" style="-fx-background-radius: 8; -fx-border-color: #CCCCCC; -fx-border-radius: 8; -fx-padding: 10;">
                     <font>
-                        <Font name="System Bold" size="20.0" />
+                        <Font size="14.0" />
                     </font>
                     <VBox.margin>
-                        <Insets left="20.0" right="20.0" top="35.0" />
+                        <Insets left="20.0" right="20.0" />
+                    </VBox.margin>
+                </TextField>
+                <HBox spacing="10.0">
+                    <children>
+                        <TextField promptText="Número" prefWidth="100.0" style="-fx-background-radius: 8; -fx-border-color: #CCCCCC; -fx-border-radius: 8; -fx-padding: 10;" HBox.hgrow="ALWAYS">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </TextField>
+                        <TextField promptText="Complemento (Opcional)" style="-fx-background-radius: 8; -fx-border-color: #CCCCCC; -fx-border-radius: 8; -fx-padding: 10;" HBox.hgrow="ALWAYS">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </TextField>
+                    </children>
+                    <VBox.margin>
+                        <Insets left="20.0" right="20.0" />
+                    </VBox.margin>
+                </HBox>
+                <TextField promptText="Bairro" style="-fx-background-radius: 8; -fx-border-color: #CCCCCC; -fx-border-radius: 8; -fx-padding: 10;">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                    <VBox.margin>
+                        <Insets left="20.0" right="20.0" />
+                    </VBox.margin>
+                </TextField>
+                <HBox spacing="10.0">
+                    <children>
+                        <TextField promptText="Cidade" style="-fx-background-radius: 8; -fx-border-color: #CCCCCC; -fx-border-radius: 8; -fx-padding: 10;" HBox.hgrow="ALWAYS">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </TextField>
+                        <TextField promptText="Estado" prefWidth="80.0" style="-fx-background-radius: 8; -fx-border-color: #CCCCCC; -fx-border-radius: 8; -fx-padding: 10;">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </TextField>
+                    </children>
+                    <VBox.margin>
+                        <Insets left="20.0" right="20.0" />
+                    </VBox.margin>
+                </HBox>
+
+                <Button mnemonicParsing="false" prefHeight="45.0" prefWidth="300.0" style="-fx-background-color: #00A60E; -fx-background-radius: 10; -fx-cursor: hand;" text="Ir para o Pagamento" textFill="WHITE">
+                    <font>
+                        <Font name="System Bold" size="16.0" />
+                    </font>
+                    <VBox.margin>
+                        <Insets top="20.0" />
                     </VBox.margin>
                 </Button>
-                <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="55.0" style="-fx-background-color: #28A745; -fx-background-radius: 12; -fx-cursor: hand;" text="Continuar Comprando" textFill="WHITE">
+                <Button mnemonicParsing="false" prefHeight="45.0" prefWidth="300.0" style="-fx-background-color: #00A60E; -fx-background-radius: 10; -fx-cursor: hand;" text="Continuar Comprando" textFill="WHITE">
                     <font>
-                        <Font name="System Bold" size="20.0" />
+                        <Font name="System Bold" size="16.0" />
                     </font>
-                    <VBox.margin>
-                        <Insets bottom="30.0" left="20.0" right="20.0" top="15.0" />
-                    </VBox.margin>
                 </Button>
             </children>
+            <padding>
+                <Insets bottom="10.0" />
+            </padding>
         </VBox>
     </children>
 </AnchorPane>

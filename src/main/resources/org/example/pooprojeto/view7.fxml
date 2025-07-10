@@ -9,118 +9,124 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="680.0" style="-fx-background-color: #00A60E;" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" style="-fx-background-color: #00A60E;" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <VBox alignment="CENTER" layoutX="140.0" layoutY="20.0" prefHeight="500.0" prefWidth="400.0" spacing="20.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="140.0" AnchorPane.rightAnchor="140.0" AnchorPane.topAnchor="20.0">
+        <VBox alignment="CENTER" prefHeight="750.0" prefWidth="800.0" spacing="30.0" style="-fx-background-color: white; -fx-background-radius: 15;" AnchorPane.bottomAnchor="165.0" AnchorPane.leftAnchor="560.0" AnchorPane.rightAnchor="560.0" AnchorPane.topAnchor="165.0">
             <children>
-                <Label text="Cadastra produtos" textFill="WHITE">
+                <Label text="Cadastra produtos" textFill="#00A60E">
                     <font>
-                        <Font name="System Bold" size="24.0" />
+                        <Font name="System Bold" size="40.0" />
                     </font>
+                    <VBox.margin>
+                        <Insets top="30.0" />
+                    </VBox.margin>
                 </Label>
 
-                <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="350.0" spacing="10.0" style="-fx-background-color: white; -fx-background-radius: 10;">
+                <HBox alignment="CENTER_LEFT" prefHeight="70.0" prefWidth="700.0" spacing="20.0">
                     <children>
                         <Label text="Categoria:">
                             <font>
-                                <Font size="18.0" />
+                                <Font size="24.0" />
                             </font>
                             <HBox.margin>
-                                <Insets left="10.0" />
+                                <Insets left="30.0" />
                             </HBox.margin>
                         </Label>
-                        <TextField editable="false" promptText="Insira a categoria..." style="-fx-background-color: transparent; -fx-border-color: transparent; -fx-faint-focus-color: transparent;" HBox.hgrow="ALWAYS">
+                        <TextField promptText="Insira a categoria..." style="-fx-background-color: transparent; -fx-border-color: #CCCCCC; -fx-border-width: 0 0 2 0; -fx-faint-focus-color: transparent;" HBox.hgrow="ALWAYS">
                             <font>
-                                <Font size="14.0" />
+                                <Font size="20.0" />
                             </font>
                         </TextField>
                     </children>
                 </HBox>
 
-                <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="350.0" spacing="10.0" style="-fx-background-color: white; -fx-background-radius: 10;">
+                <HBox alignment="CENTER_LEFT" prefHeight="70.0" prefWidth="700.0" spacing="20.0">
                     <children>
                         <Label text="Imagem:">
+                            <font>
+                                <Font size="24.0" />
+                            </font>
+                            <HBox.margin>
+                                <Insets left="30.0" />
+                            </HBox.margin>
+                        </Label>
+                        <TextField promptText="Nenhum arquivo selecionado..." style="-fx-background-color: transparent; -fx-border-color: #CCCCCC; -fx-border-width: 0 0 2 0; -fx-faint-focus-color: transparent;" HBox.hgrow="ALWAYS">
+                            <font>
+                                <Font size="20.0" />
+                            </font>
+                        </TextField>
+                        <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="120.0" style="-fx-background-color: #F43C3C; -fx-background-radius: 8;" text="Procurar" textFill="WHITE">
                             <font>
                                 <Font size="18.0" />
                             </font>
                             <HBox.margin>
-                                <Insets left="10.0" />
-                            </HBox.margin>
-                        </Label>
-                        <TextField editable="false" promptText="Nenhum arquivo selecionado..." style="-fx-background-color: transparent; -fx-border-color: transparent; -fx-faint-focus-color: transparent;" HBox.hgrow="ALWAYS">
-                            <font>
-                                <Font size="14.0" />
-                            </font>
-                        </TextField>
-                        <Button mnemonicParsing="false" style="-fx-background-color: #F43C3C; -fx-background-radius: 5;" text="Procurar" textFill="WHITE">
-                            <font>
-                                <Font size="14.0" />
-                            </font>
-                            <HBox.margin>
-                                <Insets right="10.0" />
+                                <Insets right="20.0" />
                             </HBox.margin>
                         </Button>
                     </children>
                 </HBox>
 
-                <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="350.0" spacing="10.0" style="-fx-background-color: white; -fx-background-radius: 10;">
+                <HBox alignment="CENTER_LEFT" prefHeight="70.0" prefWidth="700.0" spacing="20.0">
                     <children>
                         <Label text="Quantidade:">
                             <font>
-                                <Font size="18.0" />
+                                <Font size="24.0" />
                             </font>
                             <HBox.margin>
-                                <Insets left="10.0" />
+                                <Insets left="30.0" />
                             </HBox.margin>
                         </Label>
-                        <TextField editable="false" promptText="Insira qtd..." style="-fx-background-color: transparent; -fx-border-color: transparent; -fx-faint-focus-color: transparent;" HBox.hgrow="ALWAYS">
+                        <TextField promptText="Insira a quantidade..." style="-fx-background-color: transparent; -fx-border-color: #CCCCCC; -fx-border-width: 0 0 2 0; -fx-faint-focus-color: transparent;" HBox.hgrow="ALWAYS">
                             <font>
-                                <Font size="14.0" />
+                                <Font size="20.0" />
                             </font>
                         </TextField>
                     </children>
                 </HBox>
 
-                <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="350.0" spacing="10.0" style="-fx-background-color: white; -fx-background-radius: 10;">
+                <HBox alignment="CENTER_LEFT" prefHeight="70.0" prefWidth="700.0" spacing="20.0">
                     <children>
                         <Label text="Descrição:">
                             <font>
-                                <Font size="18.0" />
+                                <Font size="24.0" />
                             </font>
                             <HBox.margin>
-                                <Insets left="10.0" />
+                                <Insets left="30.0" />
                             </HBox.margin>
                         </Label>
-                        <TextField editable="false" promptText="Insira a descrição..." style="-fx-background-color: transparent; -fx-border-color: transparent; -fx-faint-focus-color: transparent;" HBox.hgrow="ALWAYS">
+                        <TextField promptText="Insira a descrição..." style="-fx-background-color: transparent; -fx-border-color: #CCCCCC; -fx-border-width: 0 0 2 0; -fx-faint-focus-color: transparent;" HBox.hgrow="ALWAYS">
                             <font>
-                                <Font size="14.0" />
+                                <Font size="20.0" />
                             </font>
                         </TextField>
                     </children>
                 </HBox>
 
-                <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="350.0" spacing="10.0" style="-fx-background-color: white; -fx-background-radius: 10;">
+                <HBox alignment="CENTER_LEFT" prefHeight="70.0" prefWidth="700.0" spacing="20.0">
                     <children>
                         <Label text="Preço:">
                             <font>
-                                <Font size="18.0" />
+                                <Font size="24.0" />
                             </font>
                             <HBox.margin>
-                                <Insets left="10.0" />
+                                <Insets left="30.0" />
                             </HBox.margin>
                         </Label>
-                        <TextField editable="false" promptText="Insira o preço..." style="-fx-background-color: transparent; -fx-border-color: transparent; -fx-faint-focus-color: transparent;" HBox.hgrow="ALWAYS">
+                        <TextField promptText="Insira o preço..." style="-fx-background-color: transparent; -fx-border-color: #CCCCCC; -fx-border-width: 0 0 2 0; -fx-faint-focus-color: transparent;" HBox.hgrow="ALWAYS">
                             <font>
-                                <Font size="14.0" />
+                                <Font size="20.0" />
                             </font>
                         </TextField>
                     </children>
                 </HBox>
 
-                <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="250.0" style="-fx-background-color: white; -fx-background-radius: 10;" text="Finalizar cadastro">
+                <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="350.0" style="-fx-background-color: #00A60E; -fx-background-radius: 10; -fx-cursor: hand;" text="Finalizar cadastro" textFill="WHITE">
                     <font>
-                        <Font name="System Bold" size="20.0" />
+                        <Font name="System Bold" size="28.0" />
                     </font>
+                    <VBox.margin>
+                        <Insets bottom="20.0" />
+                    </VBox.margin>
                 </Button>
             </children>
         </VBox>

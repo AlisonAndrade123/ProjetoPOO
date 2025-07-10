@@ -10,75 +10,78 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="680.0" style="-fx-background-color: #00A60E;" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" style="-fx-background-color: #00A60E;" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <fx:define>
         <ToggleGroup fx:id="paymentOptionGroup" />
     </fx:define>
 
     <children>
-        <VBox alignment="CENTER" layoutX="140.0" layoutY="20.0" prefHeight="500.0" prefWidth="400.0" spacing="20.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="140.0" AnchorPane.rightAnchor="140.0" AnchorPane.topAnchor="20.0">
+        <VBox alignment="CENTER" prefHeight="550.0" prefWidth="600.0" spacing="30.0" style="-fx-background-color: white; -fx-background-radius: 10;" AnchorPane.bottomAnchor="265.0" AnchorPane.leftAnchor="660.0" AnchorPane.rightAnchor="660.0" AnchorPane.topAnchor="265.0">
             <children>
-                <Label text="Realize seu pagamento aqui" textFill="WHITE">
+                <Label text="Realize seu pagamento aqui" textFill="#00A60E">
                     <font>
-                        <Font name="System Bold" size="24.0" />
+                        <Font name="System Bold" size="32.0" />
                     </font>
+                    <VBox.margin>
+                        <Insets top="20.0" />
+                    </VBox.margin>
                 </Label>
 
-                <VBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="350.0" style="-fx-background-color: white; -fx-background-radius: 10;">
+                <VBox alignment="CENTER_LEFT" prefHeight="180.0" prefWidth="500.0">
                     <children>
-                        <RadioButton text="PIX">
+                        <RadioButton text="PIX" toggleGroup="$paymentOptionGroup">
                             <font>
-                                <Font size="20.0" />
+                                <Font size="26.0" />
                             </font>
                             <VBox.margin>
-                                <Insets bottom="5.0" left="20.0" top="10.0" />
+                                <Insets bottom="10.0" left="30.0" top="20.0" />
                             </VBox.margin>
-                     <toggleGroup>
-                        <ToggleGroup fx:id="paymentOptionGroup" />
-                     </toggleGroup>
                         </RadioButton>
                         <Label text="OU">
                             <font>
-                                <Font size="18.0" />
+                                <Font size="22.0" />
                             </font>
                             <VBox.margin>
-                                <Insets bottom="5.0" left="20.0" top="5.0" />
+                                <Insets bottom="10.0" left="30.0" top="10.0" />
                             </VBox.margin>
                         </Label>
                         <RadioButton text="Boleto" toggleGroup="$paymentOptionGroup">
                             <font>
-                                <Font size="20.0" />
+                                <Font size="26.0" />
                             </font>
                             <VBox.margin>
-                                <Insets bottom="10.0" left="20.0" />
+                                <Insets bottom="20.0" left="30.0" />
                             </VBox.margin>
                         </RadioButton>
                     </children>
                 </VBox>
 
-                <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="350.0" style="-fx-background-color: white; -fx-background-radius: 10;">
+                <HBox alignment="CENTER_LEFT" prefHeight="80.0" prefWidth="500.0">
                     <children>
                         <Label text="Total: R$ 6000,99">
                             <font>
-                                <Font name="System Bold" size="20.0" />
+                                <Font name="System Bold" size="28.0" />
                             </font>
                             <HBox.margin>
-                                <Insets left="20.0" />
+                                <Insets left="30.0" />
                             </HBox.margin>
                         </Label>
                     </children>
                 </HBox>
 
-                <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="250.0" style="-fx-background-color: white; -fx-background-radius: 10;" text="Finaliza compra">
+                <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="320.0" style="-fx-background-color: #00A60E; -fx-background-radius: 8;" text="Finaliza compra" textFill="WHITE">
                     <font>
-                        <Font name="System Bold" size="20.0" />
+                        <Font name="System Bold" size="26.0" />
                     </font>
                 </Button>
 
-                <Label text="Volte sempre!!!" textFill="WHITE">
+                <Label text="Volte sempre!!!" textFill="#00A60E">
                     <font>
-                        <Font name="System Bold" size="20.0" />
+                        <Font name="System Bold" size="26.0" />
                     </font>
+                    <VBox.margin>
+                        <Insets bottom="20.0" />
+                    </VBox.margin>
                 </Label>
             </children>
         </VBox>
