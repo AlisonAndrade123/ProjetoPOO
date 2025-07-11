@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: #00A60E;" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: #00A60E;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.pooprojeto.controller.LoginController">
    <children>
       <Label alignment="CENTER" text="SEJA BEM VINDO" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
          <font>
@@ -21,7 +21,7 @@
                   AnchorPane.topAnchor="150.0" AnchorPane.bottomAnchor="80.0"
                   AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="150.0">
          <children>
-            <Label alignment="CENTER" text="Realize seu cadastro" textFill="#00a60e" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
+            <Label alignment="CENTER" text="Realize seu login" textFill="#00a60e" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
                <font>
                   <Font size="36.0" />
                </font>
@@ -31,23 +31,12 @@
                   AnchorPane.topAnchor="150.0" AnchorPane.bottomAnchor="50.0"
                   AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0">
                <children>
-                  <Label text="Nome:" textFill="#00a60e">
-                     <font>
-                        <Font size="28.0" />
-                     </font>
-                  </Label>
-                  <TextField maxWidth="500.0" prefHeight="50.0" promptText="Seu nome completo" style="-fx-font-size: 24;">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                  </TextField>
-
                   <Label text="E-mail:" textFill="#00a60e">
                      <font>
                         <Font size="28.0" />
                      </font>
                   </Label>
-                  <TextField maxWidth="500.0" prefHeight="50.0" promptText="seu.email@exemplo.com" style="-fx-font-size: 24;">
+                  <TextField fx:id="usernameField" maxWidth="500.0" prefHeight="50.0" promptText="seu.email@exemplo.com" style="-fx-font-size: 24;">
                      <font>
                         <Font size="24.0" />
                      </font>
@@ -58,13 +47,18 @@
                         <Font size="28.0" />
                      </font>
                   </Label>
-                  <PasswordField maxWidth="500.0" prefHeight="50.0" promptText="********" style="-fx-font-size: 24;">
+                  <PasswordField fx:id="passwordField" maxWidth="500.0" prefHeight="50.0" promptText="********" style="-fx-font-size: 24;">
                      <font>
                         <Font size="24.0" />
                      </font>
                   </PasswordField>
 
-                  <Button maxWidth="300.0" prefHeight="60.0" style="-fx-background-color: #00A60E; -fx-background-radius: 10; -fx-text-fill: white;" text="Criar conta">
+                  <Button fx:id="loginButton" maxWidth="300.0" prefHeight="60.0" onAction="#handleLoginButtonAction" style="-fx-background-color: #00A60E; -fx-background-radius: 10; -fx-text-fill: white;" text="Entrar">
+                     <font>
+                        <Font size="28.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="createAccountButton" maxWidth="300.0" prefHeight="60.0" onAction="#handleCreateAccountButtonAction" style="-fx-background-color: #00A60E; -fx-background-radius: 10; -fx-text-fill: white;" text="Criar conta">
                      <font>
                         <Font size="28.0" />
                      </font>

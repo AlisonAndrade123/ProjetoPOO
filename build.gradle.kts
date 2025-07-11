@@ -27,7 +27,7 @@ tasks.withType<JavaCompile> {
 
 application {
     mainModule.set("org.example.pooprojeto")
-    mainClass.set("org.example.pooprojeto.HelloApplication")
+    mainClass.set("org.example.pooprojeto.MainApp")
 }
 
 javafx {
@@ -36,6 +36,8 @@ javafx {
 }
 
 dependencies {
+    // Dependência para SQLite JDBC
+    implementation("org.xerial:sqlite-jdbc:3.45.1.0") // Versão atual, pode verificar por mais recente
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
 }
