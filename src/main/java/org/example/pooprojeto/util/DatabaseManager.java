@@ -5,30 +5,27 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.ResultSet;
+import java.sql.PreparedStatement;
 
 /**
  * Gerencia a conexão com o banco de dados SQLite e a criação inicial das tabelas.
  */
 public class DatabaseManager {
 
-    private static final String DB_URL = "jdbc:sqlite:loja_virtual.db"; // Nome do arquivo do banco de dados
+    private static final String DB_URL = "jdbc:sqlite:loja_virtual.db";
 
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(DB_URL);
     }
 
     /**
-     * Inicializa a estrutura do banco de dados:
-     * - Cria a tabela 'usuarios' se ela não existir.
-     * - Cria a tabela 'produtos' se ela não existir.
-     * - Opcionalmente, insere um usuário administrador padrão se ele não existir.
-     * - Opcionalmente, insere produtos de exemplo se a tabela de produtos estiver vazia.
+     * Inicializa a estrutura do banco de dados.
      */
     public static void initializeDatabase() {
         try (Connection conn = getConnection();
              Statement stmt = conn.createStatement()) {
 
-            // SQL para criar a tabela de usuários (já existente)
+            // SQL para criar a tabela de usuários
             String createUsersTable = "CREATE TABLE IF NOT EXISTS usuarios (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                     "nome TEXT NOT NULL," +
@@ -38,31 +35,33 @@ public class DatabaseManager {
             stmt.execute(createUsersTable);
             System.out.println("Tabela 'usuarios' criada/verificada.");
 
-            // SQL para criar a tabela de produtos (Adicionado 'categoria' e 'image_url')
+            // <<< MUDANÇA: 'estoque' foi alterado para 'quantidade' na definição da tabela
             String createProductsTable = "CREATE TABLE IF NOT EXISTS produtos (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                     "nome TEXT NOT NULL," +
                     "descricao TEXT," +
                     "preco REAL NOT NULL," +
-                    "estoque INTEGER NOT NULL," +
-                    "categoria TEXT NOT NULL," + // Nova coluna
-                    "image_url TEXT)";           // Nova coluna
+                    "quantidade INTEGER NOT NULL," + // <<< MUDANÇA AQUI
+                    "categoria TEXT NOT NULL," +
+                    "image_url TEXT)";
             stmt.execute(createProductsTable);
             System.out.println("Tabela 'produtos' criada/verificada.");
 
-            // Inserir um usuário administrador padrão se não existir (já existente)
-            try (ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM usuarios WHERE is_admin = 1 AND email = 'admin@loja.com'")) {
-                if (rs.next() && rs.getInt(1) == 0) {
-                    stmt.execute("INSERT INTO usuarios (nome, email, senha, is_admin) VALUES ('Administrador', 'admin@loja.com', 'admin123', 1)");
-                    System.out.println("Usuário administrador padrão criado: admin@loja.com / admin123");
-                }
+            String adminEmail = "admin@sistema.com";
+            String adminPassword = "admin123";
+
+            // Inserir um usuário administrador padrão se não existir
+            if (!usuarioExiste(adminEmail)) {
+                stmt.execute("INSERT INTO usuarios (nome, email, senha, is_admin) VALUES ('Administrador', '" + adminEmail + "', '" + adminPassword + "', 1)");
+                System.out.println("Usuário administrador padrão criado: " + adminEmail + " / " + adminPassword);
             }
 
             // Inserir produtos de exemplo se a tabela de produtos estiver vazia
             try (ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM produtos")) {
-                if (rs.next() && rs.getInt(1) == 0) { // Se a tabela de produtos estiver vazia
+                if (rs.next() && rs.getInt(1) == 0) {
                     System.out.println("Inserindo produtos de exemplo...");
-                    stmt.execute("INSERT INTO produtos (nome, descricao, preco, estoque, categoria, image_url) VALUES " +
+                    // <<< MUDANÇA: 'estoque' foi alterado para 'quantidade' na inserção dos dados de exemplo
+                    stmt.execute("INSERT INTO produtos (nome, descricao, preco, quantidade, categoria, image_url) VALUES " + // <<< MUDANÇA AQUI
                             "('Teclado Gamer RGB', 'Teclado mecânico com iluminação RGB personalizável e switches de alta durabilidade.', 279.99, 50, 'Teclado', 'teclado_gamer.png')," +
                             "('Mouse Gamer 16000DPI', 'Mouse óptico de alta precisão com 16000 DPI, ideal para jogos competitivos.', 189.99, 70, 'Mouse', 'mouse_gamer.png')," +
                             "('Monitor 24'' Full HD', 'Monitor de 24 polegadas com resolução Full HD para uma experiência visual imersiva.', 899.99, 30, 'Monitor', 'monitor_fullhd.png')," +
@@ -91,5 +90,19 @@ public class DatabaseManager {
             System.err.println("Erro ao inicializar o banco de dados: " + e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    // Método auxiliar para verificar se um usuário existe pelo email
+    private static boolean usuarioExiste(String email) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM usuarios WHERE email = ?";
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, email);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        }
+        return false;
     }
 }

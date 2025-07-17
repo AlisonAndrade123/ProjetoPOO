@@ -7,25 +7,27 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.example.pooprojeto.controller.LoginController;
 import org.example.pooprojeto.dao.UsuarioDAO;
-import org.example.pooprojeto.service.AuthService; // >>> CORREÇÃO AQUI: Importe AuthService
-import org.example.pooprojeto.util.DatabaseManager; // Para inicializar o DB
+import org.example.pooprojeto.service.AuthService;
+import org.example.pooprojeto.util.DatabaseManager;
 
 import java.io.IOException;
 
 public class MainApp extends Application {
 
     private Stage primaryStage;
-    private AuthService authService; // Variável de instância para AuthService
-    private UsuarioDAO usuarioDAO;   // Variável de instância para UsuarioDAO
+    private AuthService authService;
+    private UsuarioDAO usuarioDAO;
 
     @Override
     public void init() throws Exception {
         super.init();
-        DatabaseManager.initializeDatabase(); // Inicializa BD
+        // Inicializa o banco de dados. Isso garantirá que as tabelas e o usuário admin sejam criados.
+        DatabaseManager.initializeDatabase();
 
         // Instanciação de dependências
         usuarioDAO = new UsuarioDAO();
-        authService = new AuthService(usuarioDAO); // Instancia AuthService, passando UsuarioDAO
+        // AuthService precisa de UsuarioDAO para realizar a autenticação
+        authService = new AuthService(usuarioDAO);
     }
 
     @Override
@@ -33,24 +35,26 @@ public class MainApp extends Application {
         this.primaryStage = stage;
 
         try {
-            // >>> ATENÇÃO: Ajuste o caminho do FXML se for diferente
+            // Carrega a tela de login como a primeira tela da aplicação
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/pooprojeto/view/LoginView.fxml"));
             Parent root = loader.load();
 
             LoginController loginController = loader.getController();
 
-            // Injeta as dependências no controlador
+            // Injeta as dependências no LoginController
+            // O LoginController precisará do Stage para poder trocar de tela
             loginController.setPrimaryStage(primaryStage);
-            loginController.setAuthService(authService); // >>> CORREÇÃO AQUI: Injeta AuthService
-            //loginController.setUsuarioDAO(usuarioDAO);   // Injeta UsuarioDAO
+            // O LoginController precisará do AuthService para autenticar o usuário
+            loginController.setAuthService(authService);
 
             Scene scene = new Scene(root);
-            stage.setTitle("Sistema de Gerenciamento");
+            stage.setTitle("Sistema de Gerenciamento - Login"); // Título mais descritivo para a tela de login
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
-            e.printStackTrace();
             System.err.println("Erro ao carregar a tela de login: " + e.getMessage());
+            e.printStackTrace();
+            // Poderia adicionar um Alert para o usuário aqui, se for crítico
         }
     }
 

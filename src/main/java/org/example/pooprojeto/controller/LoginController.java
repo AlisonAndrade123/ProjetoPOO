@@ -5,10 +5,10 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import org.example.pooprojeto.dao.UsuarioDAO; // Pode ser removido se AuthService for suficiente
 import org.example.pooprojeto.model.Usuario;
 
 import java.io.IOException;
+import java.net.URL;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,20 +17,17 @@ import javafx.stage.Stage;
 
 import org.example.pooprojeto.service.AuthService;
 import org.example.pooprojeto.util.AppException;
+import org.example.pooprojeto.dao.ProdutoDAO;
 
 public class LoginController {
 
     @FXML
     private TextField usernameField;
-
     @FXML
     private PasswordField passwordField;
 
     private Stage primaryStage;
     private AuthService authService;
-    // Removendo UsuarioDAO daqui se ele não for usado diretamente,
-    // já que o AuthService encapsula as operações de DAO.
-    // private UsuarioDAO usuarioDAO;
 
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -40,43 +37,54 @@ public class LoginController {
         this.authService = authService;
     }
 
-    // Método setUsuarioDAO pode ser removido se o AuthService já estiver lidando com isso
-    /*
-    public void setUsuarioDAO(UsuarioDAO usuarioDAO) {
-        this.usuarioDAO = usuarioDAO;
-    }
-    */
-
     @FXML
     private void handleLoginButtonAction(ActionEvent event) {
-        String username = usernameField.getText();
-        String password = passwordField.getText();
+        String email = usernameField.getText();
+        String senha = passwordField.getText();
 
-        if (username.isEmpty() || password.isEmpty()) {
+        if (email.isEmpty() || senha.isEmpty()) {
             showAlert(AlertType.ERROR, "Erro de Login", "Por favor, preencha todos os campos.");
             return;
         }
 
         try {
-            Usuario usuarioLogado = authService.login(username, password);
+            Usuario usuarioLogado = authService.login(email, senha);
             showAlert(AlertType.INFORMATION, "Login Bem-sucedido", "Bem-vindo(a), " + usuarioLogado.getNome() + "!");
 
-            loadProdutosView(event, usuarioLogado); // Passe o usuário logado
+            // ADICIONADO PARA DEPURAR A PROPRIEDADE isAdmin
+            System.out.println("DEBUG - Usuário '" + usuarioLogado.getEmail() + "' (ID: " + usuarioLogado.getId() + ") é Admin? " + usuarioLogado.isAdmin());
+
+            if (usuarioLogado.isAdmin()) {
+                loadAdminView(usuarioLogado);
+            } else {
+                loadProdutosView(usuarioLogado);
+            }
 
         } catch (AppException e) {
             showAlert(AlertType.ERROR, "Falha no Login", e.getMessage());
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(AlertType.ERROR, "Erro de Navegação", "Não foi possível carregar a próxima tela. Detalhes: " + e.getMessage());
         }
     }
 
     @FXML
     private void handleCreateAccountButtonAction(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/pooprojeto/view/CadastroView.fxml"));
+            String fxmlPath = "/org/example/pooprojeto/view/CadastroView.fxml";
+            URL fxmlUrl = getClass().getResource(fxmlPath);
+            System.out.println("DEBUG - Tentando carregar CadastroView.fxml...");
+            System.out.println("DEBUG - Caminho absoluto para CadastroView.fxml: " + fxmlUrl);
+
+            if (fxmlUrl == null) {
+                throw new IOException("Recurso FXML não encontrado: " + fxmlPath);
+            }
+
+            FXMLLoader loader = new FXMLLoader(fxmlUrl);
             Parent root = loader.load();
 
             CadastroController cadastroController = loader.getController();
             cadastroController.setAuthService(authService);
-            // Passa o primaryStage para o controlador de cadastro para que ele possa voltar
             cadastroController.setPrimaryStage((Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow());
 
             Stage currentStage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
@@ -86,28 +94,54 @@ public class LoginController {
 
         } catch (IOException e) {
             e.printStackTrace();
-            showAlert(AlertType.ERROR, "Erro de Navegação", "Não foi possível carregar a tela de cadastro.");
+            showAlert(AlertType.ERROR, "Erro de Navegação", "Não foi possível carregar a tela de cadastro. Detalhes: " + e.getMessage());
         }
     }
 
-    private void loadProdutosView(ActionEvent event, Usuario usuarioLogado) { // Recebe usuarioLogado
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/pooprojeto/view/ProdutosView.fxml"));
-            Parent root = loader.load();
+    private void loadProdutosView(Usuario usuarioLogado) throws IOException {
+        String fxmlPath = "/org/example/pooprojeto/view/ProdutosView.fxml";
+        URL fxmlUrl = getClass().getResource(fxmlPath);
+        System.out.println("DEBUG - Tentando carregar ProdutosView.fxml...");
+        System.out.println("DEBUG - Caminho absoluto para ProdutosView.fxml: " + fxmlUrl);
 
-            // Certifique-se de que ProdutosController tem um método setUsuarioLogado
-            ProdutosController produtosController = loader.getController();
-            produtosController.setUsuarioLogado(usuarioLogado); // Passe o usuário logado
-
-            Stage currentStage = (primaryStage != null) ? primaryStage : (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
-            currentStage.setScene(new Scene(root));
-            currentStage.setTitle("Gerenciamento de Produtos");
-            currentStage.show();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            showAlert(AlertType.ERROR, "Erro de Navegação", "Não foi possível carregar a tela principal.");
+        if (fxmlUrl == null) {
+            throw new IOException("Recurso FXML não encontrado: " + fxmlPath);
         }
+
+        FXMLLoader loader = new FXMLLoader(fxmlUrl);
+        Parent root = loader.load();
+
+        ProdutosController produtosController = loader.getController();
+        produtosController.setUsuarioLogado(usuarioLogado);
+        produtosController.setProdutoDAO(new ProdutoDAO());
+
+        Scene scene = new Scene(root);
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Nossa Loja");
+        primaryStage.show();
+    }
+
+    private void loadAdminView(Usuario adminLogado) throws IOException {
+        String fxmlPath = "/org/example/pooprojeto/view/AdminView.fxml";
+        URL fxmlUrl = getClass().getResource(fxmlPath);
+        System.out.println("DEBUG - Tentando carregar AdminView.fxml...");
+        System.out.println("DEBUG - Caminho absoluto para AdminView.fxml: " + fxmlUrl);
+
+        if (fxmlUrl == null) {
+            throw new IOException("Recurso FXML não encontrado: " + fxmlPath);
+        }
+
+        FXMLLoader loader = new FXMLLoader(fxmlUrl);
+        Parent root = loader.load();
+
+        AdminController adminController = loader.getController();
+        adminController.setAdminLogado(adminLogado);
+        adminController.setProdutoDAO(new ProdutoDAO());
+
+        Scene scene = new Scene(root);
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Administração - Loja Virtual");
+        primaryStage.show();
     }
 
     private void showAlert(AlertType alertType, String title, String message) {
