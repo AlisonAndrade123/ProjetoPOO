@@ -12,8 +12,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import javafx.stage.Stage;
 import org.example.pooprojeto.model.Produto;
+import org.example.pooprojeto.model.Usuario; // <<< Import adicionado
 import org.example.pooprojeto.util.CarrinhoManager;
 import org.example.pooprojeto.util.NavigationManager;
 
@@ -26,9 +26,9 @@ public class CarrinhoController {
     @FXML private Button limparCarrinhoButton;
     @FXML private Button continuarComprandoButton;
 
-    // <<< NOVOS COMPONENTES DA BARRA LATERAL >>>
+    // --- Componentes da barra lateral ---
     @FXML private Label subtotalLabel;
-    @FXML private Label freteLabel; // Adicionado
+    @FXML private Label freteLabel;
     @FXML private Label totalLabel;
     @FXML private TextField cepField;
     @FXML private TextField ruaField;
@@ -37,18 +37,53 @@ public class CarrinhoController {
     @FXML private TextField bairroField;
     @FXML private TextField cidadeField;
     @FXML private TextField estadoField;
-    @FXML private Button pagamentoButton; // Adicionado, mas a ação é definida no FXML
+    @FXML private Button pagamentoButton;
 
     private final CarrinhoManager carrinhoManager = CarrinhoManager.getInstance();
+
+    // <<< MUDANÇA 1: Adicionada a variável para o usuário logado
+    private Usuario usuarioLogado;
+
+    /**
+     * <<< MUDANÇA 2: Adicionado o método que o NavigationManager precisa.
+     * Este método permite que a informação do usuário logado seja passada para esta tela.
+     */
+    public void setUsuarioLogado(Usuario usuario) {
+        this.usuarioLogado = usuario;
+        if (usuario != null) {
+            System.out.println("Usuário " + usuario.getNome() + " acessou o carrinho.");
+        }
+    }
+
 
     @FXML
     public void initialize() {
         limparCarrinhoButton.setOnAction(e -> handleLimparCarrinho());
         continuarComprandoButton.setOnAction(e -> handleContinuarComprando());
-        // A ação do 'pagamentoButton' é definida no FXML como onAction="#handleIrParaPagamento"
-
         popularItensCarrinho();
     }
+
+    @FXML
+    private void handleIrParaPagamento(ActionEvent event) {
+        if (cepField.getText().trim().isEmpty() || ruaField.getText().trim().isEmpty() ||
+                numeroField.getText().trim().isEmpty() || bairroField.getText().trim().isEmpty() ||
+                cidadeField.getText().trim().isEmpty() || estadoField.getText().trim().isEmpty()) {
+            showAlert(Alert.AlertType.WARNING, "Campos Incompletos", "Por favor, preencha todas as informações de entrega antes de prosseguir.");
+            return;
+        }
+
+        double valorTotal = carrinhoManager.calcularTotal();
+
+        PagamentoController pagamentoController = NavigationManager.getInstance().navigateToPagamento();
+
+        if (pagamentoController != null) {
+            pagamentoController.inicializar(valorTotal);
+        } else {
+            showAlert(Alert.AlertType.ERROR, "Erro de Navegação", "Não foi possível carregar a tela de pagamento.");
+        }
+    }
+
+    // --- DEMAIS MÉTODOS (sem alterações) ---
 
     private void popularItensCarrinho() {
         itensCarrinhoVBox.getChildren().clear();
@@ -57,7 +92,9 @@ public class CarrinhoController {
             Label carrinhoVazioLabel = new Label("Seu carrinho está vazio.");
             carrinhoVazioLabel.setFont(new Font("System Bold", 18));
             itensCarrinhoVBox.getChildren().add(carrinhoVazioLabel);
+            pagamentoButton.setDisable(true);
         } else {
+            pagamentoButton.setDisable(false);
             for (Map.Entry<Produto, Integer> entry : itens.entrySet()) {
                 HBox itemNode = criarItemCarrinhoNode(entry.getKey(), entry.getValue());
                 itensCarrinhoVBox.getChildren().add(itemNode);
@@ -66,34 +103,13 @@ public class CarrinhoController {
         atualizarResumo();
     }
 
-    // <<< MÉTODO ATUALIZADO PARA INCLUIR FRETE >>>
     private void atualizarResumo() {
         double subtotal = carrinhoManager.calcularTotal();
-        double frete = 0.0; // Lógica de frete pode ser adicionada aqui
+        double frete = 0.0;
         double total = subtotal + frete;
-
         subtotalLabel.setText(String.format("R$ %.2f", subtotal).replace('.', ','));
         freteLabel.setText(String.format("R$ %.2f", frete).replace('.', ','));
         totalLabel.setText(String.format("R$ %.2f", total).replace('.', ','));
-    }
-
-    // <<< NOVO MÉTODO PARA O BOTÃO DE PAGAMENTO >>>
-    @FXML
-    private void handleIrParaPagamento(ActionEvent event) {
-        if (cepField.getText().trim().isEmpty() || ruaField.getText().trim().isEmpty() ||
-                numeroField.getText().trim().isEmpty() || bairroField.getText().trim().isEmpty() ||
-                cidadeField.getText().trim().isEmpty() || estadoField.getText().trim().isEmpty()) {
-
-            showAlert(Alert.AlertType.WARNING, "Campos Incompletos", "Por favor, preencha todas as informações de entrega antes de prosseguir.");
-            return;
-        }
-
-        // Lógica de finalização do pedido iria aqui
-        showAlert(Alert.AlertType.INFORMATION, "Pedido a Caminho!", "A funcionalidade de pagamento será implementada. Seu pedido foi registrado!");
-
-        // Limpa o carrinho e volta para a loja
-        carrinhoManager.limparCarrinho();
-        NavigationManager.getInstance().navigateToProductsView();
     }
 
     private void handleLimparCarrinho() {

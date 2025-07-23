@@ -22,7 +22,7 @@ import org.example.pooprojeto.model.Produto;
 import org.example.pooprojeto.model.Usuario;
 import org.example.pooprojeto.util.CarrinhoManager;
 import org.example.pooprojeto.util.CategoriasUtil;
-import org.example.pooprojeto.util.NavigationManager; // <<< Importa o novo gerenciador
+import org.example.pooprojeto.util.NavigationManager;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -35,13 +35,8 @@ public class ProdutosController {
     @FXML private TilePane productTilePane;
     @FXML private Button profileButton;
     @FXML private Button cartButton;
-
     private Usuario usuarioLogado;
     private ProdutoDAO produtoDAO;
-    // <<< MUDANÇA 1: A variável 'primaryStage' não é mais necessária neste controlador.
-    // private Stage primaryStage;
-    // public void setPrimaryStage(Stage primaryStage) { this.primaryStage = primaryStage; }
-
     public void setUsuarioLogado(Usuario usuario) { this.usuarioLogado = usuario; }
     public void setProdutoDAO(ProdutoDAO produtoDAO) { this.produtoDAO = produtoDAO; Platform.runLater(this::loadAllProducts); }
     @FXML public void initialize() { if (searchTextField != null) { searchTextField.textProperty().addListener((obs, oldText, newText) -> filterProducts(newText)); } criarBotoesDeCategoria(); }
@@ -61,20 +56,23 @@ public class ProdutosController {
         showAlert(AlertType.INFORMATION, "Produto Adicionado", "Você adicionou '" + produto.getNome() + "' ao carrinho!");
     }
 
-    /**
-     * <<< MUDANÇA 2: O método agora usa o NavigationManager para a navegação em tela cheia.
-     */
     @FXML
     private void handleCartButtonAction(ActionEvent event) {
         NavigationManager.getInstance().navigateToCart();
     }
 
-
+    /**
+     * <<< MUDANÇA: Corrigido o 'initOwner' para o bug de renderização no Linux.
+     */
     private void showAlert(AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
+
+        // A referência da janela "dona" agora vem de um nó estável (productTilePane).
+        alert.initOwner(productTilePane.getScene().getWindow());
+
         alert.showAndWait();
     }
 }

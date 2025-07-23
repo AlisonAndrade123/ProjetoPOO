@@ -29,56 +29,47 @@ public class CadastrarProdutoController {
     @FXML private TextField quantidadeTextField;
     @FXML private TextField descricaoTextField;
     @FXML private TextField precoTextField;
-    @FXML private Button finalizarCadastroButton; // <<< ADICIONADO: @FXML para podermos alterar o texto do botão
+    @FXML private Button finalizarCadastroButton;
 
     // ==== Atributos de Suporte ====
     private Stage stage;
     private ProdutoDAO produtoDAO;
     private File imagemSelecionada;
-
-    // <<< MUDANÇA 1: Variável para controlar o modo (Cadastro vs. Edição)
-    // Se for nulo, estamos cadastrando. Se tiver um objeto, estamos editando.
     private Produto produtoParaEditar;
 
     // ==== Métodos Injetores ====
     public void setStage(Stage stage) { this.stage = stage; }
     public void setProdutoDAO(ProdutoDAO produtoDAO) { this.produtoDAO = produtoDAO; }
     public void setCategorias(List<String> categorias) { categoriaComboBox.getItems().setAll(categorias); }
+    public Stage getStage() { return this.stage; }
 
-    /**
-     * <<< MUDANÇA 2: NOVO MÉTODO FUNDAMENTAL
-     * Prepara a tela para o modo de edição.
-     * @param produto O produto cujos dados serão carregados na tela.
-     */
     public void carregarDadosParaEdicao(Produto produto) {
+        // <<< DEBUG: VERIFICANDO A RECEPÇÃO DOS DADOS
+        System.out.println("DEBUG: [CadastrarProdutoController] -> carregarDadosParaEdicao CHAMADO para: " + produto.getNome());
         this.produtoParaEditar = produto;
-
-        // Preenche os campos da tela com os dados do produto existente
         nomeTextField.setText(produto.getNome());
         descricaoTextField.setText(produto.getDescricao());
         quantidadeTextField.setText(String.valueOf(produto.getQuantidade()));
         precoTextField.setText(String.format("%.2f", produto.getPreco()).replace('.', ','));
         categoriaComboBox.setValue(produto.getCategoria());
-
         if (produto.getNomeArquivoImagem() != null) {
             imagemTextField.setText(produto.getNomeArquivoImagem());
         }
-
-        // Altera o título da janela e o texto do botão para indicar que estamos editando
-        stage.setTitle("Editar Produto");
+        if (stage != null) {
+            stage.setTitle("Editar Produto");
+        }
         finalizarCadastroButton.setText("Salvar Alterações");
     }
 
-    // ==== Método de Inicialização (sem alterações) ====
     @FXML
     public void initialize() {
+        // <<< DEBUG: VERIFICANDO SE O CONTROLADOR É INICIALIZADO
+        System.out.println("DEBUG: [CadastrarProdutoController] -> initialize() CHAMADO. A tela foi carregada.");
         imagemTextField.setEditable(false);
     }
 
-    // ==== Métodos de Eventos FXML ====
     @FXML
     void handleProcurarImagem(ActionEvent event) {
-        // Nenhuma mudança necessária aqui
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Selecionar Imagem do Produto");
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Imagens", "*.png", "*.jpg", "*.jpeg", "*.gif"));
@@ -89,67 +80,58 @@ public class CadastrarProdutoController {
         }
     }
 
-    /**
-     * <<< MUDANÇA 3: Lógica principal atualizada para decidir entre SAVE e UPDATE
-     */
     @FXML
     void handleFinalizarCadastro(ActionEvent event) {
+        // <<< DEBUG PASSO 3: VERIFICANDO O CLIQUE NO BOTÃO FINAL
+        System.out.println("DEBUG: [CadastrarProdutoController] -> PASSO 3 -> Clicou no botão 'Finalizar/Salvar Alterações'.");
+
         if (!validarCampos()) {
+            System.out.println("DEBUG: [CadastrarProdutoController] -> ERRO -> Campos inválidos.");
             return;
         }
 
         try {
-            // Verifica se uma nova imagem foi selecionada
             String nomeArquivoImagem = null;
             if (imagemSelecionada != null) {
                 nomeArquivoImagem = salvarImagemLocalmente(imagemSelecionada);
             }
-
-            // Decide se vai criar um novo produto ou atualizar um existente
             if (produtoParaEditar == null) {
                 // MODO CADASTRO
+                System.out.println("DEBUG: [CadastrarProdutoController] -> PASSO 4 -> Entrou no modo CADASTRO.");
                 Produto novoProduto = new Produto();
                 preencherDadosDoFormulario(novoProduto, nomeArquivoImagem);
-                produtoDAO.save(novoProduto);
+                System.out.println("DEBUG: [CadastrarProdutoController] -> PASSO 5 -> Chamando produtoDAO.save()...");
+                produtoDAO.save(novoProduto); // Lembre-se de ter prints de debug dentro do seu DAO também!
                 showAlert(Alert.AlertType.INFORMATION, "Sucesso", "Produto cadastrado com sucesso!");
             } else {
                 // MODO EDIÇÃO
+                System.out.println("DEBUG: [CadastrarProdutoController] -> PASSO 4 -> Entrou no modo EDIÇÃO para o produto ID: " + produtoParaEditar.getId());
                 preencherDadosDoFormulario(produtoParaEditar, nomeArquivoImagem);
-                produtoDAO.update(produtoParaEditar);
+                System.out.println("DEBUG: [CadastrarProdutoController] -> PASSO 5 -> Chamando produtoDAO.update()...");
+                produtoDAO.update(produtoParaEditar); // Lembre-se de ter prints de debug dentro do seu DAO também!
                 showAlert(Alert.AlertType.INFORMATION, "Sucesso", "Produto atualizado com sucesso!");
             }
 
+            System.out.println("DEBUG: [CadastrarProdutoController] -> PASSO 6 -> Ação no banco de dados concluída. Fechando a janela.");
             stage.close();
 
-        } catch (NumberFormatException e) {
-            showAlert(Alert.AlertType.ERROR, "Erro de Formato", "Por favor, insira um número válido para Quantidade e Preço.");
-        } catch (SQLException | IOException e) {
-            showAlert(Alert.AlertType.ERROR, "Erro", "Ocorreu um erro ao salvar as informações.\n" + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("DEBUG: [CadastrarProdutoController] -> ERRO CRÍTICO no handleFinalizarCadastro!");
             e.printStackTrace();
         }
     }
 
-
-    /**
-     * <<< MUDANÇA 4: NOVO MÉTODO auxiliar para evitar repetição de código
-     * @param produto O objeto produto (novo ou existente) a ser preenchido.
-     * @param nomeArquivoImagem O nome da nova imagem (ou nulo se nenhuma foi selecionada).
-     */
     private void preencherDadosDoFormulario(Produto produto, String nomeArquivoImagem) {
         produto.setNome(nomeTextField.getText());
         produto.setCategoria(categoriaComboBox.getValue());
         produto.setDescricao(descricaoTextField.getText());
         produto.setQuantidade(Integer.parseInt(quantidadeTextField.getText()));
         produto.setPreco(Double.parseDouble(precoTextField.getText().replace(',', '.')));
-
-        // Só atualiza o nome do arquivo da imagem se uma NOVA imagem foi selecionada
         if (nomeArquivoImagem != null) {
             produto.setNomeArquivoImagem(nomeArquivoImagem);
         }
     }
 
-
-    // ==== Métodos Auxiliares (sem alterações) ====
     private boolean validarCampos() {
         String errorMessage = "";
         if (nomeTextField.getText() == null || nomeTextField.getText().trim().isEmpty()) { errorMessage += "O campo 'Nome' é obrigatório.\n"; }
