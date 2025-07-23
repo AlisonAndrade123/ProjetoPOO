@@ -1,64 +1,43 @@
 package org.example.pooprojeto;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
-import org.example.pooprojeto.controller.LoginController;
-import org.example.pooprojeto.dao.UsuarioDAO;
-import org.example.pooprojeto.service.AuthService;
 import org.example.pooprojeto.util.DatabaseManager;
+import org.example.pooprojeto.util.NavigationManager; // <<< Importa o novo gerenciador
 
 import java.io.IOException;
 
 public class MainApp extends Application {
 
-    private Stage primaryStage;
-    private AuthService authService;
-    private UsuarioDAO usuarioDAO;
-
+    /**
+     * O método init() continua sendo o local ideal para tarefas de inicialização
+     * que não envolvem a interface gráfica, como preparar o banco de dados.
+     */
     @Override
     public void init() throws Exception {
         super.init();
-        // Inicializa o banco de dados. Isso garantirá que as tabelas e o usuário admin sejam criados.
+        // Garante que o banco de dados e as tabelas sejam criados antes de qualquer coisa.
         DatabaseManager.initializeDatabase();
-
-        // Instanciação de dependências
-        usuarioDAO = new UsuarioDAO();
-        // AuthService precisa de UsuarioDAO para realizar a autenticação
-        authService = new AuthService(usuarioDAO);
     }
 
+    /**
+     * O método start() agora é muito mais simples.
+     * Sua única responsabilidade é configurar o NavigationManager e iniciar a primeira tela.
+     */
     @Override
     public void start(Stage stage) throws IOException {
-        this.primaryStage = stage;
+        // 1. Pega a instância única do nosso gerenciador de navegação.
+        NavigationManager navigationManager = NavigationManager.getInstance();
 
-        try {
-            // Carrega a tela de login como a primeira tela da aplicação
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/pooprojeto/view/LoginView.fxml"));
-            Parent root = loader.load();
+        // 2. "Apresenta" a janela principal (Stage) para o gerenciador.
+        // A partir de agora, o NavigationManager saberá em qual janela deve trocar as telas.
+        navigationManager.setPrimaryStage(stage);
 
-            LoginController loginController = loader.getController();
-
-            // Injeta as dependências no LoginController
-            // O LoginController precisará do Stage para poder trocar de tela
-            loginController.setPrimaryStage(primaryStage);
-            // O LoginController precisará do AuthService para autenticar o usuário
-            loginController.setAuthService(authService);
-
-            Scene scene = new Scene(root);
-            stage.setTitle("Sistema de Gerenciamento - Login"); // Título mais descritivo para a tela de login
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException e) {
-            System.err.println("Erro ao carregar a tela de login: " + e.getMessage());
-            e.printStackTrace();
-            // Poderia adicionar um Alert para o usuário aqui, se for crítico
-        }
+        // 3. Inicia a aplicação mandando o gerenciador navegar para a tela de login.
+        navigationManager.navigateToLogin();
     }
 
     public static void main(String[] args) {
-        launch();
+        launch(args);
     }
 }
