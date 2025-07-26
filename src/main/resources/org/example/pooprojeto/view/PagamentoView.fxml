@@ -2,34 +2,37 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
+<!-- O nome do controlador foi mantido como PagamentoController -->
 <AnchorPane style="-fx-background-color: #F0F2F5;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.pooprojeto.controller.PagamentoController">
     <children>
         <VBox alignment="CENTER" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
                 <HBox alignment="CENTER" spacing="30.0">
                     <children>
+                        <!-- ===== PAINEL ESQUERDO DE PAGAMENTO (MODIFICADO) ===== -->
                         <VBox fx:id="paymentOptionsVBox" spacing="20.0" HBox.hgrow="ALWAYS" maxWidth="500">
                             <children>
                                 <Label text="Como você prefere pagar?" fx:id="tituloLabel" />
-                                <VBox fx:id="pixPane" alignment="CENTER" spacing="15.0">
-                                    <children>
-                                        <Label text="1. Escaneie o código QR com seu celular" />
-                                        <ImageView fx:id="qrCodeImageView" fitHeight="180.0" fitWidth="180.0" pickOnBounds="true" preserveRatio="true" />
-                                        <Label text="2. Ou copie o código abaixo:" />
-                                        <HBox alignment="CENTER" spacing="5.0">
-                                            <children>
-                                                <TextField fx:id="pixCodeTextField" editable="false" prefWidth="300.0" />
-                                                <Button fx:id="copiarChaveButton" mnemonicParsing="false" onAction="#handleCopiarChave" text="Copiar" />
-                                            </children>
-                                        </HBox>
-                                    </children>
-                                </VBox>
+
+                                <!-- <<< MUDANÇA 1: Adicionado HBox para os botões de seleção -->
+                                <HBox fx:id="opcoesPagamentoHBox" spacing="10.0" alignment="CENTER_LEFT" />
+
+                                <!--
+                                    <<< MUDANÇA 2: O VBox do PIX foi substituído por um StackPane.
+                                    Este StackPane vai atuar como um contêiner dinâmico para os
+                                    diferentes métodos de pagamento (PIX, Boleto, etc.).
+                                -->
+                                <StackPane fx:id="painelMetodoPagamento" alignment="TOP_LEFT" style="-fx-border-color: #E0E0E0; -fx-background-color: white; -fx-border-radius: 8; -fx-background-radius: 8;" minHeight="250.0">
+                                    <!-- A interface de PIX ou Boleto será injetada aqui pelo controlador -->
+                                </StackPane>
+
                             </children>
                         </VBox>
+
+                        <!-- ===== PAINEL DIREITO DE RESUMO (SEM ALTERAÇÕES) ===== -->
                         <VBox fx:id="resumoVBox" spacing="15.0" minWidth="350.0" prefWidth="350.0">
                             <children>
                                 <Label fx:id="resumoTituloLabel" text="RESUMO DO PEDIDO" />
@@ -37,10 +40,6 @@
                                 <HBox><children><Label text="Subtotal:" /><Region HBox.hgrow="ALWAYS" /><Label fx:id="subtotalLabel" text="R$ 0,00" /></children></HBox>
                                 <HBox><children><Label text="Frete:" /><Region HBox.hgrow="ALWAYS" /><Label fx:id="freteLabel" text="R$ 0,00" /></children></HBox>
                                 <Separator prefWidth="200.0" />
-                                <!--
-                                   <<< AQUI ESTÁ A CORREÇÃO
-                                   Trocado "CENTER_VERTICAL" por "CENTER_LEFT"
-                                -->
                                 <HBox alignment="CENTER_LEFT">
                                     <children>
                                         <Label fx:id="totalTituloLabel" text="Total:" />
