@@ -10,16 +10,12 @@
 <?import javafx.scene.layout.TilePane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: #00A60E;" xmlns="http://javafx.com/javafx/21.0.3" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.pooprojeto.controller.ProdutosController">
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: #00A60E;"
+            prefWidth="1920"
+            prefHeight="1080"
+            xmlns="http://javafx.com/javafx/21.0.3" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.pooprojeto.controller.ProdutosController">
     <children>
         <!-- Header: Botões de Perfil e Carrinho -->
-        <Button fx:id="profileButton" layoutX="9.0" layoutY="9.0" mnemonicParsing="false" onAction="#handleProfileButtonAction" prefHeight="60.0" prefWidth="60.0" style="-fx-background-color: #00A60E;" AnchorPane.leftAnchor="9.0" AnchorPane.topAnchor="9.0">
-            <graphic>
-                <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
-                    <image><Image url="@../images/perfil_icon.png" /></image>
-                </ImageView>
-            </graphic>
-        </Button>
         <Button fx:id="cartButton" mnemonicParsing="false" onAction="#handleCartButtonAction" prefHeight="60.0" prefWidth="60.0" style="-fx-background-color: #00A60E;" AnchorPane.rightAnchor="9.0" AnchorPane.topAnchor="9.0">
             <graphic>
                 <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
