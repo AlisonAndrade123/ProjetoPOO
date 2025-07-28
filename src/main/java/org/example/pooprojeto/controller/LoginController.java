@@ -13,8 +13,10 @@ import org.example.pooprojeto.util.NavigationManager;
 
 public class LoginController {
 
-    @FXML private TextField usernameField;
-    @FXML private PasswordField passwordField;
+    @FXML
+    private TextField usernameField;
+    @FXML
+    private PasswordField passwordField;
 
     private AuthService authService;
 
@@ -47,10 +49,6 @@ public class LoginController {
         }
     }
 
-    /**
-     * <<< MUDANÇA: O botão "Criar conta" agora navega para a tela de cadastro.
-     * O alerta de "funcionalidade não implementada" foi removido.
-     */
     @FXML
     private void handleCreateAccountButtonAction(ActionEvent event) {
         NavigationManager.getInstance().navigateToCadastro();

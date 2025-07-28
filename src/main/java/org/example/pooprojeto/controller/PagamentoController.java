@@ -17,18 +17,30 @@ import java.util.List;
 
 public class PagamentoController {
 
-    @FXML private VBox paymentOptionsVBox;
-    @FXML private VBox resumoVBox;
-    @FXML private Label tituloLabel;
-    @FXML private Label resumoTituloLabel;
-    @FXML private Label totalTituloLabel;
-    @FXML private Label totalLabel;
-    @FXML private Label subtotalLabel;
-    @FXML private Label freteLabel;
-    @FXML private Button confirmarPagamentoButton;
-    @FXML private VBox processamentoBox;
-    @FXML private HBox opcoesPagamentoHBox;
-    @FXML private StackPane painelMetodoPagamento;
+    @FXML
+    private VBox paymentOptionsVBox;
+    @FXML
+    private VBox resumoVBox;
+    @FXML
+    private Label tituloLabel;
+    @FXML
+    private Label resumoTituloLabel;
+    @FXML
+    private Label totalTituloLabel;
+    @FXML
+    private Label totalLabel;
+    @FXML
+    private Label subtotalLabel;
+    @FXML
+    private Label freteLabel;
+    @FXML
+    private Button confirmarPagamentoButton;
+    @FXML
+    private VBox processamentoBox;
+    @FXML
+    private HBox opcoesPagamentoHBox;
+    @FXML
+    private StackPane painelMetodoPagamento;
 
     private final CarrinhoManager carrinhoManager = CarrinhoManager.getInstance();
     private ToggleGroup toggleGroup;
@@ -49,22 +61,20 @@ public class PagamentoController {
 
     @FXML
     void handleConfirmarPagamento() {
-        // Desabilita o botão para evitar múltiplos cliques
         confirmarPagamentoButton.setDisable(true);
 
-        // Cria e exibe o alerta imediatamente
+
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Pagamento Realizado");
-        alert.setHeaderText("✅ Pagamento concluído com sucesso!");
+        alert.setHeaderText("Pagamento concluído com sucesso!");
         alert.setContentText("Seu pedido será processado e enviado em breve.\nObrigado por comprar conosco!");
 
-        // Vincula o alerta à janela principal
+
         Stage ownerStage = (Stage) confirmarPagamentoButton.getScene().getWindow();
         alert.initOwner(ownerStage);
 
-        // Mostra o alerta e espera o usuário confirmar
+
         alert.showAndWait().ifPresent(response -> {
-            // Limpa o carrinho e navega para a tela de produtos
             carrinhoManager.limparCarrinho();
             NavigationManager.getInstance().navigateToProductsView();
         });

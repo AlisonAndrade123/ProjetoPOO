@@ -1,4 +1,3 @@
-// Em util/CarrinhoManager.java
 package org.example.pooprojeto.util;
 
 import org.example.pooprojeto.model.Produto;
@@ -25,18 +24,16 @@ public class CarrinhoManager {
         this.itens.put(produto, this.itens.getOrDefault(produto, 0) + 1);
     }
 
-    // <<< NOVO MÉTODO
     public void incrementarQuantidade(Produto produto) {
-        this.adicionarProduto(produto); // A lógica é a mesma
+        this.adicionarProduto(produto);
     }
 
-    // <<< NOVO MÉTODO
+
     public void decrementarQuantidade(Produto produto) {
         int quantidadeAtual = this.itens.getOrDefault(produto, 0);
         if (quantidadeAtual > 1) {
             this.itens.put(produto, quantidadeAtual - 1);
         } else {
-            // Se a quantidade for 1 ou menos, remove o produto
             this.removerProduto(produto);
         }
     }

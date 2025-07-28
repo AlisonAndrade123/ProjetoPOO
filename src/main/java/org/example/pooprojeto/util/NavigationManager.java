@@ -6,7 +6,7 @@ import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import org.example.pooprojeto.controller.*; // Importa todos os controladores do pacote
+import org.example.pooprojeto.controller.*;
 import org.example.pooprojeto.dao.ProdutoDAO;
 import org.example.pooprojeto.dao.UsuarioDAO;
 import org.example.pooprojeto.model.Usuario;
@@ -20,7 +20,8 @@ public class NavigationManager {
     private Stage primaryStage;
     private Usuario usuarioLogado;
 
-    private NavigationManager() {}
+    private NavigationManager() {
+    }
 
     public static NavigationManager getInstance() {
         if (instance == null) {
@@ -29,13 +30,14 @@ public class NavigationManager {
         return instance;
     }
 
-    public void setPrimaryStage(Stage primaryStage) { this.primaryStage = primaryStage; }
-    public void setUsuarioLogado(Usuario usuario) { this.usuarioLogado = usuario; }
+    public void setPrimaryStage(Stage primaryStage) {
+        this.primaryStage = primaryStage;
+    }
 
-    /**
-     * <<< MUDANÇA 1: O método agora retorna o controlador da cena carregada.
-     * Isso permite que a tela anterior passe dados para a nova tela.
-     */
+    public void setUsuarioLogado(Usuario usuario) {
+        this.usuarioLogado = usuario;
+    }
+
     public Object navigateTo(String fxmlPath, String title) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
@@ -58,39 +60,40 @@ public class NavigationManager {
                 AuthService authService = new AuthService(usuarioDAO);
                 ((CadastroController) controller).setAuthService(authService);
             } else if (controller instanceof CarrinhoController) {
-                // Exemplo de como você poderia configurar o CarrinhoController
                 ((CarrinhoController) controller).setUsuarioLogado(usuarioLogado);
             }
-            // O PagamentoController não precisa de injeção aqui, pois é configurado
-            // pela tela que o chama (CarrinhoController).
 
             Scene scene = new Scene(root);
             primaryStage.setScene(scene);
             primaryStage.setTitle(title);
             primaryStage.show();
 
-            return controller; // <<< Retorna o controlador criado
+            return controller;
 
         } catch (IOException e) {
             e.printStackTrace();
-            return null; // Retorna nulo em caso de erro
+            return null;
         }
     }
 
-    // O método setupModal continua o mesmo, está perfeito para sua finalidade.
+    /**
+     * Configura um modal (janela) com o FXML especificado, título e janela pai.
+     * Retorna o controlador do modal, ou null em caso de erro.
+     *
+     * @param fxmlPath    Caminho do arquivo FXML
+     * @param title       Título da janela modal
+     * @param ownerWindow Janela pai para o modal
+     * @return Controlador do modal ou null se ocorrer um erro
+     */
     public Object setupModal(String fxmlPath, String title, Window ownerWindow) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             if (getClass().getResource(fxmlPath) == null) {
-                System.err.println("ERRO CRÍTICO! -> FXML NÃO ENCONTRADO EM: " + fxmlPath);
                 return null;
             }
             Parent root = loader.load();
             Object controller = loader.getController();
-            if (controller == null) {
-                System.err.println("ERRO CRÍTICO! -> O controlador do FXML é NULO.");
-                return null;
-            }
+
             Stage modalStage = new Stage();
             modalStage.setTitle(title);
             modalStage.setScene(new Scene(root));
@@ -109,19 +112,26 @@ public class NavigationManager {
         }
     }
 
+    public void navigateToLogin() {
+        navigateTo("/org/example/pooprojeto/view/LoginView.fxml", "Sistema de Gerenciamento - Login");
+    }
 
-    // --- Métodos de atalho (precisam ser atualizados para não quebrar o código existente) ---
-    // Mantemos as versões 'void' para compatibilidade com o código que não precisa do retorno.
-    public void navigateToLogin() { navigateTo("/org/example/pooprojeto/view/LoginView.fxml", "Sistema de Gerenciamento - Login"); }
-    public void navigateToAdminView() { navigateTo("/org/example/pooprojeto/view/AdminView.fxml", "Administração - Loja Virtual"); }
-    public void navigateToProductsView() { navigateTo("/org/example/pooprojeto/view/ProdutosView.fxml", "Nossa Loja"); }
-    public void navigateToCart() { navigateTo("/org/example/pooprojeto/view/CarrinhoView.fxml", "Meu Carrinho de Compras"); }
-    public void navigateToCadastro() { navigateTo("/org/example/pooprojeto/view/CadastroView.fxml", "Cadastro de Novo Usuário"); }
+    public void navigateToAdminView() {
+        navigateTo("/org/example/pooprojeto/view/AdminView.fxml", "Administração - Loja Virtual");
+    }
 
-    /**
-     * <<< NOVO MÉTODO DE ATALHO PARA A TELA DE PAGAMENTO
-     * Este método usa o navigateTo e retorna o controlador, como precisamos.
-     */
+    public void navigateToProductsView() {
+        navigateTo("/org/example/pooprojeto/view/ProdutosView.fxml", "Nossa Loja");
+    }
+
+    public void navigateToCart() {
+        navigateTo("/org/example/pooprojeto/view/CarrinhoView.fxml", "Meu Carrinho de Compras");
+    }
+
+    public void navigateToCadastro() {
+        navigateTo("/org/example/pooprojeto/view/CadastroView.fxml", "Cadastro de Novo Usuário");
+    }
+
     public PagamentoController navigateToPagamento() {
         Object controller = navigateTo("/org/example/pooprojeto/view/PagamentoView.fxml", "Finalizar Pagamento");
         if (controller instanceof PagamentoController) {

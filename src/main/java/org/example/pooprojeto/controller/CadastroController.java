@@ -8,7 +8,7 @@ import javafx.scene.control.TextField;
 import org.example.pooprojeto.model.Usuario;
 import org.example.pooprojeto.service.AuthService;
 import org.example.pooprojeto.util.AppException;
-import org.example.pooprojeto.util.NavigationManager; // <<< Importa o novo gerenciador
+import org.example.pooprojeto.util.NavigationManager;
 
 public class CadastroController {
 
@@ -17,16 +17,10 @@ public class CadastroController {
     @FXML private PasswordField passwordField;
 
     private AuthService authService;
-    // <<< MUDANÇA 1: A variável 'primaryStage' foi removida.
-    // private Stage primaryStage;
 
-    // O método setAuthService continua útil
     public void setAuthService(AuthService authService) {
         this.authService = authService;
     }
-    // <<< MUDANÇA 2: O método 'setPrimaryStage' foi removido.
-    // public void setPrimaryStage(Stage primaryStage) { this.primaryStage = primaryStage; }
-
 
     @FXML
     private void handleRegisterButtonAction(ActionEvent event) {
@@ -43,7 +37,6 @@ public class CadastroController {
             Usuario novoUsuario = authService.register(nome, email, senha, false);
             showAlert(Alert.AlertType.INFORMATION, "Cadastro Bem-sucedido", "Usuário " + novoUsuario.getNome() + " cadastrado com sucesso!");
 
-            // <<< MUDANÇA 3: Redireciona para a tela de login usando o NavigationManager.
             NavigationManager.getInstance().navigateToLogin();
 
         } catch (AppException e) {
@@ -54,16 +47,12 @@ public class CadastroController {
         }
     }
 
-    /**
-     * <<< MUDANÇA 4: Ação de voltar simplificada.
-     */
+
     @FXML
     private void handleBackToLoginButtonAction(ActionEvent event) {
         NavigationManager.getInstance().navigateToLogin();
     }
 
-    // <<< MUDANÇA 5: Os métodos 'loadLoginView' e 'loadProdutosView' foram removidos.
-    // Eles não são mais necessários.
 
     private void showAlert(Alert.AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);

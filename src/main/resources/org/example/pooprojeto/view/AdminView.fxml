@@ -26,7 +26,7 @@
                             <font><Font size="22.0" /></font>
                         </TextField>
                         <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="10.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
-                            <image><Image url="@../Imagens/lupa.png" /></image>
+                            <image><Image url="@../imagens/lupa.png" /></image>
                         </ImageView>
                     </children>
                 </AnchorPane>

@@ -32,9 +32,6 @@ public class ProdutoService {
         return produtoDAO.search(searchTerm);
     }
 
-    // <<< MUDANÇA: Método renomeado de 'addProduto' para 'saveProduto'.
-    // <<< MUDANÇA: O tipo de retorno foi alterado de 'boolean' para 'void'.
-    // <<< MUDANÇA: A chamada interna agora usa 'save' em vez de 'add'.
     public void saveProduto(Produto produto) throws SQLException {
         produtoDAO.save(produto);
     }

@@ -24,7 +24,6 @@ public class CategoriasUtil {
             "Microfone",
             "Mousepad",
             "Cadeira"
-            // Adicione novas categorias aqui no futuro
     );
 
     /**

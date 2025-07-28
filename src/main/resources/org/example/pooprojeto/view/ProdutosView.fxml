@@ -19,7 +19,7 @@
         <Button fx:id="cartButton" mnemonicParsing="false" onAction="#handleCartButtonAction" prefHeight="60.0" prefWidth="60.0" style="-fx-background-color: #00A60E;" AnchorPane.rightAnchor="9.0" AnchorPane.topAnchor="9.0">
             <graphic>
                 <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
-                    <image><Image url="@../Imagens/carrinho-de-compras.png" /></image>
+                    <image><Image url="@../imagens/carrinho-de-compras.png" /></image>
                 </ImageView>
             </graphic>
         </Button>
@@ -31,7 +31,7 @@
                     <font><Font size="22.0" /></font>
                 </TextField>
                 <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="10.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
-                    <image><Image url="@../Imagens/lupa.png" /></image>
+                    <image><Image url="@../imagens/lupa.png" /></image>
                 </ImageView>
             </children>
         </AnchorPane>

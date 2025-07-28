@@ -3,16 +3,12 @@ package org.example.pooprojeto;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import org.example.pooprojeto.util.DatabaseManager;
-import org.example.pooprojeto.util.NavigationManager; // <<< Importa o novo gerenciador
+import org.example.pooprojeto.util.NavigationManager;
 
 import java.io.IOException;
 
 public class MainApp extends Application {
 
-    /**
-     * O método init() continua sendo o local ideal para tarefas de inicialização
-     * que não envolvem a interface gráfica, como preparar o banco de dados.
-     */
     @Override
     public void init() throws Exception {
         super.init();
@@ -20,10 +16,7 @@ public class MainApp extends Application {
         DatabaseManager.initializeDatabase();
     }
 
-    /**
-     * O método start() agora é muito mais simples.
-     * Sua única responsabilidade é configurar o NavigationManager e iniciar a primeira tela.
-     */
+
     @Override
     public void start(Stage stage) throws IOException {
         // 1. Pega a instância única do nosso gerenciador de navegação.

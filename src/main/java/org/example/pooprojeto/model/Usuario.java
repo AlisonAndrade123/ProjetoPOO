@@ -7,14 +7,12 @@ public class Usuario {
     private int id;
     private String nome;
     private String email;
-    private String senha; // Em produção, armazene hashes de senha, não senhas em texto puro!
-    private boolean isAdmin; // true para administrador, false para usuário comum
+    private String senha;
+    private boolean isAdmin;
 
-    // Construtor padrão (adicionado para flexibilidade, especialmente para DAOs)
     public Usuario() {
     }
 
-    // Construtor para criar um novo usuário (sem ID, que será gerado pelo BD)
     public Usuario(String nome, String email, String senha, boolean isAdmin) {
         this.nome = nome;
         this.email = email;
@@ -22,7 +20,6 @@ public class Usuario {
         this.isAdmin = isAdmin;
     }
 
-    // Construtor para reconstruir um objeto Usuario a partir dos dados do banco (com ID)
     public Usuario(int id, String nome, String email, String senha, boolean isAdmin) {
         this.id = id;
         this.nome = nome;
@@ -31,7 +28,7 @@ public class Usuario {
         this.isAdmin = isAdmin;
     }
 
-    // --- Getters ---
+
     public int getId() {
         return id;
     }
@@ -46,13 +43,13 @@ public class Usuario {
 
     public String getSenha() {
         return senha;
-    } // Acesso à senha deve ser limitado
+    }
 
     public boolean isAdmin() {
         return isAdmin;
     }
 
-    // --- Setters (se necessário para atualizações) ---
+
     public void setId(int id) {
         this.id = id;
     }

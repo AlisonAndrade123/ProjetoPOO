@@ -14,13 +14,13 @@ public class AuthService {
 
     private final UsuarioDAO usuarioDAO;
 
-    // Injeção de dependência via construtor
     public AuthService(UsuarioDAO usuarioDAO) {
         this.usuarioDAO = usuarioDAO;
     }
 
     /**
      * Tenta autenticar um usuário no sistema.
+     *
      * @param email O e-mail fornecido pelo usuário.
      * @param senha A senha fornecida pelo usuário.
      * @return O objeto Usuario logado, se as credenciais forem válidas.
@@ -33,15 +33,13 @@ public class AuthService {
 
         Optional<Usuario> userOptional = usuarioDAO.findByEmail(email);
 
-        // Verifica se o usuário com o e-mail fornecido existe
         if (userOptional.isEmpty()) {
-            throw new AppException("E-mail ou senha inválidos."); // Mensagem genérica por segurança
+            throw new AppException("E-mail ou senha inválidos.");
         }
 
-        Usuario usuario = userOptional.get(); // Obtém o objeto Usuario do Optional
+        Usuario usuario = userOptional.get();
 
-        // Em um sistema real, aqui você usaria um método para comparar hashes de senha (ex: BCrypt.checkpw)
-        if (!usuario.getSenha().equals(senha)) { // Comparação de senha em texto puro (APENAS PARA EXEMPLO)
+        if (!usuario.getSenha().equals(senha)) {
             throw new AppException("E-mail ou senha inválidos.");
         }
 
@@ -51,9 +49,10 @@ public class AuthService {
 
     /**
      * Registra um novo usuário no sistema.
-     * @param nome O nome completo do novo usuário.
-     * @param email O e-mail do novo usuário (deve ser único).
-     * @param senha A senha do novo usuário.
+     *
+     * @param nome    O nome completo do novo usuário.
+     * @param email   O e-mail do novo usuário (deve ser único).
+     * @param senha   A senha do novo usuário.
      * @param isAdmin Indica se o usuário é um administrador (geralmente false para registros via interface).
      * @return O objeto Usuario recém-criado com o ID atribuído.
      * @throws AppException Se o registro falhar (e-mail já em uso, campos vazios, erro no BD).
@@ -65,12 +64,12 @@ public class AuthService {
             throw new AppException("Todos os campos são obrigatórios para o registro.");
         }
 
-        // Validação básica de formato de e-mail (pode ser mais robusta com regex)
+        // Validação básica de formato de e-mail
         if (!email.contains("@") || !email.contains(".")) {
             throw new AppException("Formato de e-mail inválido.");
         }
 
         Usuario novoUsuario = new Usuario(nome, email, senha, isAdmin);
-        return usuarioDAO.save(novoUsuario); // O DAO já lida com a verificação de e-mail duplicado
+        return usuarioDAO.save(novoUsuario);
     }
 }
