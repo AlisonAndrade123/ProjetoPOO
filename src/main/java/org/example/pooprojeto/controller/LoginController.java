@@ -36,7 +36,6 @@ public class LoginController {
             Usuario usuarioAutenticado = authService.login(email, senha);
             NavigationManager.getInstance().setUsuarioLogado(usuarioAutenticado);
 
-            // Apenas chama os métodos de navegação, sem passar argumentos
             if (usuarioAutenticado.isAdmin()) {
                 NavigationManager.getInstance().navigateToAdminView();
             } else {
@@ -48,6 +47,10 @@ public class LoginController {
         }
     }
 
+    /**
+     * <<< MUDANÇA: O botão "Criar conta" agora navega para a tela de cadastro.
+     * O alerta de "funcionalidade não implementada" foi removido.
+     */
     @FXML
     private void handleCreateAccountButtonAction(ActionEvent event) {
         NavigationManager.getInstance().navigateToCadastro();
