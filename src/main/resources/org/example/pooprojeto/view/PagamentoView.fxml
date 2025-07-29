@@ -6,7 +6,9 @@
 <?import javafx.scene.text.*?>
 
 <!-- O nome do controlador foi mantido como PagamentoController -->
-<AnchorPane style="-fx-background-color: #F0F2F5;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.pooprojeto.controller.PagamentoController">
+<AnchorPane style="-fx-background-color: #F0F2F5;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            prefWidth="1920"
+            prefHeight="1080" fx:controller="org.example.pooprojeto.controller.PagamentoController">
     <children>
         <VBox alignment="CENTER" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
