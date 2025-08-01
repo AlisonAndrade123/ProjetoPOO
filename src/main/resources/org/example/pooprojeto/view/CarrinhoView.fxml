@@ -5,8 +5,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -16,7 +14,6 @@
             prefWidth="1920"
             prefHeight="1080" style="-fx-background-color: #00A60E;" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.pooprojeto.controller.CarrinhoController">
     <children>
-        <!-- Header -->
         <HBox alignment="CENTER_LEFT" spacing="30.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="30.0">
             <children>
                 <Label text="Meu carrinho de compras" textFill="WHITE" HBox.hgrow="ALWAYS">
@@ -28,14 +25,12 @@
             </children>
         </HBox>
 
-        <!-- Lista de Itens do Carrinho -->
         <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="450.0" AnchorPane.topAnchor="100.0">
             <content>
                 <VBox fx:id="itensCarrinhoVBox" spacing="20.0" style="-fx-background-color: transparent; -fx-padding: 10;" />
             </content>
         </ScrollPane>
 
-        <!-- <<< BARRA LATERAL ATUALIZADA COM FX:ID's >>> -->
         <VBox alignment="TOP_CENTER" spacing="10.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-color: #00A60E; -fx-border-width: 2; -fx-border-radius: 12;" AnchorPane.bottomAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="100.0" prefWidth="400.0">
             <children>
                 <Label text="RESUMO DO PEDIDO" textFill="#00a60e">
@@ -85,7 +80,6 @@
                     <VBox.margin><Insets left="20.0" right="20.0" /></VBox.margin>
                 </HBox>
 
-                <!-- <<< Adicionado onAction e fx:id -->
                 <Button fx:id="pagamentoButton" onAction="#handleIrParaPagamento" mnemonicParsing="false" prefHeight="45.0" prefWidth="300.0" style="-fx-background-color: #00A60E; -fx-background-radius: 10; -fx-cursor: hand;" text="Ir para o Pagamento" textFill="WHITE">
                     <font><Font name="System Bold" size="16.0" /></font>
                     <VBox.margin><Insets top="20.0" /></VBox.margin>

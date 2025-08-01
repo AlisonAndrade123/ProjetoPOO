@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- MUDANÇA: Adicionado import para ComboBox -->
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
@@ -42,7 +41,6 @@
             </children>
         </HBox>
 
-        <!-- MUDANÇA: Bloco da Categoria foi alterado -->
         <HBox alignment="CENTER_LEFT" prefHeight="70.0" prefWidth="700.0" spacing="20.0">
             <children>
                 <Label text="Categoria:">
@@ -53,7 +51,6 @@
                         <Insets left="30.0" />
                     </HBox.margin>
                 </Label>
-                <!-- TextField foi trocado por um ComboBox -->
                 <ComboBox fx:id="categoriaComboBox" prefHeight="45.0" promptText="Selecione uma categoria..." HBox.hgrow="ALWAYS" />
             </children>
         </HBox>

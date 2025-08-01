@@ -3,9 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 
-<!-- O nome do controlador foi mantido como PagamentoController -->
 <AnchorPane style="-fx-background-color: #F0F2F5;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
             prefWidth="1920"
             prefHeight="1080" fx:controller="org.example.pooprojeto.controller.PagamentoController">
@@ -14,27 +12,18 @@
             <children>
                 <HBox alignment="CENTER" spacing="30.0">
                     <children>
-                        <!-- ===== PAINEL ESQUERDO DE PAGAMENTO (MODIFICADO) ===== -->
                         <VBox fx:id="paymentOptionsVBox" spacing="20.0" HBox.hgrow="ALWAYS" maxWidth="500">
                             <children>
                                 <Label text="Como você prefere pagar?" fx:id="tituloLabel" />
 
-                                <!-- <<< MUDANÇA 1: Adicionado HBox para os botões de seleção -->
                                 <HBox fx:id="opcoesPagamentoHBox" spacing="10.0" alignment="CENTER_LEFT" />
 
-                                <!--
-                                    <<< MUDANÇA 2: O VBox do PIX foi substituído por um StackPane.
-                                    Este StackPane vai atuar como um contêiner dinâmico para os
-                                    diferentes métodos de pagamento (PIX, Boleto, etc.).
-                                -->
                                 <StackPane fx:id="painelMetodoPagamento" alignment="TOP_LEFT" style="-fx-border-color: #E0E0E0; -fx-background-color: white; -fx-border-radius: 8; -fx-background-radius: 8;" minHeight="250.0">
-                                    <!-- A interface de PIX ou Boleto será injetada aqui pelo controlador -->
                                 </StackPane>
 
                             </children>
                         </VBox>
 
-                        <!-- ===== PAINEL DIREITO DE RESUMO (SEM ALTERAÇÕES) ===== -->
                         <VBox fx:id="resumoVBox" spacing="15.0" minWidth="350.0" prefWidth="350.0">
                             <children>
                                 <Label fx:id="resumoTituloLabel" text="RESUMO DO PEDIDO" />

@@ -15,7 +15,6 @@
             prefHeight="1080"
             xmlns="http://javafx.com/javafx/21.0.3" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.pooprojeto.controller.ProdutosController">
     <children>
-        <!-- Header: Botões de Perfil e Carrinho -->
         <Button fx:id="cartButton" mnemonicParsing="false" onAction="#handleCartButtonAction" prefHeight="60.0" prefWidth="60.0" style="-fx-background-color: #00A60E;" AnchorPane.rightAnchor="9.0" AnchorPane.topAnchor="9.0">
             <graphic>
                 <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
@@ -24,7 +23,6 @@
             </graphic>
         </Button>
 
-        <!-- Header: Barra de Busca -->
         <AnchorPane prefHeight="45.0" style="-fx-background-color: #FFFFFF; -fx-border-radius: 15; -fx-background-radius: 15;" AnchorPane.leftAnchor="75.0" AnchorPane.rightAnchor="75.0" AnchorPane.topAnchor="16.0">
             <children>
                 <TextField fx:id="searchTextField" promptText="O que você quer comprar hoje?" style="-fx-background-color: transparent; -fx-border-color: transparent;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -36,23 +34,16 @@
             </children>
         </AnchorPane>
 
-        <!-- Barra de Categorias -->
         <ScrollPane fx:id="categoryScrollPane" hbarPolicy="AS_NEEDED" prefHeight="72.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #00A60E; -fx-border-width: 0 0 2 0;" vbarPolicy="NEVER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
             <content>
-                <!--
-                    <<< MUDANÇA PRINCIPAL: O CONTEÚDO DESTA HBOX FOI ESVAZIADO.
-                    Todos os botões de categoria foram removidos. O ProdutosController agora é
-                    responsável por criar e adicionar os botões aqui dinamicamente.
-                -->
+
                 <HBox fx:id="categoryHBox" alignment="CENTER_LEFT" spacing="15.0" style="-fx-padding: 0 15 0 15;" />
             </content>
         </ScrollPane>
 
-        <!-- Área de Exibição dos Produtos -->
         <ScrollPane hbarPolicy="NEVER" style="-fx-background-color: transparent; -fx-padding: 0;" vbarPolicy="AS_NEEDED" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="165.0">
             <content>
                 <TilePane fx:id="productTilePane" alignment="TOP_LEFT" hgap="20.0" prefColumns="5" prefTileHeight="400.0" prefTileWidth="345.0" style="-fx-padding: 20;" vgap="20.0">
-                    <!-- O conteúdo (cards de produtos) será adicionado aqui dinamicamente pelo ProdutosController -->
                 </TilePane>
             </content>
         </ScrollPane>
