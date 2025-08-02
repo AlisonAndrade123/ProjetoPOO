@@ -12,6 +12,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.stage.Stage; // <<< Adicionada esta importação
 import org.example.pooprojeto.model.Produto;
 import org.example.pooprojeto.model.Usuario;
 import org.example.pooprojeto.util.CarrinhoManager;
@@ -21,39 +22,31 @@ import java.util.Map;
 
 public class CarrinhoController {
 
-    @FXML
-    private VBox itensCarrinhoVBox;
-    @FXML
-    private Button limparCarrinhoButton;
-    @FXML
-    private Button continuarComprandoButton;
-
-    @FXML
-    private Label subtotalLabel;
-    @FXML
-    private Label freteLabel;
-    @FXML
-    private Label totalLabel;
-    @FXML
-    private TextField cepField;
-    @FXML
-    private TextField ruaField;
-    @FXML
-    private TextField numeroField;
-    @FXML
-    private TextField complementoField;
-    @FXML
-    private TextField bairroField;
-    @FXML
-    private TextField cidadeField;
-    @FXML
-    private TextField estadoField;
-    @FXML
-    private Button pagamentoButton;
+    @FXML private VBox itensCarrinhoVBox;
+    @FXML private Button limparCarrinhoButton;
+    @FXML private Button continuarComprandoButton;
+    @FXML private Label subtotalLabel;
+    @FXML private Label freteLabel;
+    @FXML private Label totalLabel;
+    @FXML private TextField cepField;
+    @FXML private TextField ruaField;
+    @FXML private TextField numeroField;
+    @FXML private TextField complementoField;
+    @FXML private TextField bairroField;
+    @FXML private TextField cidadeField;
+    @FXML private TextField estadoField;
+    @FXML private Button pagamentoButton;
 
     private final CarrinhoManager carrinhoManager = CarrinhoManager.getInstance();
-
     private Usuario usuarioLogado;
+
+    // <<< MUDANÇA 1: Adicionado o campo para guardar a referência da janela principal.
+    private Stage primaryStage;
+
+    // <<< MUDANÇA 2: Adicionado o método setter para que o NavigationManager possa injetar a janela.
+    public void setPrimaryStage(Stage primaryStage) {
+        this.primaryStage = primaryStage;
+    }
 
     public void setUsuarioLogado(Usuario usuario) {
         this.usuarioLogado = usuario;
@@ -75,15 +68,7 @@ public class CarrinhoController {
             return;
         }
 
-        double valorTotal = carrinhoManager.calcularTotal();
-
-        PagamentoController pagamentoController = NavigationManager.getInstance().navigateToPagamento();
-
-        if (pagamentoController != null) {
-            pagamentoController.inicializar(valorTotal);
-        } else {
-            showAlert(Alert.AlertType.ERROR, "Erro de Navegação", "Não foi possível carregar a tela de pagamento.");
-        }
+        NavigationManager.getInstance().navigateToPagamento();
     }
 
     private void popularItensCarrinho() {
@@ -183,11 +168,20 @@ public class CarrinhoController {
         return hBox;
     }
 
+    /**
+     * <<< MUDANÇA 3: O alerta agora usa a referência explícita do primaryStage.
+     */
     private void showAlert(Alert.AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
+
+        // Usa a referência da janela principal para evitar bugs de renderização
+        if (this.primaryStage != null) {
+            alert.initOwner(this.primaryStage);
+        }
+
         alert.showAndWait();
     }
 }

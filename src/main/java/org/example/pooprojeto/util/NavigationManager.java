@@ -3,9 +3,7 @@ package org.example.pooprojeto.util;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import org.example.pooprojeto.controller.*;
 import org.example.pooprojeto.dao.ProdutoDAO;
 import org.example.pooprojeto.dao.UsuarioDAO;
@@ -20,8 +18,7 @@ public class NavigationManager {
     private Stage primaryStage;
     private Usuario usuarioLogado;
 
-    private NavigationManager() {
-    }
+    private NavigationManager() {}
 
     public static NavigationManager getInstance() {
         if (instance == null) {
@@ -38,105 +35,64 @@ public class NavigationManager {
         this.usuarioLogado = usuario;
     }
 
-    public Object navigateTo(String fxmlPath, String title) {
+    public Usuario getUsuarioLogado() {
+        return this.usuarioLogado;
+    }
+
+    public void navigateTo(String fxmlPath, String title) {
         try {
+            // <<< DEBUG: Verificando qual FXML está sendo carregado >>>
+            System.out.println("DEBUG [NavManager]: Tentando carregar FXML de: " + fxmlPath);
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             Parent root = loader.load();
             Object controller = loader.getController();
 
-            // Lógica de injeção de dependência para as telas principais
+            // Lógica de injeção de dependência
             if (controller instanceof AdminController) {
+                System.out.println("DEBUG [NavManager]: Encontrado AdminController. Injetando dependências...");
                 ((AdminController) controller).setAdminLogado(usuarioLogado);
                 ((AdminController) controller).setProdutoDAO(new ProdutoDAO());
             } else if (controller instanceof ProdutosController) {
+                System.out.println("DEBUG [NavManager]: Encontrado ProdutosController. Injetando dependências...");
                 ((ProdutosController) controller).setUsuarioLogado(usuarioLogado);
                 ((ProdutosController) controller).setProdutoDAO(new ProdutoDAO());
+                ((ProdutosController) controller).setPrimaryStage(this.primaryStage);
             } else if (controller instanceof LoginController) {
-                UsuarioDAO usuarioDAO = new UsuarioDAO();
-                AuthService authService = new AuthService(usuarioDAO);
-                ((LoginController) controller).setAuthService(authService);
+                System.out.println("DEBUG [NavManager]: Encontrado LoginController. Injetando dependências...");
+                ((LoginController) controller).setAuthService(new AuthService(new UsuarioDAO()));
             } else if (controller instanceof CadastroController) {
-                UsuarioDAO usuarioDAO = new UsuarioDAO();
-                AuthService authService = new AuthService(usuarioDAO);
-                ((CadastroController) controller).setAuthService(authService);
+                System.out.println("DEBUG [NavManager]: Encontrado CadastroController. Injetando dependências...");
+                ((CadastroController) controller).setAuthService(new AuthService(new UsuarioDAO()));
             } else if (controller instanceof CarrinhoController) {
+                System.out.println("DEBUG [NavManager]: Encontrado CarrinhoController. Injetando dependências...");
                 ((CarrinhoController) controller).setUsuarioLogado(usuarioLogado);
+                ((CarrinhoController) controller).setPrimaryStage(this.primaryStage);
+            } else if (controller instanceof HistoricoController) {
+                System.out.println("DEBUG [NavManager]: Encontrado HistoricoController. Injetando dependências...");
+                ((HistoricoController) controller).setUsuarioLogado(usuarioLogado);
+                ((HistoricoController) controller).setPrimaryStage(this.primaryStage);
             }
 
             Scene scene = new Scene(root);
             primaryStage.setScene(scene);
             primaryStage.setTitle(title);
             primaryStage.show();
-
-            return controller;
-
         } catch (IOException e) {
+            System.err.println("### ERRO DE NAVEGAÇÃO: Não foi possível carregar o FXML em: '" + fxmlPath + "'");
             e.printStackTrace();
-            return null;
-        }
-    }
-
-    /**
-     * Configura um modal (janela) com o FXML especificado, título e janela pai.
-     * Retorna o controlador do modal, ou null em caso de erro.
-     *
-     * @param fxmlPath    Caminho do arquivo FXML
-     * @param title       Título da janela modal
-     * @param ownerWindow Janela pai para o modal
-     * @return Controlador do modal ou null se ocorrer um erro
-     */
-    public Object setupModal(String fxmlPath, String title, Window ownerWindow) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
-            if (getClass().getResource(fxmlPath) == null) {
-                return null;
-            }
-            Parent root = loader.load();
-            Object controller = loader.getController();
-
-            Stage modalStage = new Stage();
-            modalStage.setTitle(title);
-            modalStage.setScene(new Scene(root));
-            modalStage.setResizable(false);
-            modalStage.initOwner(ownerWindow);
-            modalStage.initModality(Modality.APPLICATION_MODAL);
-            if (controller instanceof CadastrarProdutoController) {
-                ((CadastrarProdutoController) controller).setProdutoDAO(new ProdutoDAO());
-                ((CadastrarProdutoController) controller).setCategorias(CategoriasUtil.getCategorias());
-                ((CadastrarProdutoController) controller).setStage(modalStage);
-            }
-            return controller;
-        } catch (IOException e) {
+        } catch (Exception e) {
+            System.err.println("### ERRO INESPERADO DURANTE A NAVEGAÇÃO ###");
             e.printStackTrace();
-            return null;
         }
     }
 
-    public void navigateToLogin() {
-        navigateTo("/org/example/pooprojeto/view/LoginView.fxml", "Sistema de Gerenciamento - Login");
-    }
-
-    public void navigateToAdminView() {
-        navigateTo("/org/example/pooprojeto/view/AdminView.fxml", "Administração - Loja Virtual");
-    }
-
-    public void navigateToProductsView() {
-        navigateTo("/org/example/pooprojeto/view/ProdutosView.fxml", "Nossa Loja");
-    }
-
-    public void navigateToCart() {
-        navigateTo("/org/example/pooprojeto/view/CarrinhoView.fxml", "Meu Carrinho de Compras");
-    }
-
-    public void navigateToCadastro() {
-        navigateTo("/org/example/pooprojeto/view/CadastroView.fxml", "Cadastro de Novo Usuário");
-    }
-
-    public PagamentoController navigateToPagamento() {
-        Object controller = navigateTo("/org/example/pooprojeto/view/PagamentoView.fxml", "Finalizar Pagamento");
-        if (controller instanceof PagamentoController) {
-            return (PagamentoController) controller;
-        }
-        return null;
-    }
+    // --- Métodos de atalho ---
+    public void navigateToLogin() { navigateTo("/org/example/pooprojeto/view/LoginView.fxml", "Login"); }
+    public void navigateToAdminView() { navigateTo("/org/example/pooprojeto/view/AdminView.fxml", "Administração"); }
+    public void navigateToProductsView() { navigateTo("/org/example/pooprojeto/view/ProdutosView.fxml", "Nossa Loja"); }
+    public void navigateToCart() { navigateTo("/org/example/pooprojeto/view/CarrinhoView.fxml", "Carrinho"); }
+    public void navigateToCadastro() { navigateTo("/org/example/pooprojeto/view/CadastroView.fxml", "Cadastro"); }
+    public void navigateToHistory() { navigateTo("/org/example/pooprojeto/view/HistoricoView.fxml", "Histórico de Compras"); }
+    public void navigateToPagamento() { navigateTo("/org/example/pooprojeto/view/PagamentoView.fxml", "Pagamento"); }
 }

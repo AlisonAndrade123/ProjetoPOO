@@ -20,26 +20,21 @@ import java.nio.file.StandardCopyOption;
 import java.util.List;
 
 public class CadastrarProdutoController {
-    @FXML
-    private TextField nomeTextField;
-    @FXML
-    private ComboBox<String> categoriaComboBox;
-    @FXML
-    private TextField imagemTextField;
-    @FXML
-    private TextField quantidadeTextField;
-    @FXML
-    private TextField descricaoTextField;
-    @FXML
-    private TextField precoTextField;
-    @FXML
-    private Button finalizarCadastroButton;
+    @FXML private TextField nomeTextField;
+    @FXML private ComboBox<String> categoriaComboBox;
+    @FXML private TextField imagemTextField;
+    @FXML private TextField quantidadeTextField;
+    @FXML private TextField descricaoTextField;
+    @FXML private TextField precoTextField;
+    @FXML private Button finalizarCadastroButton;
 
+    // <<< MUDANÇA: A referência à Stage está de volta >>>
     private Stage stage;
     private ProdutoDAO produtoDAO;
     private File imagemSelecionada;
     private Produto produtoParaEditar;
 
+    // <<< MUDANÇA: O método setStage está de volta >>>
     public void setStage(Stage stage) {
         this.stage = stage;
     }
@@ -52,9 +47,7 @@ public class CadastrarProdutoController {
         categoriaComboBox.getItems().setAll(categorias);
     }
 
-    public Stage getStage() {
-        return this.stage;
-    }
+    // O método onCloseCallback foi removido.
 
     public void carregarDadosParaEdicao(Produto produto) {
         this.produtoParaEditar = produto;
@@ -65,9 +58,6 @@ public class CadastrarProdutoController {
         categoriaComboBox.setValue(produto.getCategoria());
         if (produto.getNomeArquivoImagem() != null) {
             imagemTextField.setText(produto.getNomeArquivoImagem());
-        }
-        if (stage != null) {
-            stage.setTitle("Editar Produto");
         }
         finalizarCadastroButton.setText("Salvar Alterações");
     }
@@ -82,7 +72,8 @@ public class CadastrarProdutoController {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Selecionar Imagem do Produto");
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Imagens", "*.png", "*.jpg", "*.jpeg", "*.gif"));
-        File file = fileChooser.showOpenDialog(stage);
+        // Agora usa a variável 'stage' da classe
+        File file = fileChooser.showOpenDialog(this.stage);
         if (file != null) {
             imagemSelecionada = file;
             imagemTextField.setText(imagemSelecionada.getName());
@@ -91,34 +82,32 @@ public class CadastrarProdutoController {
 
     @FXML
     void handleFinalizarCadastro(ActionEvent event) {
-
         if (!validarCampos()) {
             return;
         }
-
         try {
             String nomeArquivoImagem = null;
             if (imagemSelecionada != null) {
                 nomeArquivoImagem = salvarImagemLocalmente(imagemSelecionada);
             }
             if (produtoParaEditar == null) {
-                // MODO CADASTRO
                 Produto novoProduto = new Produto();
                 preencherDadosDoFormulario(novoProduto, nomeArquivoImagem);
                 produtoDAO.save(novoProduto);
                 showAlert(Alert.AlertType.INFORMATION, "Sucesso", "Produto cadastrado com sucesso!");
             } else {
-                // MODO EDIÇÃO
                 preencherDadosDoFormulario(produtoParaEditar, nomeArquivoImagem);
                 produtoDAO.update(produtoParaEditar);
                 showAlert(Alert.AlertType.INFORMATION, "Sucesso", "Produto atualizado com sucesso!");
             }
 
-            stage.close();
-
+            // <<< MUDANÇA: Agora o controlador se fecha sozinho >>>
+            if (stage != null) {
+                stage.close();
+            }
         } catch (Exception e) {
-            System.err.println("DEBUG: [CadastrarProdutoController] -> ERRO CRÍTICO no handleFinalizarCadastro!");
             e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Erro", "Ocorreu um erro ao salvar: " + e.getMessage());
         }
     }
 
@@ -135,18 +124,11 @@ public class CadastrarProdutoController {
 
     private boolean validarCampos() {
         String errorMessage = "";
-        if (nomeTextField.getText() == null || nomeTextField.getText().trim().isEmpty()) {
-            errorMessage += "O campo 'Nome' é obrigatório.\n";
-        }
-        if (categoriaComboBox.getValue() == null || categoriaComboBox.getValue().isEmpty()) {
-            errorMessage += "É obrigatório selecionar uma 'Categoria'.\n";
-        }
-        if (quantidadeTextField.getText() == null || quantidadeTextField.getText().trim().isEmpty()) {
-            errorMessage += "O campo 'Quantidade' é obrigatório.\n";
-        }
-        if (precoTextField.getText() == null || precoTextField.getText().trim().isEmpty()) {
-            errorMessage += "O campo 'Preço' é obrigatório.\n";
-        }
+        if (nomeTextField.getText().trim().isEmpty()) errorMessage += "Nome é obrigatório.\n";
+        if (categoriaComboBox.getValue() == null) errorMessage += "Categoria é obrigatória.\n";
+        if (quantidadeTextField.getText().trim().isEmpty()) errorMessage += "Quantidade é obrigatória.\n";
+        if (precoTextField.getText().trim().isEmpty()) errorMessage += "Preço é obrigatório.\n";
+
         if (errorMessage.isEmpty()) {
             return true;
         } else {
@@ -166,12 +148,15 @@ public class CadastrarProdutoController {
         return nomeUnico;
     }
 
+    // <<< MUDANÇA: O método showAlert está de volta >>>
     private void showAlert(Alert.AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
-        alert.initOwner(stage);
+        if (this.stage != null) {
+            alert.initOwner(this.stage);
+        }
         alert.showAndWait();
     }
 }

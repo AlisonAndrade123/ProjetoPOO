@@ -10,6 +10,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 import org.example.pooprojeto.dao.ProdutoDAO;
 import org.example.pooprojeto.model.Produto;
 import org.example.pooprojeto.model.Usuario;
@@ -22,26 +23,23 @@ import java.util.List;
 
 public class ProdutosController {
 
-    @FXML
-    private TextField searchTextField;
-    @FXML
-    private ScrollPane categoryScrollPane;
-    @FXML
-    private HBox categoryHBox;
-    @FXML
-    private TilePane productTilePane;
-    @FXML
-    private Button profileButton;
-    @FXML
-    private Button cartButton;
+    @FXML private TextField searchTextField;
+    @FXML private ScrollPane categoryScrollPane;
+    @FXML private HBox categoryHBox;
+    @FXML private TilePane productTilePane;
+    @FXML private Button cartButton;
+    @FXML private Button historyButton;
+
     private Usuario usuarioLogado;
     private ProdutoDAO produtoDAO;
+    private Stage primaryStage;
 
-    public void setUsuarioLogado(Usuario usuario) {
-        this.usuarioLogado = usuario;
-    }
+    public void setPrimaryStage(Stage primaryStage) { this.primaryStage = primaryStage; }
+    public void setUsuarioLogado(Usuario usuario) { this.usuarioLogado = usuario; }
 
     public void setProdutoDAO(ProdutoDAO produtoDAO) {
+        // <<< DEBUG: Verificando se o DAO está sendo injetado >>>
+        System.out.println("DEBUG [ProdutosCtrl]: setProdutoDAO foi chamado. DAO recebido: " + produtoDAO);
         this.produtoDAO = produtoDAO;
         Platform.runLater(this::loadAllProducts);
     }
@@ -111,14 +109,19 @@ public class ProdutosController {
     }
 
     private void loadAllProducts() {
+        // <<< DEBUG: Verificando se o método é chamado e qual o estado do DAO >>>
+        System.out.println("DEBUG [ProdutosCtrl]: loadAllProducts foi chamado.");
         if (produtoDAO != null) {
             try {
                 List<Produto> produtos = produtoDAO.findAll();
+                System.out.println("DEBUG [ProdutosCtrl]: O DAO retornou " + (produtos != null ? produtos.size() : "null") + " produtos.");
                 displayProducts(produtos);
             } catch (SQLException e) {
                 showAlert(AlertType.ERROR, "Erro de Banco de Dados", "Erro ao carregar produtos: " + e.getMessage());
                 e.printStackTrace();
             }
+        } else {
+            System.err.println("DEBUG [ProdutosCtrl]: ERRO CRÍTICO! O produtoDAO é NULO ao tentar carregar os produtos.");
         }
     }
 
@@ -160,7 +163,6 @@ public class ProdutosController {
         }
     }
 
-
     private void handleComprarProduto(Produto produto) {
         CarrinhoManager.getInstance().adicionarProduto(produto);
         showAlert(AlertType.INFORMATION, "Produto Adicionado", "Você adicionou '" + produto.getNome() + "' ao carrinho!");
@@ -171,14 +173,21 @@ public class ProdutosController {
         NavigationManager.getInstance().navigateToCart();
     }
 
+    @FXML
+    private void handleHistoryButtonAction(ActionEvent event) {
+        NavigationManager.getInstance().navigateToHistory();
+    }
+
     private void showAlert(AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
-
-        alert.initOwner(productTilePane.getScene().getWindow());
-
+        if (this.primaryStage != null) {
+            alert.initOwner(this.primaryStage);
+        } else if (productTilePane != null && productTilePane.getScene() != null) {
+            alert.initOwner(productTilePane.getScene().getWindow());
+        }
         alert.showAndWait();
     }
 }

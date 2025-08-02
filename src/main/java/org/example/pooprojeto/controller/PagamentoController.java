@@ -7,40 +7,35 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.example.pooprojeto.dao.PedidoDAO;
+import org.example.pooprojeto.model.Pedido;
+import org.example.pooprojeto.model.PedidoItem;
+import org.example.pooprojeto.model.Produto;
 import org.example.pooprojeto.pagamento.MetodoPagamento;
 import org.example.pooprojeto.pagamento.PagamentoBoleto;
 import org.example.pooprojeto.pagamento.PagamentoPix;
 import org.example.pooprojeto.util.CarrinhoManager;
 import org.example.pooprojeto.util.NavigationManager;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class PagamentoController {
 
-    @FXML
-    private VBox paymentOptionsVBox;
-    @FXML
-    private VBox resumoVBox;
-    @FXML
-    private Label tituloLabel;
-    @FXML
-    private Label resumoTituloLabel;
-    @FXML
-    private Label totalTituloLabel;
-    @FXML
-    private Label totalLabel;
-    @FXML
-    private Label subtotalLabel;
-    @FXML
-    private Label freteLabel;
-    @FXML
-    private Button confirmarPagamentoButton;
-    @FXML
-    private VBox processamentoBox;
-    @FXML
-    private HBox opcoesPagamentoHBox;
-    @FXML
-    private StackPane painelMetodoPagamento;
+    @FXML private VBox paymentOptionsVBox;
+    @FXML private VBox resumoVBox;
+    @FXML private Label tituloLabel;
+    @FXML private Label resumoTituloLabel;
+    @FXML private Label totalTituloLabel;
+    @FXML private Label totalLabel;
+    @FXML private Label subtotalLabel;
+    @FXML private Label freteLabel;
+    @FXML private Button confirmarPagamentoButton;
+    @FXML private HBox opcoesPagamentoHBox;
+    @FXML private StackPane painelMetodoPagamento;
 
     private final CarrinhoManager carrinhoManager = CarrinhoManager.getInstance();
     private ToggleGroup toggleGroup;
@@ -63,16 +58,53 @@ public class PagamentoController {
     void handleConfirmarPagamento() {
         confirmarPagamentoButton.setDisable(true);
 
+        try {
+            Pedido novoPedido = new Pedido();
+
+            // <<< DEBUG: Verificando os dados do pedido >>>
+            System.out.println("DEBUG [PagamentoCtrl]: Tentando criar pedido para o usuário ID: " + NavigationManager.getInstance().getUsuarioLogado().getId());
+            novoPedido.setUsuarioId(NavigationManager.getInstance().getUsuarioLogado().getId());
+            novoPedido.setValorTotal(carrinhoManager.calcularTotal());
+
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+            novoPedido.setDataPedido(dtf.format(LocalDateTime.now()));
+
+            List<PedidoItem> itensDoPedido = new ArrayList<>();
+            for (Map.Entry<Produto, Integer> entry : carrinhoManager.getItens().entrySet()) {
+                PedidoItem item = new PedidoItem();
+                item.setProduto(entry.getKey());
+                item.setQuantidade(entry.getValue());
+                item.setPrecoUnitario(entry.getKey().getPreco());
+                itensDoPedido.add(item);
+            }
+            novoPedido.setItens(itensDoPedido);
+
+            System.out.println("DEBUG [PagamentoCtrl]: Pedido criado com " + novoPedido.getItens().size() + " item(ns). Valor total: " + novoPedido.getValorTotal());
+
+            PedidoDAO pedidoDAO = new PedidoDAO();
+            System.out.println("DEBUG [PagamentoCtrl]: Chamando pedidoDAO.salvar()...");
+            pedidoDAO.salvar(novoPedido);
+            System.out.println("DEBUG [PagamentoCtrl]: pedidoDAO.salvar() executado sem exceção.");
+
+        } catch (Exception e) {
+            System.err.println("DEBUG [PagamentoCtrl]: ERRO CRÍTICO ao salvar o pedido!");
+            e.printStackTrace();
+            Alert alertErro = new Alert(Alert.AlertType.ERROR);
+            alertErro.setTitle("Erro no Pedido");
+            alertErro.setHeaderText("Não foi possível registrar seu pedido.");
+            alertErro.setContentText("Ocorreu um erro ao salvar sua compra. Por favor, tente novamente.");
+            alertErro.showAndWait();
+            confirmarPagamentoButton.setDisable(false);
+            return;
+        }
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Pagamento Realizado");
-        alert.setHeaderText("Pagamento concluído com sucesso!");
-        alert.setContentText("Seu pedido será processado e enviado em breve.\nObrigado por comprar conosco!");
-
+        alert.setHeaderText("✅ Pagamento concluído com sucesso!");
+        alert.setContentText("Seu pedido foi registrado e será processado em breve.\nObrigado por comprar conosco!");
 
         Stage ownerStage = (Stage) confirmarPagamentoButton.getScene().getWindow();
         alert.initOwner(ownerStage);
-
 
         alert.showAndWait().ifPresent(response -> {
             carrinhoManager.limparCarrinho();

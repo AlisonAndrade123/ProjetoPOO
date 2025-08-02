@@ -33,6 +33,9 @@ public class ProdutoDAO {
     }
 
     public List<Produto> findAll() throws SQLException {
+        // <<< DEBUG: Verificando se este método é chamado e o que ele retorna >>>
+        System.out.println("DEBUG [ProdutoDAO]: findAll() foi chamado.");
+
         List<Produto> produtos = new ArrayList<>();
         String sql = "SELECT id, nome, descricao, preco, quantidade, categoria, nome_arquivo_imagem FROM produtos";
         try (Connection conn = DatabaseManager.getConnection();
@@ -50,6 +53,9 @@ public class ProdutoDAO {
                 produtos.add(produto);
             }
         }
+
+        // <<< DEBUG: Verificando o resultado antes de retornar >>>
+        System.out.println("DEBUG [ProdutoDAO]: retornando uma lista com " + produtos.size() + " produtos.");
         return produtos;
     }
 
@@ -109,12 +115,11 @@ public class ProdutoDAO {
             pstmt.setDouble(3, produto.getPreco());
             pstmt.setInt(4, produto.getQuantidade());
             pstmt.setString(5, produto.getCategoria());
-            pstmt.setString(6, produto.getNomeArquivoImagem()); // Usa o novo getter
+            pstmt.setString(6, produto.getNomeArquivoImagem());
             pstmt.setInt(7, produto.getId());
             return pstmt.executeUpdate() > 0;
         }
     }
-
 
     public boolean delete(int id) throws SQLException {
         String sql = "DELETE FROM produtos WHERE id = ?";

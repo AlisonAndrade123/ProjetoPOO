@@ -20,7 +20,7 @@ public class DatabaseManager {
         try (Connection conn = getConnection();
              Statement stmt = conn.createStatement()) {
 
-            // SQL para criar a tabela de usuários (sem alterações)
+            // SQL para criar a tabela de usuários
             String createUsersTable = "CREATE TABLE IF NOT EXISTS usuarios (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                     "nome TEXT NOT NULL," +
@@ -30,6 +30,7 @@ public class DatabaseManager {
             stmt.execute(createUsersTable);
             System.out.println("Tabela 'usuarios' criada/verificada.");
 
+            // SQL para criar a tabela de produtos
             String createProductsTable = "CREATE TABLE IF NOT EXISTS produtos (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                     "nome TEXT NOT NULL," +
@@ -40,6 +41,28 @@ public class DatabaseManager {
                     "nome_arquivo_imagem TEXT)";
             stmt.execute(createProductsTable);
             System.out.println("Tabela 'produtos' criada/verificada.");
+
+            // <<< MUDANÇA 1: Adicionada a criação da tabela de pedidos >>>
+            String createPedidosTable = "CREATE TABLE IF NOT EXISTS pedidos (" +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "usuario_id INTEGER NOT NULL," +
+                    "data_pedido TEXT NOT NULL," +
+                    "valor_total REAL NOT NULL," +
+                    "FOREIGN KEY (usuario_id) REFERENCES usuarios(id))";
+            stmt.execute(createPedidosTable);
+            System.out.println("Tabela 'pedidos' criada/verificada.");
+
+            // <<< MUDANÇA 2: Adicionada a criação da tabela de itens do pedido >>>
+            String createPedidoItensTable = "CREATE TABLE IF NOT EXISTS pedido_itens (" +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "pedido_id INTEGER NOT NULL," +
+                    "produto_id INTEGER NOT NULL," +
+                    "quantidade INTEGER NOT NULL," +
+                    "preco_unitario REAL NOT NULL," +
+                    "FOREIGN KEY (pedido_id) REFERENCES pedidos(id) ON DELETE CASCADE," +
+                    "FOREIGN KEY (produto_id) REFERENCES produtos(id))";
+            stmt.execute(createPedidoItensTable);
+            System.out.println("Tabela 'pedido_itens' criada/verificada.");
 
             // Inserir um usuário administrador padrão se não existir
             inserirAdminPadrao(conn);
@@ -54,7 +77,6 @@ public class DatabaseManager {
         String adminEmail = "admin@sistema.com";
         String adminPassword = "admin123";
 
-        // Primeiro, verifica se o usuário já existe
         String checkUserSql = "SELECT COUNT(*) FROM usuarios WHERE email = ?";
         try (PreparedStatement pstmtCheck = conn.prepareStatement(checkUserSql)) {
             pstmtCheck.setString(1, adminEmail);
@@ -64,7 +86,6 @@ public class DatabaseManager {
             }
         }
 
-        // Se não existir, insere o novo usuário administrador
         String insertUserSql = "INSERT INTO usuarios (nome, email, senha, is_admin) VALUES (?, ?, ?, ?)";
         try (PreparedStatement pstmtInsert = conn.prepareStatement(insertUserSql)) {
             pstmtInsert.setString(1, "Administrador");
