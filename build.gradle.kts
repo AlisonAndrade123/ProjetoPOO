@@ -17,7 +17,7 @@ val junitVersion = "5.10.2"
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
+        languageVersion = JavaLanguageVersion.of(17)
     }
 }
 
@@ -37,7 +37,10 @@ javafx {
 
 dependencies {
     // Dependência para SQLite JDBC
-    implementation("org.xerial:sqlite-jdbc:3.45.1.0") // Versão atual, pode verificar por mais recente
+    implementation("org.xerial:sqlite-jdbc:3.45.1.0")
+    // Dependência para OpenPDF
+    implementation ("com.github.librepdf:openpdf:1.3.30")
+    implementation ("org.slf4j:slf4j-simple:1.7.32")
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
 }

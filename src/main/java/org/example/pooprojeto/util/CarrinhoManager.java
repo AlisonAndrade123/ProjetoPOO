@@ -1,5 +1,6 @@
 package org.example.pooprojeto.util;
 
+import org.example.pooprojeto.model.Endereco;
 import org.example.pooprojeto.model.Produto;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -8,6 +9,7 @@ public class CarrinhoManager {
 
     private static CarrinhoManager instance;
     private final Map<Produto, Integer> itens;
+    private Endereco enderecoEntrega;
 
     private CarrinhoManager() {
         this.itens = new LinkedHashMap<>();
@@ -53,8 +55,19 @@ public class CarrinhoManager {
         }
         return total;
     }
+    // NOVO MÉTODO SETTER
+    public void setEnderecoEntrega(Endereco endereco) {
+        this.enderecoEntrega = endereco;
+    }
 
+    // NOVO MÉTODO GETTER
+    public Endereco getEnderecoEntrega() {
+        return this.enderecoEntrega;
+    }
+
+    // ATUALIZAR ESTE MÉTODO
     public void limparCarrinho() {
         this.itens.clear();
+        this.enderecoEntrega = null; 
     }
 }

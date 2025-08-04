@@ -1,3 +1,4 @@
+// Local: src/main/java/org/example/pooprojeto/util/NavigationManager.java
 package org.example.pooprojeto.util;
 
 import javafx.fxml.FXMLLoader;
@@ -6,11 +7,9 @@ import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import org.example.pooprojeto.controller.*;
-import org.example.pooprojeto.dao.ProdutoDAO;
-import org.example.pooprojeto.dao.UsuarioDAO;
-import org.example.pooprojeto.model.Usuario;
-import org.example.pooprojeto.service.AuthService;
+import org.example.pooprojeto.controller.CadastrarProdutoController;
+import org.example.pooprojeto.controller.PagamentoController;
+import org.example.pooprojeto.dao.ProdutoDAO; // MANTIDO - Ainda é útil para o modal
 
 import java.io.IOException;
 
@@ -18,10 +17,11 @@ public class NavigationManager {
 
     private static NavigationManager instance;
     private Stage primaryStage;
-    private Usuario usuarioLogado;
 
-    private NavigationManager() {
-    }
+    // REMOVIDO: O NavigationManager não precisa mais saber quem está logado.
+    // private Usuario usuarioLogado;
+
+    private NavigationManager() {}
 
     public static NavigationManager getInstance() {
         if (instance == null) {
@@ -34,34 +34,24 @@ public class NavigationManager {
         this.primaryStage = primaryStage;
     }
 
-    public void setUsuarioLogado(Usuario usuario) {
-        this.usuarioLogado = usuario;
-    }
+    // REMOVIDO: Não precisamos mais deste método.
+    // public void setUsuarioLogado(Usuario usuario) { ... }
 
+
+    /**
+     * Navega para uma nova cena principal.
+     * A lógica de injeção de dependência foi removida daqui e movida
+     * para dentro dos próprios controllers, que agora usam o AuthService.
+     */
     public Object navigateTo(String fxmlPath, String title) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             Parent root = loader.load();
             Object controller = loader.getController();
 
-            // Lógica de injeção de dependência para as telas principais
-            if (controller instanceof AdminController) {
-                ((AdminController) controller).setAdminLogado(usuarioLogado);
-                ((AdminController) controller).setProdutoDAO(new ProdutoDAO());
-            } else if (controller instanceof ProdutosController) {
-                ((ProdutosController) controller).setUsuarioLogado(usuarioLogado);
-                ((ProdutosController) controller).setProdutoDAO(new ProdutoDAO());
-            } else if (controller instanceof LoginController) {
-                UsuarioDAO usuarioDAO = new UsuarioDAO();
-                AuthService authService = new AuthService(usuarioDAO);
-                ((LoginController) controller).setAuthService(authService);
-            } else if (controller instanceof CadastroController) {
-                UsuarioDAO usuarioDAO = new UsuarioDAO();
-                AuthService authService = new AuthService(usuarioDAO);
-                ((CadastroController) controller).setAuthService(authService);
-            } else if (controller instanceof CarrinhoController) {
-                ((CarrinhoController) controller).setUsuarioLogado(usuarioLogado);
-            }
+            // --- LÓGICA DE INJEÇÃO REMOVIDA ---
+            // O código que verificava "instanceof LoginController", "instanceof AdminController", etc.
+            // foi completamente removido. Os controllers agora são independentes.
 
             Scene scene = new Scene(root);
             primaryStage.setScene(scene);
@@ -77,20 +67,11 @@ public class NavigationManager {
     }
 
     /**
-     * Configura um modal (janela) com o FXML especificado, título e janela pai.
-     * Retorna o controlador do modal, ou null em caso de erro.
-     *
-     * @param fxmlPath    Caminho do arquivo FXML
-     * @param title       Título da janela modal
-     * @param ownerWindow Janela pai para o modal
-     * @return Controlador do modal ou null se ocorrer um erro
+     * Configura um modal. Esta lógica pode ser mantida, pois é específica.
      */
     public Object setupModal(String fxmlPath, String title, Window ownerWindow) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
-            if (getClass().getResource(fxmlPath) == null) {
-                return null;
-            }
             Parent root = loader.load();
             Object controller = loader.getController();
 
@@ -100,6 +81,8 @@ public class NavigationManager {
             modalStage.setResizable(false);
             modalStage.initOwner(ownerWindow);
             modalStage.initModality(Modality.APPLICATION_MODAL);
+
+            // A injeção para o modal de cadastro de produto ainda é útil, podemos manter.
             if (controller instanceof CadastrarProdutoController) {
                 ((CadastrarProdutoController) controller).setProdutoDAO(new ProdutoDAO());
                 ((CadastrarProdutoController) controller).setCategorias(CategoriasUtil.getCategorias());
@@ -112,6 +95,7 @@ public class NavigationManager {
         }
     }
 
+    // Métodos de navegação (sem alterações)
     public void navigateToLogin() {
         navigateTo("/org/example/pooprojeto/view/LoginView.fxml", "Sistema de Gerenciamento - Login");
     }

@@ -4,10 +4,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import org.example.pooprojeto.model.Usuario;
-import org.example.pooprojeto.service.AuthService;
+import org.example.pooprojeto.service.AuthService; // Import permanece o mesmo
 import org.example.pooprojeto.util.AppException;
 import org.example.pooprojeto.util.NavigationManager;
 
@@ -17,12 +18,6 @@ public class LoginController {
     private TextField usernameField;
     @FXML
     private PasswordField passwordField;
-
-    private AuthService authService;
-
-    public void setAuthService(AuthService authService) {
-        this.authService = authService;
-    }
 
     @FXML
     private void handleLoginButtonAction(ActionEvent event) {
@@ -35,8 +30,8 @@ public class LoginController {
         }
 
         try {
-            Usuario usuarioAutenticado = authService.login(email, senha);
-            NavigationManager.getInstance().setUsuarioLogado(usuarioAutenticado);
+
+            Usuario usuarioAutenticado = AuthService.getInstance().login(email, senha);
 
             if (usuarioAutenticado.isAdmin()) {
                 NavigationManager.getInstance().navigateToAdminView();

@@ -1,13 +1,8 @@
 package org.example.pooprojeto.controller;
 
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
@@ -17,6 +12,7 @@ import javafx.stage.Window;
 import org.example.pooprojeto.dao.ProdutoDAO;
 import org.example.pooprojeto.model.Produto;
 import org.example.pooprojeto.model.Usuario;
+import org.example.pooprojeto.service.AuthService;
 import org.example.pooprojeto.util.CategoriasUtil;
 import org.example.pooprojeto.util.NavigationManager;
 
@@ -30,8 +26,6 @@ public class AdminController {
     @FXML
     private Button addProductButton;
     @FXML
-    private ScrollPane categoryScrollPane;
-    @FXML
     private HBox categoryHBox;
     @FXML
     private TilePane productTilePane;
@@ -39,26 +33,25 @@ public class AdminController {
     private Usuario adminLogado;
     private ProdutoDAO produtoDAO;
 
-    public void setAdminLogado(Usuario admin) {
-        this.adminLogado = admin;
-    }
-
-    public void setProdutoDAO(ProdutoDAO produtoDAO) {
-        this.produtoDAO = produtoDAO;
-        Platform.runLater(this::loadAllProducts);
-    }
-
     @FXML
     public void initialize() {
+        this.produtoDAO = new ProdutoDAO();
+        this.adminLogado = AuthService.getInstance().getUsuarioLogado();
+
+        if (adminLogado == null || !adminLogado.isAdmin()) {
+            // Navega para o login se o acesso for indevido
+            NavigationManager.getInstance().navigateToLogin();
+            return;
+        }
+
         searchTextField.textProperty().addListener((obs, oldText, newText) -> filterProducts(newText));
         criarBotoesDeCategoria();
+        loadAllProducts();
     }
 
     @FXML
     private void handleAddProduct(ActionEvent event) {
-
         Window ownerWindow = productTilePane.getScene().getWindow();
-
         Object controller = NavigationManager.getInstance().setupModal(
                 "/org/example/pooprojeto/view/CadastrarProdutoView.fxml",
                 "Cadastro de Novo Produto",
@@ -67,19 +60,13 @@ public class AdminController {
 
         if (controller instanceof CadastrarProdutoController) {
             ((CadastrarProdutoController) controller).getStage().showAndWait();
-        } else {
-            System.err.println("DEBUG: ERRO CRÍTICO! -> NavigationManager não retornou um CadastrarProdutoController.");
         }
-
         loadAllProducts();
     }
 
     private void handleEditProduct(Produto produto) {
-
         Window ownerWindow = productTilePane.getScene().getWindow();
-        if (ownerWindow == null) {
-            return;
-        }
+        if (ownerWindow == null) return;
 
         Object controllerObj = NavigationManager.getInstance().setupModal(
                 "/org/example/pooprojeto/view/CadastrarProdutoView.fxml",
@@ -90,20 +77,9 @@ public class AdminController {
         if (controllerObj instanceof CadastrarProdutoController controller) {
             controller.carregarDadosParaEdicao(produto);
             controller.getStage().showAndWait();
-        } else {
-            System.err.println("DEBUG: ERRO CRÍTICO! -> NavigationManager não retornou um CadastrarProdutoController para edição.");
         }
-
         loadAllProducts();
     }
-
-    /**
-     * Exibe um alerta com o tipo, título e mensagem especificados.
-     *
-     * @param alertType O tipo de alerta (INFORMATION, ERROR, etc.)
-     * @param title     O título do alerta
-     * @param message   A mensagem do alerta
-     */
 
     private void showAlert(Alert.AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);
@@ -239,5 +215,4 @@ public class AdminController {
             productTilePane.getChildren().add(noProductsLabel);
         }
     }
-
 }
