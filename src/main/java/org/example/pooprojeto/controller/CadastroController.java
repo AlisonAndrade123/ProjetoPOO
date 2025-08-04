@@ -5,22 +5,19 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import org.example.pooprojeto.model.Usuario;
-import org.example.pooprojeto.service.AuthService;
+import org.example.pooprojeto.service.AuthService; // Import permanece
 import org.example.pooprojeto.util.AppException;
 import org.example.pooprojeto.util.NavigationManager;
 
 public class CadastroController {
 
-    @FXML private TextField nameField;
-    @FXML private TextField emailField;
-    @FXML private PasswordField passwordField;
+    @FXML
+    private TextField nameField;
+    @FXML
+    private TextField emailField;
+    @FXML
+    private PasswordField passwordField;
 
-    private AuthService authService;
-
-    public void setAuthService(AuthService authService) {
-        this.authService = authService;
-    }
 
     @FXML
     private void handleRegisterButtonAction(ActionEvent event) {
@@ -28,31 +25,25 @@ public class CadastroController {
         String email = emailField.getText();
         String senha = passwordField.getText();
 
-        if (nome.isEmpty() || email.isEmpty() || senha.isEmpty()) {
-            showAlert(Alert.AlertType.ERROR, "Erro de Cadastro", "Por favor, preencha todos os campos.");
-            return;
-        }
-
         try {
-            Usuario novoUsuario = authService.register(nome, email, senha, false);
-            showAlert(Alert.AlertType.INFORMATION, "Cadastro Bem-sucedido", "Usuário " + novoUsuario.getNome() + " cadastrado com sucesso!");
+            // ALTERADO: Chamamos diretamente a instância Singleton global do AuthService.
+            AuthService.getInstance().register(nome, email, senha, false); // false para usuário padrão
 
+            // Após o sucesso do registro, exibe um alerta e navega para a tela de login
+            showAlert(Alert.AlertType.INFORMATION, "Sucesso", "Cadastro realizado com sucesso! Faça o login para continuar.");
             NavigationManager.getInstance().navigateToLogin();
 
         } catch (AppException e) {
-            showAlert(Alert.AlertType.ERROR, "Falha no Cadastro", e.getMessage());
-        } catch (Exception e) {
-            e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Erro Inesperado", "Ocorreu um erro ao tentar cadastrar.");
+            // Se o registro falhar (ex: e-mail já existe), mostra a mensagem de erro.
+            showAlert(Alert.AlertType.ERROR, "Erro no Cadastro", e.getMessage());
         }
     }
 
-
     @FXML
     private void handleBackToLoginButtonAction(ActionEvent event) {
+        // Ação para o botão "Voltar", que leva para a tela de login
         NavigationManager.getInstance().navigateToLogin();
     }
-
 
     private void showAlert(Alert.AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);

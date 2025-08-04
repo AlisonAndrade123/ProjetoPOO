@@ -12,8 +12,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import org.example.pooprojeto.model.Endereco;
 import org.example.pooprojeto.model.Produto;
-import org.example.pooprojeto.model.Usuario;
 import org.example.pooprojeto.util.CarrinhoManager;
 import org.example.pooprojeto.util.NavigationManager;
 
@@ -27,7 +27,6 @@ public class CarrinhoController {
     private Button limparCarrinhoButton;
     @FXML
     private Button continuarComprandoButton;
-
     @FXML
     private Label subtotalLabel;
     @FXML
@@ -53,12 +52,6 @@ public class CarrinhoController {
 
     private final CarrinhoManager carrinhoManager = CarrinhoManager.getInstance();
 
-    private Usuario usuarioLogado;
-
-    public void setUsuarioLogado(Usuario usuario) {
-        this.usuarioLogado = usuario;
-    }
-
     @FXML
     public void initialize() {
         limparCarrinhoButton.setOnAction(e -> handleLimparCarrinho());
@@ -66,17 +59,32 @@ public class CarrinhoController {
         popularItensCarrinho();
     }
 
+    /**
+     * MÉTODO ATUALIZADO
+     * Agora ele salva o endereço antes de navegar.
+     */
     @FXML
     private void handleIrParaPagamento(ActionEvent event) {
-        if (cepField.getText().trim().isEmpty() || ruaField.getText().trim().isEmpty() ||
-                numeroField.getText().trim().isEmpty() || bairroField.getText().trim().isEmpty() ||
-                cidadeField.getText().trim().isEmpty() || estadoField.getText().trim().isEmpty()) {
-            showAlert(Alert.AlertType.WARNING, "Campos Incompletos", "Por favor, preencha todas as informações de entrega antes de prosseguir.");
+        if (ruaField.getText().trim().isEmpty() || numeroField.getText().trim().isEmpty() ||
+                bairroField.getText().trim().isEmpty() || cidadeField.getText().trim().isEmpty() ||
+                estadoField.getText().trim().isEmpty() || cepField.getText().trim().isEmpty()) {
+            showAlert(Alert.AlertType.WARNING, "Campos Incompletos", "Por favor, preencha todos os campos de endereço antes de prosseguir.");
             return;
         }
 
-        double valorTotal = carrinhoManager.calcularTotal();
+        Endereco enderecoDeEntrega = new Endereco(
+                ruaField.getText(),
+                numeroField.getText(),
+                complementoField.getText(),
+                bairroField.getText(),
+                cidadeField.getText(),
+                estadoField.getText(),
+                cepField.getText()
+        );
 
+        carrinhoManager.setEnderecoEntrega(enderecoDeEntrega);
+
+        double valorTotal = carrinhoManager.calcularTotal();
         PagamentoController pagamentoController = NavigationManager.getInstance().navigateToPagamento();
 
         if (pagamentoController != null) {

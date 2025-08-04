@@ -3,12 +3,12 @@ module org.example.pooprojeto {
     requires javafx.fxml;
     requires java.sql;
     requires org.xerial.sqlitejdbc;
+    requires com.github.librepdf.openpdf;
+    requires java.desktop;
 
     exports org.example.pooprojeto;
 
-
     exports org.example.pooprojeto.controller;
-
 
     opens org.example.pooprojeto.controller to javafx.fxml;
 
