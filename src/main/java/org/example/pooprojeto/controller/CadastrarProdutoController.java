@@ -28,13 +28,11 @@ public class CadastrarProdutoController {
     @FXML private TextField precoTextField;
     @FXML private Button finalizarCadastroButton;
 
-    // <<< MUDANÇA: A referência à Stage está de volta >>>
     private Stage stage;
     private ProdutoDAO produtoDAO;
     private File imagemSelecionada;
     private Produto produtoParaEditar;
 
-    // <<< MUDANÇA: O método setStage está de volta >>>
     public void setStage(Stage stage) {
         this.stage = stage;
     }
@@ -47,7 +45,6 @@ public class CadastrarProdutoController {
         categoriaComboBox.getItems().setAll(categorias);
     }
 
-    // O método onCloseCallback foi removido.
 
     public void carregarDadosParaEdicao(Produto produto) {
         this.produtoParaEditar = produto;
@@ -72,7 +69,6 @@ public class CadastrarProdutoController {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Selecionar Imagem do Produto");
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Imagens", "*.png", "*.jpg", "*.jpeg", "*.gif"));
-        // Agora usa a variável 'stage' da classe
         File file = fileChooser.showOpenDialog(this.stage);
         if (file != null) {
             imagemSelecionada = file;
@@ -101,7 +97,6 @@ public class CadastrarProdutoController {
                 showAlert(Alert.AlertType.INFORMATION, "Sucesso", "Produto atualizado com sucesso!");
             }
 
-            // <<< MUDANÇA: Agora o controlador se fecha sozinho >>>
             if (stage != null) {
                 stage.close();
             }
@@ -148,7 +143,6 @@ public class CadastrarProdutoController {
         return nomeUnico;
     }
 
-    // <<< MUDANÇA: O método showAlert está de volta >>>
     private void showAlert(Alert.AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);

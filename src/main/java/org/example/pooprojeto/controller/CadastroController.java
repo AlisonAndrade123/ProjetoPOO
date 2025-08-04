@@ -47,7 +47,6 @@ public class CadastroController {
         }
     }
 
-
     @FXML
     private void handleBackToLoginButtonAction(ActionEvent event) {
         NavigationManager.getInstance().navigateToLogin();

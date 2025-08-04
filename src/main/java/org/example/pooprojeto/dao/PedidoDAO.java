@@ -25,6 +25,7 @@ public class PedidoDAO {
                 pstmtPedido.setString(2, pedido.getDataPedido());
                 pstmtPedido.setDouble(3, pedido.getValorTotal());
                 pstmtPedido.executeUpdate();
+
                 try (ResultSet generatedKeys = pstmtPedido.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
                         pedido.setId(generatedKeys.getInt(1));
@@ -48,21 +49,28 @@ public class PedidoDAO {
             conn.commit();
 
         } catch (SQLException e) {
-            System.err.println("### ERRO no PedidoDAO.salvar ### Ocorreu um erro durante a transação. Executando rollback...");
-            e.printStackTrace(); // <<< Adicionado para detalhar o erro
-            if (conn != null) { conn.rollback(); }
+            e.printStackTrace();
+            if (conn != null) {
+                conn.rollback();
+            }
             throw e;
         } finally {
-            if (conn != null) { conn.setAutoCommit(true); }
+            if (conn != null) {
+                conn.setAutoCommit(true);
+            }
         }
     }
 
     public List<Pedido> buscarPorUsuario(int usuarioId) throws SQLException {
         List<Pedido> pedidos = new ArrayList<>();
         String sql = "SELECT * FROM pedidos WHERE usuario_id = ? ORDER BY id DESC";
-        try (Connection conn = DatabaseManager.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
             pstmt.setInt(1, usuarioId);
             ResultSet rs = pstmt.executeQuery();
+
             while(rs.next()) {
                 Pedido pedido = new Pedido();
                 pedido.setId(rs.getInt("id"));
@@ -72,25 +80,30 @@ public class PedidoDAO {
                 pedidos.add(pedido);
             }
         } catch (SQLException e) {
-            System.err.println("### ERRO no PedidoDAO.buscarPorUsuario ### Falha ao buscar pedidos.");
-            e.printStackTrace(); // <<< Adicionado para detalhar o erro
-            throw e; // Re-lança a exceção para que o controller saiba que algo deu errado
+            e.printStackTrace();
+            throw e;
         }
         return pedidos;
     }
 
     public List<PedidoItem> buscarItensPorPedido(int pedidoId) throws SQLException {
         List<PedidoItem> itens = new ArrayList<>();
-        String sql = "SELECT pi.quantidade, pi.preco_unitario, p.id as produto_id, p.nome as produto_nome " +
+        String sql = "SELECT pi.quantidade, pi.preco_unitario, p.id as produto_id, p.nome as produto_nome, p.descricao as produto_descricao " +
                 "FROM pedido_itens pi JOIN produtos p ON pi.produto_id = p.id " +
                 "WHERE pi.pedido_id = ?";
-        try (Connection conn = DatabaseManager.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
             pstmt.setInt(1, pedidoId);
             ResultSet rs = pstmt.executeQuery();
+
             while (rs.next()) {
                 Produto produto = new Produto();
                 produto.setId(rs.getInt("produto_id"));
                 produto.setNome(rs.getString("produto_nome"));
+                produto.setDescricao(rs.getString("produto_descricao"));
+
                 PedidoItem item = new PedidoItem();
                 item.setProduto(produto);
                 item.setQuantidade(rs.getInt("quantidade"));
@@ -98,9 +111,8 @@ public class PedidoDAO {
                 itens.add(item);
             }
         } catch (SQLException e) {
-            System.err.println("### ERRO no PedidoDAO.buscarItensPorPedido ### Falha ao buscar itens do pedido.");
-            e.printStackTrace(); // <<< Adicionado para detalhar o erro
-            throw e; // Re-lança a exceção
+            e.printStackTrace();
+            throw e;
         }
         return itens;
     }

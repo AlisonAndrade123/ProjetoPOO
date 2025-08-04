@@ -29,6 +29,7 @@ public class ProdutosController {
     @FXML private TilePane productTilePane;
     @FXML private Button cartButton;
     @FXML private Button historyButton;
+    @FXML private Button profileButton; // Mantido para consistência com o FXML
 
     private Usuario usuarioLogado;
     private ProdutoDAO produtoDAO;
@@ -38,8 +39,6 @@ public class ProdutosController {
     public void setUsuarioLogado(Usuario usuario) { this.usuarioLogado = usuario; }
 
     public void setProdutoDAO(ProdutoDAO produtoDAO) {
-        // <<< DEBUG: Verificando se o DAO está sendo injetado >>>
-        System.out.println("DEBUG [ProdutosCtrl]: setProdutoDAO foi chamado. DAO recebido: " + produtoDAO);
         this.produtoDAO = produtoDAO;
         Platform.runLater(this::loadAllProducts);
     }
@@ -109,19 +108,14 @@ public class ProdutosController {
     }
 
     private void loadAllProducts() {
-        // <<< DEBUG: Verificando se o método é chamado e qual o estado do DAO >>>
-        System.out.println("DEBUG [ProdutosCtrl]: loadAllProducts foi chamado.");
         if (produtoDAO != null) {
             try {
                 List<Produto> produtos = produtoDAO.findAll();
-                System.out.println("DEBUG [ProdutosCtrl]: O DAO retornou " + (produtos != null ? produtos.size() : "null") + " produtos.");
                 displayProducts(produtos);
             } catch (SQLException e) {
                 showAlert(AlertType.ERROR, "Erro de Banco de Dados", "Erro ao carregar produtos: " + e.getMessage());
                 e.printStackTrace();
             }
-        } else {
-            System.err.println("DEBUG [ProdutosCtrl]: ERRO CRÍTICO! O produtoDAO é NULO ao tentar carregar os produtos.");
         }
     }
 

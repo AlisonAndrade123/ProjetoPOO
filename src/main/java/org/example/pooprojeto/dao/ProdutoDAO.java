@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProdutoDAO {
+
     public void save(Produto produto) throws SQLException {
         String sql = "INSERT INTO produtos (nome, descricao, preco, quantidade, categoria, nome_arquivo_imagem) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = DatabaseManager.getConnection();
@@ -33,9 +34,6 @@ public class ProdutoDAO {
     }
 
     public List<Produto> findAll() throws SQLException {
-        // <<< DEBUG: Verificando se este método é chamado e o que ele retorna >>>
-        System.out.println("DEBUG [ProdutoDAO]: findAll() foi chamado.");
-
         List<Produto> produtos = new ArrayList<>();
         String sql = "SELECT id, nome, descricao, preco, quantidade, categoria, nome_arquivo_imagem FROM produtos";
         try (Connection conn = DatabaseManager.getConnection();
@@ -53,9 +51,6 @@ public class ProdutoDAO {
                 produtos.add(produto);
             }
         }
-
-        // <<< DEBUG: Verificando o resultado antes de retornar >>>
-        System.out.println("DEBUG [ProdutoDAO]: retornando uma lista com " + produtos.size() + " produtos.");
         return produtos;
     }
 

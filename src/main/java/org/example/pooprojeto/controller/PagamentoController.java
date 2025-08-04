@@ -60,9 +60,6 @@ public class PagamentoController {
 
         try {
             Pedido novoPedido = new Pedido();
-
-            // <<< DEBUG: Verificando os dados do pedido >>>
-            System.out.println("DEBUG [PagamentoCtrl]: Tentando criar pedido para o usuário ID: " + NavigationManager.getInstance().getUsuarioLogado().getId());
             novoPedido.setUsuarioId(NavigationManager.getInstance().getUsuarioLogado().getId());
             novoPedido.setValorTotal(carrinhoManager.calcularTotal());
 
@@ -79,15 +76,10 @@ public class PagamentoController {
             }
             novoPedido.setItens(itensDoPedido);
 
-            System.out.println("DEBUG [PagamentoCtrl]: Pedido criado com " + novoPedido.getItens().size() + " item(ns). Valor total: " + novoPedido.getValorTotal());
-
             PedidoDAO pedidoDAO = new PedidoDAO();
-            System.out.println("DEBUG [PagamentoCtrl]: Chamando pedidoDAO.salvar()...");
             pedidoDAO.salvar(novoPedido);
-            System.out.println("DEBUG [PagamentoCtrl]: pedidoDAO.salvar() executado sem exceção.");
 
         } catch (Exception e) {
-            System.err.println("DEBUG [PagamentoCtrl]: ERRO CRÍTICO ao salvar o pedido!");
             e.printStackTrace();
             Alert alertErro = new Alert(Alert.AlertType.ERROR);
             alertErro.setTitle("Erro no Pedido");

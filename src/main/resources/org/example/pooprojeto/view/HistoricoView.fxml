@@ -10,7 +10,6 @@
 
 <VBox prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #00A60E;" xmlns="http://javafx.com/javafx/21.0.3" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.pooprojeto.controller.HistoricoController">
     <children>
-        <!-- CABEÇALHO (sem alterações) -->
         <HBox alignment="CENTER_LEFT" prefHeight="80.0" spacing="20.0" style="-fx-padding: 0 30 0 30;">
             <children>
                 <Label text="Meu Histórico de Compras" textFill="WHITE">
@@ -26,7 +25,6 @@
             </children>
         </HBox>
 
-        <!-- ÁREA DE CONTEÚDO PRINCIPAL -->
         <VBox style="-fx-background-color: #f4f4f4; -fx-padding: 20;" VBox.vgrow="ALWAYS">
             <children>
                 <VBox style="-fx-background-color: white; -fx-background-radius: 8; -fx-padding: 20;" VBox.vgrow="ALWAYS">
@@ -36,10 +34,8 @@
                             <VBox.margin><Insets bottom="15.0" /></VBox.margin>
                         </Label>
 
-                        <!-- MUDANÇA: ListView foi trocada por um ScrollPane com um VBox dentro. -->
                         <ScrollPane fitToWidth="true" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS">
                             <content>
-                                <!-- Este VBox vai conter os cards de cada pedido -->
                                 <VBox fx:id="pedidosContainerVBox" spacing="15.0" />
                             </content>
                         </ScrollPane>

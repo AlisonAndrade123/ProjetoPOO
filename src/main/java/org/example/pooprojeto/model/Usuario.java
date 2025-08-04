@@ -1,8 +1,5 @@
 package org.example.pooprojeto.model;
 
-/**
- * Representa um Usuário do sistema, com informações de login e perfil.
- */
 public class Usuario {
     private int id;
     private String nome;

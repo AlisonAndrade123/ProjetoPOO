@@ -20,7 +20,6 @@ public class DatabaseManager {
         try (Connection conn = getConnection();
              Statement stmt = conn.createStatement()) {
 
-            // SQL para criar a tabela de usuários
             String createUsersTable = "CREATE TABLE IF NOT EXISTS usuarios (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                     "nome TEXT NOT NULL," +
@@ -30,7 +29,6 @@ public class DatabaseManager {
             stmt.execute(createUsersTable);
             System.out.println("Tabela 'usuarios' criada/verificada.");
 
-            // SQL para criar a tabela de produtos
             String createProductsTable = "CREATE TABLE IF NOT EXISTS produtos (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                     "nome TEXT NOT NULL," +
@@ -42,7 +40,6 @@ public class DatabaseManager {
             stmt.execute(createProductsTable);
             System.out.println("Tabela 'produtos' criada/verificada.");
 
-            // <<< MUDANÇA 1: Adicionada a criação da tabela de pedidos >>>
             String createPedidosTable = "CREATE TABLE IF NOT EXISTS pedidos (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                     "usuario_id INTEGER NOT NULL," +
@@ -52,7 +49,6 @@ public class DatabaseManager {
             stmt.execute(createPedidosTable);
             System.out.println("Tabela 'pedidos' criada/verificada.");
 
-            // <<< MUDANÇA 2: Adicionada a criação da tabela de itens do pedido >>>
             String createPedidoItensTable = "CREATE TABLE IF NOT EXISTS pedido_itens (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                     "pedido_id INTEGER NOT NULL," +

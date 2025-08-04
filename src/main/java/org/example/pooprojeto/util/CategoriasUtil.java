@@ -26,10 +26,6 @@ public class CategoriasUtil {
             "Cadeira"
     );
 
-    /**
-     * Retorna uma lista imutável de todas as categorias de produtos.
-     * @return A lista de categorias.
-     */
     public static List<String> getCategorias() {
         return CATEGORIAS;
     }
