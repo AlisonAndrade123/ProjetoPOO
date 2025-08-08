@@ -1,30 +1,22 @@
 package org.example.pooprojeto.controller;
 
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import javafx.geometry.Pos;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
+import javafx.stage.Stage; // Importe a classe Stage
 import javafx.stage.Window;
 import org.example.pooprojeto.dao.ProdutoDAO;
 import org.example.pooprojeto.model.Produto;
 import org.example.pooprojeto.model.Usuario;
+import org.example.pooprojeto.service.AuthService;
 import org.example.pooprojeto.util.CategoriasUtil;
+import org.example.pooprojeto.util.NavigationManager;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -38,62 +30,53 @@ public class AdminController {
     private Usuario adminLogado;
     private ProdutoDAO produtoDAO;
 
-    public void setAdminLogado(Usuario admin) { this.adminLogado = admin; }
-    public void setProdutoDAO(ProdutoDAO produtoDAO) { this.produtoDAO = produtoDAO; Platform.runLater(this::loadAllProducts); }
-
     @FXML
     public void initialize() {
+        this.produtoDAO = new ProdutoDAO();
+        this.adminLogado = AuthService.getInstance().getUsuarioLogado();
+
+        if (adminLogado == null || !adminLogado.isAdmin()) {
+            NavigationManager.getInstance().navigateToLogin();
+            return;
+        }
+
         searchTextField.textProperty().addListener((obs, oldText, newText) -> filterProducts(newText));
         criarBotoesDeCategoria();
+        loadAllProducts();
     }
 
-    private void openModal(Produto produto) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/pooprojeto/view/CadastrarProdutoView.fxml"));
-            Parent root = loader.load();
-            CadastrarProdutoController controller = loader.getController();
-
-            Stage modalStage = new Stage();
-            modalStage.setScene(new Scene(root));
-            modalStage.setResizable(false);
-            Window ownerWindow = addProductButton.getScene().getWindow();
-            modalStage.initOwner(ownerWindow);
-            modalStage.initModality(Modality.APPLICATION_MODAL);
-
-            controller.setProdutoDAO(new ProdutoDAO());
-            controller.setCategorias(CategoriasUtil.getCategorias());
-            controller.setStage(modalStage);
-
-            if (produto == null) {
-                modalStage.setTitle("Cadastro de Novo Produto");
-            } else {
-                modalStage.setTitle("Editar Produto");
-                controller.carregarDadosParaEdicao(produto);
-            }
-
-            modalStage.showAndWait();
-            loadAllProducts();
-        } catch (IOException e) {
-            e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Erro", "Não foi possível carregar a tela.");
-        }
+    @FXML
+    private void handleAddProduct(ActionEvent event) {
+        abrirModalProduto(null);
     }
 
-    @FXML private void handleAddProduct(ActionEvent event) { openModal(null); }
-    private void handleEditProduct(Produto produto) { openModal(produto); }
+    private void handleEditProduct(Produto produto) {
+        abrirModalProduto(produto);
+    }
 
-    private void handleRemoveProduct(Produto produto) {
-        try {
-            if (produtoDAO.delete(produto.getId())) {
-                showAlert(Alert.AlertType.INFORMATION, "Sucesso", "Produto removido com sucesso!");
-                loadAllProducts();
-            } else {
-                showAlert(Alert.AlertType.ERROR, "Erro", "Falha ao remover o produto.");
+    private void abrirModalProduto(Produto produto) {
+        Window ownerWindow = productTilePane.getScene().getWindow();
+
+        Object controller = NavigationManager.getInstance().setupModal(
+                "/org/example/pooprojeto/view/CadastrarProdutoView.fxml",
+                (produto == null) ? "Cadastro de Novo Produto" : "Editar Produto",
+                ownerWindow
+        );
+
+        if (controller instanceof CadastrarProdutoController cadastrarController) {
+            if (produto != null) {
+                cadastrarController.carregarDadosParaEdicao(produto);
             }
-        } catch (SQLException e) {
-            showAlert(Alert.AlertType.ERROR, "Erro de Banco de Dados", "Ocorreu um erro: " + e.getMessage());
-            e.printStackTrace();
+
+            Stage modalStage = cadastrarController.getStage();
+            if (modalStage != null) {
+                modalStage.showAndWait(); // Exibe e espera o modal ser fechado
+            }
+        } else {
+            showAlert(Alert.AlertType.ERROR, "Erro Crítico", "Não foi possível carregar a tela de cadastro.");
         }
+
+        loadAllProducts(); // Recarrega os produtos APÓS o modal fechar
     }
 
     private void showAlert(Alert.AlertType alertType, String title, String message) {
@@ -101,13 +84,11 @@ public class AdminController {
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
-        if (addProductButton != null && addProductButton.getScene() != null) {
-            alert.initOwner(addProductButton.getScene().getWindow());
-        }
+        alert.initOwner(productTilePane.getScene().getWindow());
         alert.showAndWait();
     }
 
-    // --- MÉTODOS AUXILIARES COM O CORPO RESTAURADO ---
+    // ... O resto dos seus métodos (createProductCard, loadAllProducts, etc.) permanece igual ...
     private void criarBotoesDeCategoria() {
         categoryHBox.getChildren().clear();
         Button todosButton = criarBotaoEstilizado("Todos");
@@ -118,7 +99,6 @@ public class AdminController {
             categoryHBox.getChildren().add(categoriaButton);
         }
     }
-
     private Button criarBotaoEstilizado(String nome) {
         Button button = new Button(nome);
         button.setUserData(nome);
@@ -127,9 +107,7 @@ public class AdminController {
         button.setOnAction(this::handleCategoryFilter);
         return button;
     }
-
-    @FXML
-    private void handleCategoryFilter(ActionEvent event) {
+    @FXML private void handleCategoryFilter(ActionEvent event) {
         Button clickedButton = (Button) event.getSource();
         String category = (String) clickedButton.getUserData();
         if ("Todos".equals(category)) {
@@ -138,10 +116,22 @@ public class AdminController {
             filterProductsByCategory(category);
         }
     }
-
+    private void handleRemoveProduct(Produto produto) {
+        try {
+            if (produtoDAO.delete(produto.getId())) {
+                showAlert(Alert.AlertType.INFORMATION, "Remover Produto", "Produto '" + produto.getNome() + "' removido com sucesso!");
+                loadAllProducts();
+            } else {
+                showAlert(Alert.AlertType.ERROR, "Remover Produto", "Falha ao remover o produto.");
+            }
+        } catch (SQLException e) {
+            showAlert(Alert.AlertType.ERROR, "Erro de Banco de Dados", "Erro ao acessar o banco de dados.");
+            e.printStackTrace();
+        }
+    }
     private VBox createProductCard(Produto produto) {
         VBox card = new VBox(10);
-        card.setAlignment(Pos.TOP_CENTER);
+        card.setAlignment(javafx.geometry.Pos.TOP_CENTER);
         card.setPrefHeight(400.0);
         card.setStyle("-fx-background-color: white; -fx-border-color: #00A60E; -fx-border-radius: 10; -fx-border-width: 1; -fx-padding: 15;");
         ImageView imageView = new ImageView(produto.getImage());
@@ -158,7 +148,7 @@ public class AdminController {
         Label priceLabel = new Label("R$ " + String.format("%.2f", produto.getPreco()).replace('.', ','));
         priceLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #00A60E; -fx-padding: 5px 0 15px 0;");
         HBox actionButtons = new HBox(5);
-        actionButtons.setAlignment(Pos.CENTER);
+        actionButtons.setAlignment(javafx.geometry.Pos.CENTER);
         Button removeButton = new Button("Remover");
         removeButton.setStyle("-fx-background-color: #F43C3C; -fx-text-fill: white; -fx-font-weight: bold; -fx-border-radius: 5; -fx-padding: 6px 12px; -fx-cursor: hand;");
         removeButton.setOnAction(e -> handleRemoveProduct(produto));
@@ -169,11 +159,39 @@ public class AdminController {
         card.getChildren().addAll(imageView, nameLabel, descriptionLabel, priceLabel, actionButtons);
         return card;
     }
-
-    private void loadAllProducts() { if (produtoDAO != null) { try { List<Produto> produtos = produtoDAO.findAll(); displayProducts(produtos); } catch (SQLException e) { showAlert(Alert.AlertType.ERROR, "Erro", e.getMessage()); e.printStackTrace(); } } }
-    private void filterProducts(String searchText) { if (produtoDAO != null) { try { List<Produto> produtos = produtoDAO.search(searchText); displayProducts(produtos); } catch (SQLException e) { showAlert(Alert.AlertType.ERROR, "Erro", e.getMessage()); e.printStackTrace(); } } }
-    private void filterProductsByCategory(String category) { if (produtoDAO != null) { try { List<Produto> produtos = produtoDAO.findByCategory(category); displayProducts(produtos); } catch (SQLException e) { showAlert(Alert.AlertType.ERROR, "Erro", e.getMessage()); e.printStackTrace(); } } }
-
+    private void loadAllProducts() {
+        if (produtoDAO != null) {
+            try {
+                List<Produto> produtos = produtoDAO.findAll();
+                displayProducts(produtos);
+            } catch (SQLException e) {
+                showAlert(Alert.AlertType.ERROR, "Erro", e.getMessage());
+                e.printStackTrace();
+            }
+        }
+    }
+    private void filterProducts(String searchText) {
+        if (produtoDAO != null) {
+            try {
+                List<Produto> produtos = produtoDAO.search(searchText);
+                displayProducts(produtos);
+            } catch (SQLException e) {
+                showAlert(Alert.AlertType.ERROR, "Erro", e.getMessage());
+                e.printStackTrace();
+            }
+        }
+    }
+    private void filterProductsByCategory(String category) {
+        if (produtoDAO != null) {
+            try {
+                List<Produto> produtos = produtoDAO.findByCategory(category);
+                displayProducts(produtos);
+            } catch (SQLException e) {
+                showAlert(Alert.AlertType.ERROR, "Erro", e.getMessage());
+                e.printStackTrace();
+            }
+        }
+    }
     private void displayProducts(List<Produto> produtos) {
         productTilePane.getChildren().clear();
         if (produtos != null && !produtos.isEmpty()) {

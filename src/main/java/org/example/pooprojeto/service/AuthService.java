@@ -6,14 +6,44 @@ import org.example.pooprojeto.util.AppException;
 
 import java.util.Optional;
 
+/**
+ * Serviço de Autenticação (Singleton).
+ * Gerencia a lógica de login/registro e a sessão do usuário logado.
+ */
 public class AuthService {
+
+    // NOVO: Instância única (Singleton) para toda a aplicação.
+    private static AuthService instance;
+
+    // NOVO: Campo para armazenar o usuário que está atualmente logado.
+    private Usuario usuarioLogado;
 
     private final UsuarioDAO usuarioDAO;
 
-    public AuthService(UsuarioDAO usuarioDAO) {
-        this.usuarioDAO = usuarioDAO;
+    // NOVO: O construtor agora é privado para forçar o uso do getInstance().
+    private AuthService() {
+        this.usuarioDAO = new UsuarioDAO(); // O DAO é instanciado aqui dentro.
     }
 
+    /**
+     * NOVO: Ponto de acesso global para a instância do AuthService.
+     * @return A instância única do serviço.
+     */
+    public static AuthService getInstance() {
+        if (instance == null) {
+            instance = new AuthService();
+        }
+        return instance;
+    }
+
+    /**
+     * Tenta autenticar um usuário no sistema.
+     *
+     * @param email O e-mail fornecido pelo usuário.
+     * @param senha A senha fornecida pelo usuário.
+     * @return O objeto Usuario logado, se as credenciais forem válidas.
+     * @throws AppException Se o login falhar (usuário não encontrado, senha incorreta, etc.).
+     */
     public Usuario login(String email, String senha) throws AppException {
         if (email == null || email.trim().isEmpty() || senha == null || senha.isEmpty()) {
             throw new AppException("E-mail e senha são obrigatórios.");
@@ -31,6 +61,10 @@ public class AuthService {
             throw new AppException("E-mail ou senha inválidos.");
         }
 
+        // NOVO: Armazena o usuário na sessão após o sucesso do login.
+        this.usuarioLogado = usuario;
+
+        System.out.println("Usuário logado com sucesso: " + usuario.getNome() + " (Admin: " + usuario.isAdmin() + ")");
         return usuario;
     }
 
@@ -47,5 +81,21 @@ public class AuthService {
 
         Usuario novoUsuario = new Usuario(nome, email, senha, isAdmin);
         return usuarioDAO.save(novoUsuario);
+    }
+
+    /**
+     * NOVO: Método para obter o usuário atualmente logado de qualquer parte do código.
+     * @return O usuário logado, ou null se ninguém estiver logado.
+     */
+    public Usuario getUsuarioLogado() {
+        return this.usuarioLogado;
+    }
+
+    /**
+     * NOVO: Método para fazer logout, limpando a sessão.
+     */
+    public void logout() {
+        System.out.println("Usuário deslogado: " + (usuarioLogado != null ? usuarioLogado.getNome() : "N/A"));
+        this.usuarioLogado = null;
     }
 }

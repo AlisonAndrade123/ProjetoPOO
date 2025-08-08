@@ -2,6 +2,7 @@ package org.example.pooprojeto.model;
 
 import javafx.scene.image.Image;
 import java.io.File;
+import java.util.Objects;
 
 public class Produto {
 
@@ -97,7 +98,7 @@ public class Produto {
 
     private void loadPlaceholder() {
         try {
-            this.image = new Image(getClass().getResourceAsStream("/org/example/pooprojeto/imagens/placeholder.png"));
+            this.image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/org/example/pooprojeto/imagens/placeholder.png")));
         } catch (Exception e) {
             e.printStackTrace();
             this.image = null;

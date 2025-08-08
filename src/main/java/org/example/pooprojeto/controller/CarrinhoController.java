@@ -12,6 +12,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import org.example.pooprojeto.model.Endereco;
 import javafx.stage.Stage;
 import org.example.pooprojeto.model.Produto;
 import org.example.pooprojeto.model.Usuario;
@@ -22,33 +23,36 @@ import java.util.Map;
 
 public class CarrinhoController {
 
-    @FXML private VBox itensCarrinhoVBox;
-    @FXML private Button limparCarrinhoButton;
-    @FXML private Button continuarComprandoButton;
-    @FXML private Label subtotalLabel;
-    @FXML private Label freteLabel;
-    @FXML private Label totalLabel;
-    @FXML private TextField cepField;
-    @FXML private TextField ruaField;
-    @FXML private TextField numeroField;
-    @FXML private TextField complementoField;
-    @FXML private TextField bairroField;
-    @FXML private TextField cidadeField;
-    @FXML private TextField estadoField;
-    @FXML private Button pagamentoButton;
+    @FXML
+    private VBox itensCarrinhoVBox;
+    @FXML
+    private Button limparCarrinhoButton;
+    @FXML
+    private Button continuarComprandoButton;
+    @FXML
+    private Label subtotalLabel;
+    @FXML
+    private Label freteLabel;
+    @FXML
+    private Label totalLabel;
+    @FXML
+    private TextField cepField;
+    @FXML
+    private TextField ruaField;
+    @FXML
+    private TextField numeroField;
+    @FXML
+    private TextField complementoField;
+    @FXML
+    private TextField bairroField;
+    @FXML
+    private TextField cidadeField;
+    @FXML
+    private TextField estadoField;
+    @FXML
+    private Button pagamentoButton;
 
     private final CarrinhoManager carrinhoManager = CarrinhoManager.getInstance();
-    private Usuario usuarioLogado;
-
-    private Stage primaryStage;
-
-    public void setPrimaryStage(Stage primaryStage) {
-        this.primaryStage = primaryStage;
-    }
-
-    public void setUsuarioLogado(Usuario usuario) {
-        this.usuarioLogado = usuario;
-    }
 
     @FXML
     public void initialize() {
@@ -59,14 +63,33 @@ public class CarrinhoController {
 
     @FXML
     private void handleIrParaPagamento(ActionEvent event) {
-        if (cepField.getText().trim().isEmpty() || ruaField.getText().trim().isEmpty() ||
-                numeroField.getText().trim().isEmpty() || bairroField.getText().trim().isEmpty() ||
-                cidadeField.getText().trim().isEmpty() || estadoField.getText().trim().isEmpty()) {
-            showAlert(Alert.AlertType.WARNING, "Campos Incompletos", "Por favor, preencha todas as informações de entrega antes de prosseguir.");
+        if (ruaField.getText().trim().isEmpty() || numeroField.getText().trim().isEmpty() ||
+                bairroField.getText().trim().isEmpty() || cidadeField.getText().trim().isEmpty() ||
+                estadoField.getText().trim().isEmpty() || cepField.getText().trim().isEmpty()) {
+            showAlert(Alert.AlertType.WARNING, "Campos Incompletos", "Por favor, preencha todos os campos de endereço antes de prosseguir.");
             return;
         }
 
-        NavigationManager.getInstance().navigateToPagamento();
+        Endereco enderecoDeEntrega = new Endereco(
+                ruaField.getText(),
+                numeroField.getText(),
+                complementoField.getText(),
+                bairroField.getText(),
+                cidadeField.getText(),
+                estadoField.getText(),
+                cepField.getText()
+        );
+
+        carrinhoManager.setEnderecoEntrega(enderecoDeEntrega);
+
+        double valorTotal = carrinhoManager.calcularTotal();
+        PagamentoController pagamentoController = NavigationManager.getInstance().navigateToPagamento();
+
+        if (pagamentoController != null) {
+            pagamentoController.inicializar(valorTotal);
+        } else {
+            showAlert(Alert.AlertType.ERROR, "Erro de Navegação", "Não foi possível carregar a tela de pagamento.");
+        }
     }
 
     private void popularItensCarrinho() {
@@ -172,9 +195,9 @@ public class CarrinhoController {
         alert.setHeaderText(null);
         alert.setContentText(message);
 
-        // Usa a referência da janela principal para evitar bugs de renderização
-        if (this.primaryStage != null) {
-            alert.initOwner(this.primaryStage);
+        // CORREÇÃO: Obtém a janela a partir de um componente FXML existente na tela
+        if (itensCarrinhoVBox.getScene() != null) {
+            alert.initOwner(itensCarrinhoVBox.getScene().getWindow());
         }
 
         alert.showAndWait();

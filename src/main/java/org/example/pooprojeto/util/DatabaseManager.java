@@ -63,6 +63,9 @@ public class DatabaseManager {
             // Inserir um usuário administrador padrão se não existir
             inserirAdminPadrao(conn);
 
+            // Inserir produtos padrão se a tabela estiver vazia
+            inserirProdutosPadrao(conn);
+
         } catch (SQLException e) {
             System.err.println("Erro ao inicializar o banco de dados: " + e.getMessage());
             e.printStackTrace();
@@ -89,6 +92,57 @@ public class DatabaseManager {
             pstmtInsert.setString(3, adminPassword);
             pstmtInsert.setInt(4, 1);
             pstmtInsert.executeUpdate();
+            System.out.println("Usuário administrador padrão inserido.");
+        }
+    }
+
+    /**
+     * Insere uma lista de produtos padrão na tabela 'produtos' se ela estiver vazia.
+     *
+     * @param conn A conexão com o banco de dados.
+     * @throws SQLException Se ocorrer um erro de SQL.
+     */
+    private static void inserirProdutosPadrao(Connection conn) throws SQLException {
+        String checkProductsSql = "SELECT COUNT(*) FROM produtos";
+        try (Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(checkProductsSql)) {
+            if (rs.next() && rs.getInt(1) > 0) {
+                System.out.println("A tabela 'produtos' já contém dados. Nenhuma inserção foi feita.");
+                return; // Se já houver produtos, não faz nada
+            }
+        }
+
+        String insertProductSql = "INSERT INTO produtos (nome, descricao, preco, quantidade, categoria, nome_arquivo_imagem) VALUES (?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement pstmt = conn.prepareStatement(insertProductSql)) {
+            // Lista de produtos para inserir
+            Object[][] produtos = {
+                    {"Teclado com fio", "Confiável e pronto para usar, este teclado com fio oferece uma conexão estável e digitação precisa para todas as suas tarefas.", 25.0, 10, "Periféricos", "teclado.png"},
+                    {"Mouse com fio", "Este mouse com fio oferece precisão e confiabilidade para todas as suas tarefas.", 10.0, 10, "Periféricos", "mouse.png"},
+                    {"Monitor 22 Polegadas Full HD", "Desfrute de imagens nítidas e vibrantes com este monitor Full HD de 22 polegadas. Ideal para trabalho, estudo e entretenimento.", 350.0, 10, "Monitores", "monitor_22.png"},
+                    {"Intel Core i5 3330", "O Intel Core i5-3330 é um processador quad-core da 3ª geração, ideal para computadores de mesa, oferecendo desempenho sólido para tarefas do dia a dia e multitarefas.", 150.0, 10, "Processadores", "intel_i5_3330.png"},
+                    {"AMD FX-4300", "O AMD FX-4300 é um processador quad-core de 3.8GHz, ideal para PCs mais antigos, oferecendo desempenho básico para uso diário e jogos que não exigem muito.", 160.0, 10, "Processadores", "amd_fx.png"},
+                    {"Placa de vídeo - MSI ATI Radeon HD 5450", "A MSI ATI Radeon HD 5450 é uma placa de vídeo de baixo perfil projetada para oferecer desempenho gráfico básico e funcionalidade de vídeo de alta definição.", 150.0, 10, "Placas de Vídeo", "msi_5450.png"},
+                    {"Placa de vídeo RX 550 4gb", "A RX 550 é uma placa de vídeo que pode rodar diversos jogos, mas com configurações e resoluções mais baixas, especialmente em jogos mais recentes e exigentes.", 400.0, 10, "Placas de Vídeo", "rx550.png"},
+                    {"Placa de vídeo - MSI GTX 1650", "A GTX 1650 é uma placa de vídeo de entrada, adequada para jogos em Full HD (1080p) com configurações gráficas médias a baixas, sendo uma boa opção para quem busca um bom custo-benefício.", 1200.0, 10, "Placas de Vídeo", "msi_1650.png"},
+                    {"Gabinete Gamer", "Gabinete com led.", 350.0, 10, "Gabinetes", "gabinete_games.png"},
+                    {"Gabinete", "Gabinete comum.", 70.0, 10, "Gabinetes", "gabinete.png"},
+                    {"Placa mãe lga 1155 b75", "Placa mãe para processadores Intel soquete lga 1155 com chipset b75.", 300.0, 10, "Placas-mãe", "placa_mae_1155_b75.png"},
+                    {"Placa mãe Socket AM3+", "Placa mãe para processadores AMD soquete AM3+.", 300.0, 10, "Placas-mãe", "placa_mae_am3+.png"},
+                    {"Memória ram 8gb DDR3", "Memória ram 8gb DDR3 com frequência de 1333 MHz.", 60.0, 10, "Memória RAM", "ram_ddr3.png"},
+                    {"Memória ram 8gb DDR4", "Memória ram 8gb DDR4 com frequência de 3200 MHz.", 150.0, 10, "Memória RAM", "ram_ddr4.png"}
+            };
+
+            for (Object[] produto : produtos) {
+                pstmt.setString(1, (String) produto[0]);
+                pstmt.setString(2, (String) produto[1]);
+                pstmt.setDouble(3, (Double) produto[2]);
+                pstmt.setInt(4, (Integer) produto[3]);
+                pstmt.setString(5, (String) produto[4]);
+                pstmt.setString(6, (String) produto[5]);
+                pstmt.addBatch(); // Adiciona a inserção ao lote
+            }
+            pstmt.executeBatch(); // Executa todas as inserções de uma vez
+            System.out.println("Produtos padrão inseridos na tabela 'produtos'.");
         }
     }
 }

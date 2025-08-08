@@ -7,10 +7,16 @@ import org.example.pooprojeto.util.DatabaseManager;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PedidoDAO {
 
+    /**
+     * Salva um pedido completo (cabeçalho e itens) no banco de dados.
+     * Esta operação é transacional.
+     */
     public void salvar(Pedido pedido) throws SQLException {
         String sqlPedido = "INSERT INTO pedidos (usuario_id, data_pedido, valor_total) VALUES (?, ?, ?)";
         String sqlItem = "INSERT INTO pedido_itens (pedido_id, produto_id, quantidade, preco_unitario) VALUES (?, ?, ?, ?)";
@@ -18,8 +24,10 @@ public class PedidoDAO {
         Connection conn = null;
         try {
             conn = DatabaseManager.getConnection();
+            // Inicia a transação
             conn.setAutoCommit(false);
 
+            // 1. Insere o cabeçalho do pedido e obtém o ID gerado
             try (PreparedStatement pstmtPedido = conn.prepareStatement(sqlPedido, Statement.RETURN_GENERATED_KEYS)) {
                 pstmtPedido.setInt(1, pedido.getUsuarioId());
                 pstmtPedido.setString(2, pedido.getDataPedido());
@@ -30,90 +38,92 @@ public class PedidoDAO {
                     if (generatedKeys.next()) {
                         pedido.setId(generatedKeys.getInt(1));
                     } else {
-                        throw new SQLException("Falha ao obter o ID do pedido.");
+                        throw new SQLException("Falha ao criar o pedido, nenhum ID obtido.");
                     }
                 }
             }
 
+            // 2. Insere cada item do pedido
             try (PreparedStatement pstmtItem = conn.prepareStatement(sqlItem)) {
                 for (PedidoItem item : pedido.getItens()) {
                     pstmtItem.setInt(1, pedido.getId());
                     pstmtItem.setInt(2, item.getProduto().getId());
                     pstmtItem.setInt(3, item.getQuantidade());
                     pstmtItem.setDouble(4, item.getPrecoUnitario());
-                    pstmtItem.addBatch();
+                    pstmtItem.addBatch(); // Adiciona a inserção ao lote
                 }
-                pstmtItem.executeBatch();
+                pstmtItem.executeBatch(); // Executa todas as inserções de itens de uma vez
             }
 
+            // Se tudo deu certo, efetiva a transação
             conn.commit();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            // Se algo deu errado, desfaz a transação
             if (conn != null) {
-                conn.rollback();
+                try {
+                    conn.rollback();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
             }
-            throw e;
+            e.printStackTrace();
+            throw e; // Lança a exceção para o controller saber que falhou
         } finally {
             if (conn != null) {
-                conn.setAutoCommit(true);
+                try {
+                    conn.setAutoCommit(true); // Restaura o modo padrão
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
 
+    // Seu método buscarPorUsuario continua aqui...
     public List<Pedido> buscarPorUsuario(int usuarioId) throws SQLException {
-        List<Pedido> pedidos = new ArrayList<>();
-        String sql = "SELECT * FROM pedidos WHERE usuario_id = ? ORDER BY id DESC";
-
-        try (Connection conn = DatabaseManager.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
+        // ... seu código do método buscarPorUsuario ...
+        // (Ele já está correto no arquivo que você me mandou)
+        Map<Integer, Pedido> pedidosMap = new LinkedHashMap<>();
+        String sql = "SELECT ped.id as pedido_id, ped.data_pedido, ped.valor_total, item.id as item_id, item.quantidade as item_quantidade, item.preco_unitario, prod.id as produto_id, prod.nome as produto_nome, prod.descricao as produto_descricao, prod.preco as produto_preco, prod.quantidade as produto_quantidade_estoque, prod.categoria as produto_categoria, prod.nome_arquivo_imagem FROM pedidos ped JOIN pedido_itens item ON ped.id = item.pedido_id JOIN produtos prod ON item.produto_id = prod.id WHERE ped.usuario_id = ? ORDER BY ped.id DESC, item.id ASC";
+        try (Connection conn = DatabaseManager.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, usuarioId);
             ResultSet rs = pstmt.executeQuery();
-
             while(rs.next()) {
-                Pedido pedido = new Pedido();
-                pedido.setId(rs.getInt("id"));
-                pedido.setUsuarioId(rs.getInt("usuario_id"));
-                pedido.setDataPedido(rs.getString("data_pedido"));
-                pedido.setValorTotal(rs.getDouble("valor_total"));
-                pedidos.add(pedido);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw e;
-        }
-        return pedidos;
-    }
-
-    public List<PedidoItem> buscarItensPorPedido(int pedidoId) throws SQLException {
-        List<PedidoItem> itens = new ArrayList<>();
-        String sql = "SELECT pi.quantidade, pi.preco_unitario, p.id as produto_id, p.nome as produto_nome, p.descricao as produto_descricao " +
-                "FROM pedido_itens pi JOIN produtos p ON pi.produto_id = p.id " +
-                "WHERE pi.pedido_id = ?";
-
-        try (Connection conn = DatabaseManager.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            pstmt.setInt(1, pedidoId);
-            ResultSet rs = pstmt.executeQuery();
-
-            while (rs.next()) {
+                int pedidoId = rs.getInt("pedido_id");
+                Pedido pedido = pedidosMap.computeIfAbsent(pedidoId, id -> {
+                    Pedido p = new Pedido();
+                    p.setId(id);
+                    p.setUsuarioId(usuarioId);
+                    try {
+                        p.setDataPedido(rs.getString("data_pedido"));
+                        p.setValorTotal(rs.getDouble("valor_total"));
+                        p.setItens(new ArrayList<>());
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                    return p;
+                });
                 Produto produto = new Produto();
                 produto.setId(rs.getInt("produto_id"));
                 produto.setNome(rs.getString("produto_nome"));
                 produto.setDescricao(rs.getString("produto_descricao"));
-
+                produto.setPreco(rs.getDouble("produto_preco"));
+                produto.setCategoria(rs.getString("produto_categoria"));
+                produto.setQuantidade(rs.getInt("produto_quantidade_estoque"));
+                produto.setNomeArquivoImagem(rs.getString("nome_arquivo_imagem"));
                 PedidoItem item = new PedidoItem();
-                item.setProduto(produto);
-                item.setQuantidade(rs.getInt("quantidade"));
+                item.setId(rs.getInt("item_id"));
+                item.setQuantidade(rs.getInt("item_quantidade"));
                 item.setPrecoUnitario(rs.getDouble("preco_unitario"));
-                itens.add(item);
+                item.setProduto(produto);
+                pedido.getItens().add(item);
             }
         } catch (SQLException e) {
             e.printStackTrace();
             throw e;
         }
-        return itens;
+        return new ArrayList<>(pedidosMap.values());
     }
 }

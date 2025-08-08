@@ -17,6 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.sql.SQLException;
 import java.util.List;
 
 public class CadastrarProdutoController {
@@ -37,6 +38,10 @@ public class CadastrarProdutoController {
         this.stage = stage;
     }
 
+    public Stage getStage() {
+        return this.stage;
+    }
+
     public void setProdutoDAO(ProdutoDAO produtoDAO) {
         this.produtoDAO = produtoDAO;
     }
@@ -44,7 +49,6 @@ public class CadastrarProdutoController {
     public void setCategorias(List<String> categorias) {
         categoriaComboBox.getItems().setAll(categorias);
     }
-
 
     public void carregarDadosParaEdicao(Produto produto) {
         this.produtoParaEditar = produto;
@@ -82,39 +86,42 @@ public class CadastrarProdutoController {
             return;
         }
         try {
-            String nomeArquivoImagem = null;
+            Produto produto = (produtoParaEditar == null) ? new Produto() : produtoParaEditar;
+            preencherDadosDoFormulario(produto);
+
             if (imagemSelecionada != null) {
-                nomeArquivoImagem = salvarImagemLocalmente(imagemSelecionada);
-            }
-            if (produtoParaEditar == null) {
-                Produto novoProduto = new Produto();
-                preencherDadosDoFormulario(novoProduto, nomeArquivoImagem);
-                produtoDAO.save(novoProduto);
-                showAlert(Alert.AlertType.INFORMATION, "Sucesso", "Produto cadastrado com sucesso!");
-            } else {
-                preencherDadosDoFormulario(produtoParaEditar, nomeArquivoImagem);
-                produtoDAO.update(produtoParaEditar);
-                showAlert(Alert.AlertType.INFORMATION, "Sucesso", "Produto atualizado com sucesso!");
+                String nomeArquivoImagem = salvarImagemLocalmente(imagemSelecionada);
+                produto.setNomeArquivoImagem(nomeArquivoImagem);
             }
 
-            if (stage != null) {
-                stage.close();
+            if (produtoParaEditar == null) {
+                produtoDAO.save(produto);
+                showAlertAndClose("Sucesso", "Produto cadastrado com sucesso!");
+            } else {
+                produtoDAO.update(produtoParaEditar);
+                showAlertAndClose("Sucesso", "Produto atualizado com sucesso!");
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (NumberFormatException e) {
+            showAlert(Alert.AlertType.ERROR, "Erro de Formato", "Preço e Quantidade devem ser números válidos.");
+        } catch (SQLException | IOException e) {
             showAlert(Alert.AlertType.ERROR, "Erro", "Ocorreu um erro ao salvar: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
-    private void preencherDadosDoFormulario(Produto produto, String nomeArquivoImagem) {
+    @FXML
+    void handleCancelar(ActionEvent event) {
+        if (stage != null) {
+            stage.close();
+        }
+    }
+
+    private void preencherDadosDoFormulario(Produto produto) {
         produto.setNome(nomeTextField.getText());
         produto.setCategoria(categoriaComboBox.getValue());
         produto.setDescricao(descricaoTextField.getText());
         produto.setQuantidade(Integer.parseInt(quantidadeTextField.getText()));
         produto.setPreco(Double.parseDouble(precoTextField.getText().replace(',', '.')));
-        if (nomeArquivoImagem != null) {
-            produto.setNomeArquivoImagem(nomeArquivoImagem);
-        }
     }
 
     private boolean validarCampos() {
@@ -124,12 +131,11 @@ public class CadastrarProdutoController {
         if (quantidadeTextField.getText().trim().isEmpty()) errorMessage += "Quantidade é obrigatória.\n";
         if (precoTextField.getText().trim().isEmpty()) errorMessage += "Preço é obrigatório.\n";
 
-        if (errorMessage.isEmpty()) {
-            return true;
-        } else {
+        if (!errorMessage.isEmpty()) {
             showAlert(Alert.AlertType.ERROR, "Campos Inválidos", errorMessage);
             return false;
         }
+        return true;
     }
 
     private String salvarImagemLocalmente(File arquivoImagem) throws IOException {
@@ -152,5 +158,19 @@ public class CadastrarProdutoController {
             alert.initOwner(this.stage);
         }
         alert.showAndWait();
+    }
+
+    private void showAlertAndClose(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        if (this.stage != null) {
+            alert.initOwner(this.stage);
+        }
+        alert.showAndWait();
+        if (stage != null) {
+            stage.close();
+        }
     }
 }

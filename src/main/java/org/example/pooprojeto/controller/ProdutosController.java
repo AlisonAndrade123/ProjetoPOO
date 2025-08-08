@@ -10,10 +10,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import javafx.stage.Stage;
 import org.example.pooprojeto.dao.ProdutoDAO;
 import org.example.pooprojeto.model.Produto;
 import org.example.pooprojeto.model.Usuario;
+import org.example.pooprojeto.service.AuthService;
 import org.example.pooprojeto.util.CarrinhoManager;
 import org.example.pooprojeto.util.CategoriasUtil;
 import org.example.pooprojeto.util.NavigationManager;
@@ -31,33 +31,41 @@ public class ProdutosController {
     @FXML private Button historyButton;
     @FXML private Button profileButton; // Mantido para consistência com o FXML
 
+
     private Usuario usuarioLogado;
     private ProdutoDAO produtoDAO;
-    private Stage primaryStage;
-
-    public void setPrimaryStage(Stage primaryStage) { this.primaryStage = primaryStage; }
-    public void setUsuarioLogado(Usuario usuario) { this.usuarioLogado = usuario; }
-
-    public void setProdutoDAO(ProdutoDAO produtoDAO) {
-        this.produtoDAO = produtoDAO;
-        Platform.runLater(this::loadAllProducts);
-    }
 
     @FXML
     public void initialize() {
+        // Configura as dependências
+        this.usuarioLogado = AuthService.getInstance().getUsuarioLogado();
+        this.produtoDAO = new ProdutoDAO();
+
+        // Atualiza a UI com base no usuário
+        if (this.usuarioLogado != null) {
+            profileButton.setText("Olá, " + this.usuarioLogado.getNome().split(" ")[0]);
+        } else {
+            profileButton.setText("Visitante");
+        }
+
+        // Configura listeners e carrega dados iniciais
         if (searchTextField != null) {
             searchTextField.textProperty().addListener((obs, oldText, newText) -> filterProducts(newText));
         }
         criarBotoesDeCategoria();
+        loadAllProducts();
     }
 
     private void criarBotoesDeCategoria() {
         categoryHBox.getChildren().clear();
         Button todosButton = criarBotaoEstilizado("Todos");
+        todosButton.setOnAction(event -> loadAllProducts()); // Simplificado para usar lambda aqui
         categoryHBox.getChildren().add(todosButton);
         List<String> categorias = CategoriasUtil.getCategorias();
         for (String nomeCategoria : categorias) {
             Button categoriaButton = criarBotaoEstilizado(nomeCategoria);
+            // Ao clicar, chama o método para filtrar pela categoria específica
+            categoriaButton.setOnAction(event -> filterProductsByCategory(nomeCategoria));
             categoryHBox.getChildren().add(categoriaButton);
         }
     }
@@ -157,13 +165,22 @@ public class ProdutosController {
         }
     }
 
+
     private void handleComprarProduto(Produto produto) {
+        if (this.usuarioLogado == null) {
+            showAlert(AlertType.WARNING, "Login Necessário", "Você precisa estar logado para adicionar produtos ao carrinho.");
+            return;
+        }
         CarrinhoManager.getInstance().adicionarProduto(produto);
         showAlert(AlertType.INFORMATION, "Produto Adicionado", "Você adicionou '" + produto.getNome() + "' ao carrinho!");
     }
 
     @FXML
     private void handleCartButtonAction(ActionEvent event) {
+        if (this.usuarioLogado == null) {
+            showAlert(AlertType.WARNING, "Login Necessário", "Você precisa estar logado para visualizar o carrinho.");
+            return;
+        }
         NavigationManager.getInstance().navigateToCart();
     }
 
@@ -177,11 +194,7 @@ public class ProdutosController {
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
-        if (this.primaryStage != null) {
-            alert.initOwner(this.primaryStage);
-        } else if (productTilePane != null && productTilePane.getScene() != null) {
-            alert.initOwner(productTilePane.getScene().getWindow());
-        }
+        alert.initOwner(productTilePane.getScene().getWindow());
         alert.showAndWait();
     }
 }

@@ -10,9 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity"
-            prefWidth="1920"
-            prefHeight="1080" style="-fx-background-color: #00A60E;" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.pooprojeto.controller.CarrinhoController">
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080" prefWidth="1920" style="-fx-background-color: #00A60E;" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.pooprojeto.controller.CarrinhoController">
     <children>
         <HBox alignment="CENTER_LEFT" spacing="30.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="30.0">
             <children>
@@ -31,7 +29,7 @@
             </content>
         </ScrollPane>
 
-        <VBox alignment="TOP_CENTER" spacing="10.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-color: #00A60E; -fx-border-width: 2; -fx-border-radius: 12;" AnchorPane.bottomAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="100.0" prefWidth="400.0">
+        <VBox alignment="TOP_CENTER" prefWidth="400.0" spacing="10.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-color: #00A60E; -fx-border-width: 2; -fx-border-radius: 12;" AnchorPane.bottomAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="100.0">
             <children>
                 <Label text="RESUMO DO PEDIDO" textFill="#00a60e">
                     <font><Font name="System Bold" size="20.0" /></font>
@@ -64,7 +62,7 @@
                 </TextField>
                 <HBox spacing="10.0">
                     <children>
-                        <TextField fx:id="numeroField" promptText="Número" prefWidth="100.0" style="-fx-background-radius: 8; -fx-border-color: #CCCCCC; -fx-border-radius: 8; -fx-padding: 10;" HBox.hgrow="ALWAYS" />
+                        <TextField fx:id="numeroField" prefWidth="100.0" promptText="Número" style="-fx-background-radius: 8; -fx-border-color: #CCCCCC; -fx-border-radius: 8; -fx-padding: 10;" HBox.hgrow="ALWAYS" />
                         <TextField fx:id="complementoField" promptText="Complemento (Opcional)" style="-fx-background-radius: 8; -fx-border-color: #CCCCCC; -fx-border-radius: 8; -fx-padding: 10;" HBox.hgrow="ALWAYS" />
                     </children>
                     <VBox.margin><Insets left="20.0" right="20.0" /></VBox.margin>
@@ -75,12 +73,12 @@
                 <HBox spacing="10.0">
                     <children>
                         <TextField fx:id="cidadeField" promptText="Cidade" style="-fx-background-radius: 8; -fx-border-color: #CCCCCC; -fx-border-radius: 8; -fx-padding: 10;" HBox.hgrow="ALWAYS" />
-                        <TextField fx:id="estadoField" promptText="Estado" prefWidth="80.0" style="-fx-background-radius: 8; -fx-border-color: #CCCCCC; -fx-border-radius: 8; -fx-padding: 10;" />
+                        <TextField fx:id="estadoField" prefWidth="80.0" promptText="Estado" style="-fx-background-radius: 8; -fx-border-color: #CCCCCC; -fx-border-radius: 8; -fx-padding: 10;" />
                     </children>
                     <VBox.margin><Insets left="20.0" right="20.0" /></VBox.margin>
                 </HBox>
 
-                <Button fx:id="pagamentoButton" onAction="#handleIrParaPagamento" mnemonicParsing="false" prefHeight="45.0" prefWidth="300.0" style="-fx-background-color: #00A60E; -fx-background-radius: 10; -fx-cursor: hand;" text="Ir para o Pagamento" textFill="WHITE">
+                <Button fx:id="pagamentoButton" mnemonicParsing="false" onAction="#handleIrParaPagamento" prefHeight="45.0" prefWidth="300.0" style="-fx-background-color: #DC3545; -fx-background-radius: 10; -fx-cursor: hand;" text="Ir para o Pagamento" textFill="WHITE">
                     <font><Font name="System Bold" size="16.0" /></font>
                     <VBox.margin><Insets top="20.0" /></VBox.margin>
                 </Button>
