@@ -20,6 +20,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import javafx.application.Platform;
+import javafx.scene.control.Alert;
+import java.awt.Desktop;
+
 public class GeradorNotaFiscalPDF {
 
     private static final Font FONTE_TITULO = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18, Font.BOLD);
@@ -110,5 +114,29 @@ public class GeradorNotaFiscalPDF {
             tabela.addCell(new Phrase(String.format("R$ %.2f", p.getPreco() * quantidade), FONTE_CORPO));
         }
         return tabela;
+    }
+    public static void abrirPdf(File arquivoPdf) {
+        new Thread(() -> {
+            try {
+                if (!Desktop.isDesktopSupported()) {
+                    Platform.runLater(() -> showAlert(Alert.AlertType.WARNING, "Recurso Indisponível", "A abertura automática de arquivos não é suportada neste sistema."));
+                    return;
+                }
+                Desktop.getDesktop().open(arquivoPdf);
+            } catch (IOException ex) {
+                Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Erro ao Abrir PDF", "Não foi possível abrir o arquivo.\nVerifique se você tem um leitor de PDF instalado e configurado como padrão."));
+                ex.printStackTrace();
+            }
+        }).start();
+    }
+    private static void showAlert(Alert.AlertType alertType, String title, String message) {
+        // Assegura que o alerta seja criado e exibido na thread da UI
+        Platform.runLater(() -> {
+            Alert alert = new Alert(alertType);
+            alert.setTitle(title);
+            alert.setHeaderText(null);
+            alert.setContentText(message);
+            alert.showAndWait();
+        });
     }
 }

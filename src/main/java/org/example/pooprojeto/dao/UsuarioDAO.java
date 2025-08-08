@@ -9,13 +9,6 @@ import java.util.Optional;
 
 public class UsuarioDAO {
 
-    /**
-     * Tenta autenticar um usuário com base no e-mail e senha.
-     *
-     * @param email O e-mail do usuário.
-     * @param senha A senha em texto puro (ATENÇÃO: Em produção, use hashing de senha!).
-     * @return Um objeto Usuario se a autenticação for bem-sucedida, caso contrário, null.
-     */
     public Usuario autenticar(String email, String senha) {
         String sql = "SELECT id, nome, email, senha, is_admin FROM usuarios WHERE email = ? AND senha = ?";
 
@@ -37,18 +30,11 @@ public class UsuarioDAO {
                 return usuario;
             }
         } catch (SQLException e) {
-            System.err.println("Erro ao autenticar usuário no DAO: " + e.getMessage());
             e.printStackTrace();
         }
         return null;
     }
 
-    /**
-     * Busca um usuário pelo seu e-mail.
-     *
-     * @param email O e-mail do usuário a ser buscado.
-     * @return Um Optional contendo o Usuario se encontrado, ou um Optional vazio.
-     */
     public Optional<Usuario> findByEmail(String email) {
         String sql = "SELECT id, nome, email, senha, is_admin FROM usuarios WHERE email = ?";
 
@@ -68,20 +54,11 @@ public class UsuarioDAO {
                 return Optional.of(usuario);
             }
         } catch (SQLException e) {
-            System.err.println("Erro ao buscar usuário por e-mail: " + e.getMessage());
             e.printStackTrace();
         }
         return Optional.empty();
     }
 
-    /**
-     * Salva um novo usuário no banco de dados.
-     * Este método é utilizado para registro (cadastro).
-     *
-     * @param usuario O objeto Usuario a ser salvo.
-     * @return O objeto Usuario salvo, com o ID gerado pelo banco.
-     * @throws AppException Se o e-mail já estiver em uso.
-     */
     public Usuario save(Usuario usuario) throws AppException {
         if (findByEmail(usuario.getEmail()).isPresent()) {
             throw new AppException("E-mail já cadastrado.");
@@ -110,11 +87,9 @@ public class UsuarioDAO {
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Erro ao salvar usuário: " + e.getMessage());
             e.printStackTrace();
             throw new AppException("Erro ao cadastrar usuário: " + e.getMessage());
         }
         return usuario;
     }
-
 }

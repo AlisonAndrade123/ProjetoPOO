@@ -2,35 +2,35 @@ package org.example.pooprojeto.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import org.example.pooprojeto.model.Endereco;
-import org.example.pooprojeto.model.NotaFiscal;
-import org.example.pooprojeto.model.Produto;
-import org.example.pooprojeto.model.Usuario;
+import org.example.pooprojeto.dao.PedidoDAO;
+import org.example.pooprojeto.model.*;
 import org.example.pooprojeto.pagamento.MetodoPagamento;
 import org.example.pooprojeto.pagamento.PagamentoBoleto;
 import org.example.pooprojeto.pagamento.PagamentoPix;
 import org.example.pooprojeto.service.AuthService;
 import org.example.pooprojeto.service.NotaFiscalService;
 import org.example.pooprojeto.util.CarrinhoManager;
-import org.example.pooprojeto.util.GeradorNotaFiscalPDF;
+import org.example.pooprojeto.util.GeradorNotaFiscalPDF; // Mantém este import
 import org.example.pooprojeto.util.NavigationManager;
 
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
+import java.io.File; // Mantém este import
+import java.io.IOException; // Mantém este import
+import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class PagamentoController {
 
+    // ... Seus @FXML e declarações de variáveis permanecem os mesmos ...
     @FXML
     private VBox paymentOptionsVBox;
     @FXML
@@ -50,18 +50,18 @@ public class PagamentoController {
     @FXML
     private Button confirmarPagamentoButton;
     @FXML
-    private VBox processamentoBox;
-    @FXML
     private HBox opcoesPagamentoHBox;
     @FXML
     private StackPane painelMetodoPagamento;
 
     private final CarrinhoManager carrinhoManager = CarrinhoManager.getInstance();
+    private final NotaFiscalService notaFiscalService = new NotaFiscalService();
     private ToggleGroup toggleGroup;
     private double valorTotalCompra;
+    private final PedidoDAO pedidoDAO = new PedidoDAO();
 
-    private final NotaFiscalService notaFiscalService = new NotaFiscalService();
 
+    // O método inicializar continua igual
     public void inicializar(double valorTotal) {
         this.valorTotalCompra = valorTotal;
         String valorFormatado = String.format("R$ %.2f", valorTotal).replace('.', ',');
@@ -71,41 +71,77 @@ public class PagamentoController {
         confirmarPagamentoButton.setText("Pagar " + valorFormatado);
     }
 
+    // O método initialize continua igual
     @FXML
     public void initialize() {
         aplicarEstilos();
         configurarMetodosPagamento();
     }
 
+
+    // --- MÉTODO handleConfirmarPagamento SIMPLIFICADO ---
     @FXML
     void handleConfirmarPagamento() {
         confirmarPagamentoButton.setDisable(true);
 
+        // --- PREPARAÇÃO DOS DADOS ---
         Usuario usuarioLogado = AuthService.getInstance().getUsuarioLogado();
         Map<Produto, Integer> itensDoCarrinhoMap = carrinhoManager.getItens();
-        List<Produto> produtosParaNota = new ArrayList<>();
-        itensDoCarrinhoMap.forEach((produto, quantidade) -> {
-            for (int i = 0; i < quantidade; i++) {
-                produtosParaNota.add(produto);
-            }
-        });
+        Endereco endereco = carrinhoManager.getEnderecoEntrega();
 
-        Endereco endereco = CarrinhoManager.getInstance().getEnderecoEntrega();
-
-        if (usuarioLogado == null) {
-            showAlert(Alert.AlertType.ERROR, "Erro de Autenticação", "Usuário não encontrado!");
+        if (usuarioLogado == null || endereco == null) {
+            showAlert(Alert.AlertType.ERROR, "Erro Crítico", "Dados do usuário ou endereço não encontrados.");
             confirmarPagamentoButton.setDisable(false);
             return;
         }
+
+        // --- INÍCIO DA LÓGICA RESTAURADA ---
+        // 1. Criar o objeto Pedido
+        Pedido novoPedido = new Pedido();
+        novoPedido.setUsuarioId(usuarioLogado.getId());
+        novoPedido.setValorTotal(this.valorTotalCompra);
+        novoPedido.setDataPedido(LocalDateTime.now().toString());
+
+        // 2. Converter os itens do carrinho para o formato PedidoItem
+        List<PedidoItem> itensDoPedido = itensDoCarrinhoMap.entrySet().stream()
+                .map(entry -> {
+                    Produto produto = entry.getKey();
+                    int quantidade = entry.getValue();
+                    PedidoItem item = new PedidoItem();
+
+                    // --- CORREÇÃO PRINCIPAL AQUI ---
+                    // Em vez de setar apenas o ID, setamos o objeto Produto inteiro.
+                    item.setProduto(produto); // Em vez de item.setProdutoId(produto.getId());
+
+                    item.setQuantidade(quantidade);
+                    item.setPrecoUnitario(produto.getPreco());
+                    return item;
+                })
+                .collect(Collectors.toList());
+        novoPedido.setItens(itensDoPedido);
+
+        // 3. Tentar salvar o Pedido no Banco de Dados
+        try {
+            pedidoDAO.salvar(novoPedido);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Erro de Banco de Dados", "Falha ao registrar o pedido no sistema. A compra foi cancelada.");
+            confirmarPagamentoButton.setDisable(false);
+            return; // Interrompe a execução se o pedido não puder ser salvo
+        }
+        // --- FIM DA LÓGICA RESTAURADA ---
+
+        // 4. Se o pedido foi salvo, prosseguir com a Nota Fiscal
+        List<Produto> produtosParaNota = new ArrayList<>();
+        itensDoCarrinhoMap.forEach((p, q) -> { for (int i = 0; i < q; i++) produtosParaNota.add(p); });
 
         NotaFiscal notaFiscal = notaFiscalService.gerarNotaFiscal(usuarioLogado, produtosParaNota, this.valorTotalCompra, endereco);
 
         try {
             File arquivoPdf = GeradorNotaFiscalPDF.gerarPdf(notaFiscal);
-
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Pagamento Realizado");
-            alert.setHeaderText("Pagamento concluído e Nota Fiscal gerada!");
+            alert.setHeaderText("Compra finalizada e Nota Fiscal gerada!");
             alert.setContentText("O PDF da sua nota foi salvo em sua pasta 'notas_fiscais'.");
 
             ButtonType abrirPdfButton = new ButtonType("Abrir PDF da Nota Fiscal");
@@ -114,11 +150,7 @@ public class PagamentoController {
 
             Optional<ButtonType> result = alert.showAndWait();
             if (result.isPresent() && result.get() == abrirPdfButton) {
-                if (Desktop.isDesktopSupported()) {
-                    Desktop.getDesktop().open(arquivoPdf);
-                } else {
-                    showAlert(Alert.AlertType.WARNING, "Aviso", "Não foi possível abrir o arquivo automaticamente.");
-                }
+                GeradorNotaFiscalPDF.abrirPdf(arquivoPdf);
             }
 
         } catch (IOException e) {
@@ -128,6 +160,15 @@ public class PagamentoController {
             carrinhoManager.limparCarrinho();
             NavigationManager.getInstance().navigateToProductsView();
         }
+    }
+
+    // ... os outros métodos (showAlert, configurarMetodosPagamento, aplicarEstilos) permanecem os mesmos ...
+    private void showAlert(Alert.AlertType alertType, String title, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
     private void configurarMetodosPagamento() {
@@ -166,13 +207,5 @@ public class PagamentoController {
         confirmarPagamentoButton.setStyle("-fx-background-color: #00A60E; -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold; -fx-background-radius: 8; -fx-padding: 12 25; -fx-cursor: hand;");
         confirmarPagamentoButton.setOnMouseEntered(e -> confirmarPagamentoButton.setStyle("-fx-background-color: #008c0c; -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold; -fx-background-radius: 8; -fx-padding: 12 25; -fx-cursor: hand;"));
         confirmarPagamentoButton.setOnMouseExited(e -> confirmarPagamentoButton.setStyle("-fx-background-color: #00A60E; -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold; -fx-background-radius: 8; -fx-padding: 12 25; -fx-cursor: hand;"));
-    }
-
-    private void showAlert(Alert.AlertType alertType, String title, String message) {
-        Alert alert = new Alert(alertType);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
     }
 }

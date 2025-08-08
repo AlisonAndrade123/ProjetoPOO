@@ -1,4 +1,3 @@
-// Local: src/main/java/org/example/pooprojeto/service/AuthService.java
 package org.example.pooprojeto.service;
 
 import org.example.pooprojeto.dao.UsuarioDAO;
@@ -38,11 +37,12 @@ public class AuthService {
     }
 
     /**
-     * Tenta autenticar um usuário e, se bem-sucedido, armazena-o na sessão.
+     * Tenta autenticar um usuário no sistema.
+     *
      * @param email O e-mail fornecido pelo usuário.
      * @param senha A senha fornecida pelo usuário.
-     * @return O objeto Usuario logado.
-     * @throws AppException Se o login falhar.
+     * @return O objeto Usuario logado, se as credenciais forem válidas.
+     * @throws AppException Se o login falhar (usuário não encontrado, senha incorreta, etc.).
      */
     public Usuario login(String email, String senha) throws AppException {
         if (email == null || email.trim().isEmpty() || senha == null || senha.isEmpty()) {
@@ -57,7 +57,7 @@ public class AuthService {
 
         Usuario usuario = userOptional.get();
 
-        if (!usuario.getSenha().equals(senha)) { // Para um projeto real, use criptografia de senha!
+        if (!usuario.getSenha().equals(senha)) {
             throw new AppException("E-mail ou senha inválidos.");
         }
 
@@ -68,16 +68,13 @@ public class AuthService {
         return usuario;
     }
 
-    /**
-     * Registra um novo usuário no sistema.
-     * (A lógica de registro permanece a mesma)
-     */
     public Usuario register(String nome, String email, String senha, boolean isAdmin) throws AppException {
         if (nome == null || nome.trim().isEmpty() ||
                 email == null || email.trim().isEmpty() ||
                 senha == null || senha.isEmpty()) {
             throw new AppException("Todos os campos são obrigatórios para o registro.");
         }
+
         if (!email.contains("@") || !email.contains(".")) {
             throw new AppException("Formato de e-mail inválido.");
         }

@@ -1,6 +1,4 @@
-// Local: src/main/java/org/example/pooprojeto/util/NavigationManager.java
 package org.example.pooprojeto.util;
-
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -9,17 +7,11 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import org.example.pooprojeto.controller.CadastrarProdutoController;
 import org.example.pooprojeto.controller.PagamentoController;
-import org.example.pooprojeto.dao.ProdutoDAO; // MANTIDO - Ainda é útil para o modal
-
+import org.example.pooprojeto.dao.ProdutoDAO;
 import java.io.IOException;
-
 public class NavigationManager {
-
     private static NavigationManager instance;
     private Stage primaryStage;
-
-    // REMOVIDO: O NavigationManager não precisa mais saber quem está logado.
-    // private Usuario usuarioLogado;
 
     private NavigationManager() {}
 
@@ -34,24 +26,11 @@ public class NavigationManager {
         this.primaryStage = primaryStage;
     }
 
-    // REMOVIDO: Não precisamos mais deste método.
-    // public void setUsuarioLogado(Usuario usuario) { ... }
-
-
-    /**
-     * Navega para uma nova cena principal.
-     * A lógica de injeção de dependência foi removida daqui e movida
-     * para dentro dos próprios controllers, que agora usam o AuthService.
-     */
     public Object navigateTo(String fxmlPath, String title) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             Parent root = loader.load();
             Object controller = loader.getController();
-
-            // --- LÓGICA DE INJEÇÃO REMOVIDA ---
-            // O código que verificava "instanceof LoginController", "instanceof AdminController", etc.
-            // foi completamente removido. Os controllers agora são independentes.
 
             Scene scene = new Scene(root);
             primaryStage.setScene(scene);
@@ -59,7 +38,6 @@ public class NavigationManager {
             primaryStage.show();
 
             return controller;
-
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -67,7 +45,9 @@ public class NavigationManager {
     }
 
     /**
-     * Configura um modal. Esta lógica pode ser mantida, pois é específica.
+     * CORREÇÃO: Este método agora se chama 'setupModal' e apenas PREPARA o modal.
+     * Ele não o exibe mais com showAndWait().
+     * Ele retorna o CONTROLLER para que quem o chamou possa interagir com ele.
      */
     public Object setupModal(String fxmlPath, String title, Window ownerWindow) {
         try {
@@ -82,20 +62,21 @@ public class NavigationManager {
             modalStage.initOwner(ownerWindow);
             modalStage.initModality(Modality.APPLICATION_MODAL);
 
-            // A injeção para o modal de cadastro de produto ainda é útil, podemos manter.
+            // A lógica de configuração continua aqui, e é crucial.
             if (controller instanceof CadastrarProdutoController) {
+                ((CadastrarProdutoController) controller).setStage(modalStage); // Passa a janela para o controller poder se fechar.
                 ((CadastrarProdutoController) controller).setProdutoDAO(new ProdutoDAO());
                 ((CadastrarProdutoController) controller).setCategorias(CategoriasUtil.getCategorias());
-                ((CadastrarProdutoController) controller).setStage(modalStage);
             }
-            return controller;
+
+            return controller; // Retorna o controller JÁ CONFIGURADO.
         } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    // Métodos de navegação (sem alterações)
+    // O resto dos métodos de navegação permanece o mesmo
     public void navigateToLogin() {
         navigateTo("/org/example/pooprojeto/view/LoginView.fxml", "Sistema de Gerenciamento - Login");
     }
@@ -103,6 +84,8 @@ public class NavigationManager {
     public void navigateToAdminView() {
         navigateTo("/org/example/pooprojeto/view/AdminView.fxml", "Administração - Loja Virtual");
     }
+
+// ... todos os seus outros métodos navigateTo ...
 
     public void navigateToProductsView() {
         navigateTo("/org/example/pooprojeto/view/ProdutosView.fxml", "Nossa Loja");
@@ -118,9 +101,10 @@ public class NavigationManager {
 
     public PagamentoController navigateToPagamento() {
         Object controller = navigateTo("/org/example/pooprojeto/view/PagamentoView.fxml", "Finalizar Pagamento");
-        if (controller instanceof PagamentoController) {
-            return (PagamentoController) controller;
-        }
-        return null;
+        return (controller instanceof PagamentoController) ? (PagamentoController) controller : null;
+    }
+
+    public void navigateToHistory() {
+        navigateTo("/org/example/pooprojeto/view/HistoricoView.fxml", "Meu Histórico de Compras");
     }
 }

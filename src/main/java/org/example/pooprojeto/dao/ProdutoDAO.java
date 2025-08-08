@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProdutoDAO {
+
     public void save(Produto produto) throws SQLException {
         String sql = "INSERT INTO produtos (nome, descricao, preco, quantidade, categoria, nome_arquivo_imagem) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = DatabaseManager.getConnection();
@@ -109,12 +110,11 @@ public class ProdutoDAO {
             pstmt.setDouble(3, produto.getPreco());
             pstmt.setInt(4, produto.getQuantidade());
             pstmt.setString(5, produto.getCategoria());
-            pstmt.setString(6, produto.getNomeArquivoImagem()); // Usa o novo getter
+            pstmt.setString(6, produto.getNomeArquivoImagem());
             pstmt.setInt(7, produto.getId());
             return pstmt.executeUpdate() > 0;
         }
     }
-
 
     public boolean delete(int id) throws SQLException {
         String sql = "DELETE FROM produtos WHERE id = ?";
