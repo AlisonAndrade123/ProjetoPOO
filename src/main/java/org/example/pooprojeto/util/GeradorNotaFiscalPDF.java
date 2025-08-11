@@ -87,7 +87,6 @@ public class GeradorNotaFiscalPDF {
             }
         }
 
-        System.out.println("PDF da Nota Fiscal gerado com sucesso em: " + arquivoPdf.getAbsolutePath());
         return arquivoPdf;
     }
 

@@ -90,12 +90,4 @@ public class AuthService {
     public Usuario getUsuarioLogado() {
         return this.usuarioLogado;
     }
-
-    /**
-     *  Método para fazer logout, limpando a sessão.
-     */
-    public void logout() {
-        System.out.println("Usuário deslogado: " + (usuarioLogado != null ? usuarioLogado.getNome() : "N/A"));
-        this.usuarioLogado = null;
-    }
 }
