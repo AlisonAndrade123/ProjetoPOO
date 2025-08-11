@@ -40,13 +40,13 @@ public class GeradorNotaFiscalPDF {
         
         Document documento = new Document(PageSize.A4);
         try {
-            // 1. Cria o escritor de PDF associado ao arquivo e ao documento
+            // Cria o escritor de PDF associado ao arquivo e ao documento
             PdfWriter.getInstance(documento, new FileOutputStream(arquivoPdf));
 
-            // 2. Abre o documento para começar a escrever
+            // Abre o documento para começar a escrever
             documento.open();
 
-            // 3. Adiciona todo o conteúdo ao documento
+            // Adiciona todo o conteúdo ao documento
             // Informação cliente
             Paragraph titulo = new Paragraph("NOTA FISCAL", FONTE_TITULO);
             titulo.setAlignment(Element.ALIGN_CENTER);
@@ -81,7 +81,7 @@ public class GeradorNotaFiscalPDF {
         } catch (DocumentException | IOException e) {
             throw new IOException("Erro ao gerar documento PDF", e);
         } finally {
-            // 4. Fecha o documento. Isso é CRUCIAL e finaliza a escrita no arquivo.
+            //  Fecha o documento. finaliza a escrita no arquivo.
             if (documento.isOpen()) {
                 documento.close();
             }

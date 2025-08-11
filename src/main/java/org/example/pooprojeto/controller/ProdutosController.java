@@ -1,6 +1,5 @@
 package org.example.pooprojeto.controller;
 
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -17,7 +16,6 @@ import org.example.pooprojeto.service.AuthService;
 import org.example.pooprojeto.util.CarrinhoManager;
 import org.example.pooprojeto.util.CategoriasUtil;
 import org.example.pooprojeto.util.NavigationManager;
-
 import java.sql.SQLException;
 import java.util.List;
 
@@ -29,7 +27,7 @@ public class ProdutosController {
     @FXML private TilePane productTilePane;
     @FXML private Button cartButton;
     @FXML private Button historyButton;
-    @FXML private Button profileButton; // Mantido para consistência com o FXML
+    @FXML private Button profileButton;
 
 
     private Usuario usuarioLogado;
@@ -59,7 +57,7 @@ public class ProdutosController {
     private void criarBotoesDeCategoria() {
         categoryHBox.getChildren().clear();
         Button todosButton = criarBotaoEstilizado("Todos");
-        todosButton.setOnAction(event -> loadAllProducts()); // Simplificado para usar lambda aqui
+        todosButton.setOnAction(event -> loadAllProducts());
         categoryHBox.getChildren().add(todosButton);
         List<String> categorias = CategoriasUtil.getCategorias();
         for (String nomeCategoria : categorias) {

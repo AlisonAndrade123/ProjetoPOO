@@ -8,7 +8,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import javafx.stage.Stage; // Importe a classe Stage
+import javafx.stage.Stage;
 import javafx.stage.Window;
 import org.example.pooprojeto.dao.ProdutoDAO;
 import org.example.pooprojeto.model.Produto;
@@ -70,13 +70,13 @@ public class AdminController {
 
             Stage modalStage = cadastrarController.getStage();
             if (modalStage != null) {
-                modalStage.showAndWait(); // Exibe e espera o modal ser fechado
+                modalStage.showAndWait();
             }
         } else {
             showAlert(Alert.AlertType.ERROR, "Erro Crítico", "Não foi possível carregar a tela de cadastro.");
         }
 
-        loadAllProducts(); // Recarrega os produtos APÓS o modal fechar
+        loadAllProducts();
     }
 
     private void showAlert(Alert.AlertType alertType, String title, String message) {
@@ -88,7 +88,6 @@ public class AdminController {
         alert.showAndWait();
     }
 
-    // ... O resto dos seus métodos (createProductCard, loadAllProducts, etc.) permanece igual ...
     private void criarBotoesDeCategoria() {
         categoryHBox.getChildren().clear();
         Button todosButton = criarBotaoEstilizado("Todos");

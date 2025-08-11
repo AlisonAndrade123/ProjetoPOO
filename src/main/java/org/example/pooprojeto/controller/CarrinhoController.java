@@ -13,9 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import org.example.pooprojeto.model.Endereco;
-import javafx.stage.Stage;
 import org.example.pooprojeto.model.Produto;
-import org.example.pooprojeto.model.Usuario;
 import org.example.pooprojeto.util.CarrinhoManager;
 import org.example.pooprojeto.util.NavigationManager;
 
@@ -195,7 +193,6 @@ public class CarrinhoController {
         alert.setHeaderText(null);
         alert.setContentText(message);
 
-        // CORREÇÃO: Obtém a janela a partir de um componente FXML existente na tela
         if (itensCarrinhoVBox.getScene() != null) {
             alert.initOwner(itensCarrinhoVBox.getScene().getWindow());
         }

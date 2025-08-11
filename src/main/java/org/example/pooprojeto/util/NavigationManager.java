@@ -44,11 +44,6 @@ public class NavigationManager {
         }
     }
 
-    /**
-     * CORREÇÃO: Este método agora se chama 'setupModal' e apenas PREPARA o modal.
-     * Ele não o exibe mais com showAndWait().
-     * Ele retorna o CONTROLLER para que quem o chamou possa interagir com ele.
-     */
     public Object setupModal(String fxmlPath, String title, Window ownerWindow) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
@@ -62,21 +57,19 @@ public class NavigationManager {
             modalStage.initOwner(ownerWindow);
             modalStage.initModality(Modality.APPLICATION_MODAL);
 
-            // A lógica de configuração continua aqui, e é crucial.
             if (controller instanceof CadastrarProdutoController) {
-                ((CadastrarProdutoController) controller).setStage(modalStage); // Passa a janela para o controller poder se fechar.
+                ((CadastrarProdutoController) controller).setStage(modalStage);
                 ((CadastrarProdutoController) controller).setProdutoDAO(new ProdutoDAO());
                 ((CadastrarProdutoController) controller).setCategorias(CategoriasUtil.getCategorias());
             }
 
-            return controller; // Retorna o controller JÁ CONFIGURADO.
+            return controller;
         } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    // O resto dos métodos de navegação permanece o mesmo
     public void navigateToLogin() {
         navigateTo("/org/example/pooprojeto/view/LoginView.fxml", "Sistema de Gerenciamento - Login");
     }
@@ -85,7 +78,6 @@ public class NavigationManager {
         navigateTo("/org/example/pooprojeto/view/AdminView.fxml", "Administração - Loja Virtual");
     }
 
-// ... todos os seus outros métodos navigateTo ...
 
     public void navigateToProductsView() {
         navigateTo("/org/example/pooprojeto/view/ProdutosView.fxml", "Nossa Loja");

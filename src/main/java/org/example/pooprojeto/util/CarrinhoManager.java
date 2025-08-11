@@ -55,17 +55,14 @@ public class CarrinhoManager {
         }
         return total;
     }
-    // NOVO MÉTODO SETTER
     public void setEnderecoEntrega(Endereco endereco) {
         this.enderecoEntrega = endereco;
     }
 
-    // NOVO MÉTODO GETTER
     public Endereco getEnderecoEntrega() {
         return this.enderecoEntrega;
     }
 
-    // ATUALIZAR ESTE MÉTODO
     public void limparCarrinho() {
         this.itens.clear();
         this.enderecoEntrega = null; 

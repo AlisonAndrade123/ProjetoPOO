@@ -67,23 +67,18 @@ public class HistoricoController {
         VBox card = new VBox(10);
         card.setStyle("-fx-background-color: #f9f9f9; -fx-padding: 15; -fx-border-color: #e0e0e0; -fx-border-radius: 8; -fx-background-radius: 8;");
 
-        // --- INÍCIO DA CORREÇÃO ---
-        // 1. Converte a string do banco (que está no formato ISO) para um objeto LocalDateTime.
         LocalDateTime dataDoPedido = LocalDateTime.parse(pedido.getDataPedido());
 
-        // 2. Define o formato que queremos mostrar ao usuário.
         DateTimeFormatter formatoParaUsuario = DateTimeFormatter.ofPattern("dd/MM/yyyy 'às' HH:mm");
 
-        // 3. Formata a data para a exibição.
         String dataFormatada = "Data: " + dataDoPedido.format(formatoParaUsuario);
-        // --- FIM DA CORREÇÃO ---
 
 
         HBox header = new HBox(20);
         header.setAlignment(Pos.CENTER_LEFT);
         Label idLabel = new Label("Pedido #" + pedido.getId());
         idLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
-        Label dataLabel = new Label(dataFormatada); // Usa a string já formatada
+        Label dataLabel = new Label(dataFormatada);
         dataLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #555;");
         header.getChildren().addAll(idLabel, dataLabel);
 

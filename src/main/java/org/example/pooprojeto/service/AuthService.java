@@ -12,21 +12,21 @@ import java.util.Optional;
  */
 public class AuthService {
 
-    // NOVO: Instância única (Singleton) para toda a aplicação.
+    // Instância única (Singleton) para toda a aplicação.
     private static AuthService instance;
 
-    // NOVO: Campo para armazenar o usuário que está atualmente logado.
+    // Campo para armazenar o usuário que está atualmente logado.
     private Usuario usuarioLogado;
 
     private final UsuarioDAO usuarioDAO;
 
-    // NOVO: O construtor agora é privado para forçar o uso do getInstance().
+    // O construtor agora é privado para forçar o uso do getInstance().
     private AuthService() {
         this.usuarioDAO = new UsuarioDAO(); // O DAO é instanciado aqui dentro.
     }
 
     /**
-     * NOVO: Ponto de acesso global para a instância do AuthService.
+     * Ponto de acesso global para a instância do AuthService.
      * @return A instância única do serviço.
      */
     public static AuthService getInstance() {
@@ -61,7 +61,7 @@ public class AuthService {
             throw new AppException("E-mail ou senha inválidos.");
         }
 
-        // NOVO: Armazena o usuário na sessão após o sucesso do login.
+        //  Armazena o usuário na sessão após o sucesso do login.
         this.usuarioLogado = usuario;
 
         System.out.println("Usuário logado com sucesso: " + usuario.getNome() + " (Admin: " + usuario.isAdmin() + ")");
@@ -84,7 +84,7 @@ public class AuthService {
     }
 
     /**
-     * NOVO: Método para obter o usuário atualmente logado de qualquer parte do código.
+     *  Método para obter o usuário atualmente logado de qualquer parte do código.
      * @return O usuário logado, ou null se ninguém estiver logado.
      */
     public Usuario getUsuarioLogado() {
@@ -92,7 +92,7 @@ public class AuthService {
     }
 
     /**
-     * NOVO: Método para fazer logout, limpando a sessão.
+     *  Método para fazer logout, limpando a sessão.
      */
     public void logout() {
         System.out.println("Usuário deslogado: " + (usuarioLogado != null ? usuarioLogado.getNome() : "N/A"));

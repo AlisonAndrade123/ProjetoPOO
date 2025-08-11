@@ -27,7 +27,7 @@ public class PedidoDAO {
             // Inicia a transação
             conn.setAutoCommit(false);
 
-            // 1. Insere o cabeçalho do pedido e obtém o ID gerado
+            //  Insere o cabeçalho do pedido e obtém o ID gerado
             try (PreparedStatement pstmtPedido = conn.prepareStatement(sqlPedido, Statement.RETURN_GENERATED_KEYS)) {
                 pstmtPedido.setInt(1, pedido.getUsuarioId());
                 pstmtPedido.setString(2, pedido.getDataPedido());
@@ -43,7 +43,7 @@ public class PedidoDAO {
                 }
             }
 
-            // 2. Insere cada item do pedido
+            //  Insere cada item do pedido
             try (PreparedStatement pstmtItem = conn.prepareStatement(sqlItem)) {
                 for (PedidoItem item : pedido.getItens()) {
                     pstmtItem.setInt(1, pedido.getId());
@@ -81,10 +81,7 @@ public class PedidoDAO {
         }
     }
 
-    // Seu método buscarPorUsuario continua aqui...
     public List<Pedido> buscarPorUsuario(int usuarioId) throws SQLException {
-        // ... seu código do método buscarPorUsuario ...
-        // (Ele já está correto no arquivo que você me mandou)
         Map<Integer, Pedido> pedidosMap = new LinkedHashMap<>();
         String sql = "SELECT ped.id as pedido_id, ped.data_pedido, ped.valor_total, item.id as item_id, item.quantidade as item_quantidade, item.preco_unitario, prod.id as produto_id, prod.nome as produto_nome, prod.descricao as produto_descricao, prod.preco as produto_preco, prod.quantidade as produto_quantidade_estoque, prod.categoria as produto_categoria, prod.nome_arquivo_imagem FROM pedidos ped JOIN pedido_itens item ON ped.id = item.pedido_id JOIN produtos prod ON item.produto_id = prod.id WHERE ped.usuario_id = ? ORDER BY ped.id DESC, item.id ASC";
         try (Connection conn = DatabaseManager.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {

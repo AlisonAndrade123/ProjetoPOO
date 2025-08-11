@@ -14,14 +14,12 @@ import org.example.pooprojeto.pagamento.PagamentoPix;
 import org.example.pooprojeto.service.AuthService;
 import org.example.pooprojeto.service.NotaFiscalService;
 import org.example.pooprojeto.util.CarrinhoManager;
-import org.example.pooprojeto.util.GeradorNotaFiscalPDF; // Mantém este import
+import org.example.pooprojeto.util.GeradorNotaFiscalPDF;
 import org.example.pooprojeto.util.NavigationManager;
-
-import java.io.File; // Mantém este import
-import java.io.IOException; // Mantém este import
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +28,6 @@ import java.util.stream.Collectors;
 
 public class PagamentoController {
 
-    // ... Seus @FXML e declarações de variáveis permanecem os mesmos ...
     @FXML
     private VBox paymentOptionsVBox;
     @FXML
@@ -61,7 +58,6 @@ public class PagamentoController {
     private final PedidoDAO pedidoDAO = new PedidoDAO();
 
 
-    // O método inicializar continua igual
     public void inicializar(double valorTotal) {
         this.valorTotalCompra = valorTotal;
         String valorFormatado = String.format("R$ %.2f", valorTotal).replace('.', ',');
@@ -71,7 +67,6 @@ public class PagamentoController {
         confirmarPagamentoButton.setText("Pagar " + valorFormatado);
     }
 
-    // O método initialize continua igual
     @FXML
     public void initialize() {
         aplicarEstilos();
@@ -79,12 +74,10 @@ public class PagamentoController {
     }
 
 
-    // --- MÉTODO handleConfirmarPagamento SIMPLIFICADO ---
     @FXML
     void handleConfirmarPagamento() {
         confirmarPagamentoButton.setDisable(true);
 
-        // --- PREPARAÇÃO DOS DADOS ---
         Usuario usuarioLogado = AuthService.getInstance().getUsuarioLogado();
         Map<Produto, Integer> itensDoCarrinhoMap = carrinhoManager.getItens();
         Endereco endereco = carrinhoManager.getEnderecoEntrega();
@@ -95,24 +88,17 @@ public class PagamentoController {
             return;
         }
 
-        // --- INÍCIO DA LÓGICA RESTAURADA ---
-        // 1. Criar o objeto Pedido
         Pedido novoPedido = new Pedido();
         novoPedido.setUsuarioId(usuarioLogado.getId());
         novoPedido.setValorTotal(this.valorTotalCompra);
         novoPedido.setDataPedido(LocalDateTime.now().toString());
 
-        // 2. Converter os itens do carrinho para o formato PedidoItem
         List<PedidoItem> itensDoPedido = itensDoCarrinhoMap.entrySet().stream()
                 .map(entry -> {
                     Produto produto = entry.getKey();
                     int quantidade = entry.getValue();
                     PedidoItem item = new PedidoItem();
-
-                    // --- CORREÇÃO PRINCIPAL AQUI ---
-                    // Em vez de setar apenas o ID, setamos o objeto Produto inteiro.
-                    item.setProduto(produto); // Em vez de item.setProdutoId(produto.getId());
-
+                    item.setProduto(produto);
                     item.setQuantidade(quantidade);
                     item.setPrecoUnitario(produto.getPreco());
                     return item;
@@ -120,18 +106,15 @@ public class PagamentoController {
                 .collect(Collectors.toList());
         novoPedido.setItens(itensDoPedido);
 
-        // 3. Tentar salvar o Pedido no Banco de Dados
         try {
             pedidoDAO.salvar(novoPedido);
         } catch (SQLException e) {
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Erro de Banco de Dados", "Falha ao registrar o pedido no sistema. A compra foi cancelada.");
             confirmarPagamentoButton.setDisable(false);
-            return; // Interrompe a execução se o pedido não puder ser salvo
+            return;
         }
-        // --- FIM DA LÓGICA RESTAURADA ---
 
-        // 4. Se o pedido foi salvo, prosseguir com a Nota Fiscal
         List<Produto> produtosParaNota = new ArrayList<>();
         itensDoCarrinhoMap.forEach((p, q) -> { for (int i = 0; i < q; i++) produtosParaNota.add(p); });
 
@@ -162,7 +145,6 @@ public class PagamentoController {
         }
     }
 
-    // ... os outros métodos (showAlert, configurarMetodosPagamento, aplicarEstilos) permanecem os mesmos ...
     private void showAlert(Alert.AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
