@@ -1,0 +1,58 @@
+package br.edu.ifpb.lojavirtual.controller;
+
+import br.edu.ifpb.lojavirtual.model.Usuario;
+import br.edu.ifpb.lojavirtual.service.AuthService;
+import br.edu.ifpb.lojavirtual.util.AppException;
+import br.edu.ifpb.lojavirtual.util.NavigationManager;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+
+public class LoginController {
+
+    @FXML
+    private TextField usernameField;
+    @FXML
+    private PasswordField passwordField;
+
+    @FXML
+    private void handleLoginButtonAction(ActionEvent event) {
+        String email = usernameField.getText();
+        String senha = passwordField.getText();
+
+        if (email.isEmpty() || senha.isEmpty()) {
+            showAlert(AlertType.ERROR, "Erro de Login", "Por favor, preencha todos os campos.");
+            return;
+        }
+
+        try {
+
+            Usuario usuarioAutenticado = AuthService.getInstance().login(email, senha);
+
+            if (usuarioAutenticado.isAdmin()) {
+                NavigationManager.getInstance().navigateToAdminView();
+            } else {
+                NavigationManager.getInstance().navigateToProductsView();
+            }
+
+        } catch (AppException e) {
+            showAlert(AlertType.ERROR, "Falha no Login", e.getMessage());
+        }
+    }
+
+    @FXML
+    private void handleCreateAccountButtonAction(ActionEvent event) {
+        NavigationManager.getInstance().navigateToCadastro();
+    }
+
+    private void showAlert(AlertType alertType, String title, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+}

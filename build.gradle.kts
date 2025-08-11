@@ -26,8 +26,8 @@ tasks.withType<JavaCompile> {
 }
 
 application {
-    mainModule.set("org.example.pooprojeto")
-    mainClass.set("org.example.pooprojeto.MainApp")
+    mainModule.set("br.edu.ifpb.lojavirtual")
+    mainClass.set("br.edu.ifpb.lojavirtual.MainApp")
 }
 
 javafx {

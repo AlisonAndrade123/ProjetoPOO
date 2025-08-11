@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.TilePane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity"
+            prefWidth="1920"
+            prefHeight="1080" style="-fx-background-color: #00A60E;" xmlns="http://javafx.com/javafx/21.0.3" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.edu.ifpb.lojavirtual.controller.AdminController">
+    <children>
+
+        <HBox alignment="CENTER_RIGHT" layoutX="81.0" layoutY="20.0" prefHeight="45.0" prefWidth="1779.0" spacing="15.0" AnchorPane.leftAnchor="81.0" AnchorPane.rightAnchor="113.0" AnchorPane.topAnchor="20.0">
+            <children>
+                <AnchorPane prefHeight="45.0" prefWidth="1317.0" style="-fx-background-color: #FFFFFF; -fx-border-radius: 15; -fx-background-radius: 15;" HBox.hgrow="SOMETIMES">
+                    <children>
+                        <TextField fx:id="searchTextField" layoutX="9.0" prefHeight="45.0" prefWidth="1522.0" promptText="O que você quer pesquisar?" style="-fx-background-color: transparent; -fx-border-color: transparent;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <font><Font size="22.0" /></font>
+                        </TextField>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="10.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+                            <image><Image url="@../imagens/lupa.png" /></image>
+                        </ImageView>
+                    </children>
+                </AnchorPane>
+                <Button fx:id="addProductButton" mnemonicParsing="false" onAction="#handleAddProduct" prefHeight="45.0" prefWidth="192.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-cursor: hand;" text="Adicionar Produto" textFill="#00A60E">
+                    <font><Font name="System Bold" size="16.0" /></font>
+                </Button>
+            </children>
+        </HBox>
+
+        <ScrollPane fx:id="categoryScrollPane" hbarPolicy="AS_NEEDED" prefHeight="72.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #00A60E; -fx-border-width: 0 0 2 0;" vbarPolicy="NEVER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
+            <content>
+
+                <HBox fx:id="categoryHBox" alignment="CENTER_LEFT" spacing="15.0" style="-fx-padding: 0 15 0 15;" />
+            </content>
+        </ScrollPane>
+
+        <ScrollPane hbarPolicy="NEVER" style="-fx-background-color: transparent; -fx-padding: 0;" vbarPolicy="AS_NEEDED" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="165.0">
+            <content>
+                <TilePane fx:id="productTilePane" alignment="TOP_LEFT" hgap="20.0" prefColumns="5" prefTileHeight="400.0" prefTileWidth="345.0" style="-fx-padding: 20;" vgap="20.0">
+                </TilePane>
+            </content>
+        </ScrollPane>
+    </children>
+</AnchorPane>
