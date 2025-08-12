@@ -56,3 +56,16 @@ jlink {
         name = "app"
     }
 }
+tasks.jar {
+    manifest {
+        attributes["Main-Class"] = application.mainClass.get()
+    }
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+    // Inclui todas as dependências do projeto no JAR
+    from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
+
+    // Adiciona uma dependência para garantir que a compilação seja feita antes do JAR
+    dependsOn(tasks.compileJava)
+}
