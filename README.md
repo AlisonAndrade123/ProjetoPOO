@@ -25,14 +25,11 @@
 
 ### **Índice**
 
-<ol>
- <li><a href="#-objetivos-principais">Objetivos Principais</a></li>
- <li><a href="#-funcionalidades-planejadas">Funcionalidades Planejadas</a></li>
- <li><a href="#-estrutura-do-projeto">Estrutura do Projeto</a></li>
- <li><a href="#-tecnologias-utilizadas">Tecnologias Utilizadas</a></li>
- <li><a href="#-como-executar-o-projeto">Como Executar o Projeto</a></li>
-</ol>
-
+1. [Objetivos Principais](#objetivos-principais)
+2. [Funcionalidades Planejadas](#funcionalidades-planejadas)
+3. [Estrutura do Projeto](#estrutura-do-projeto)
+4. [Tecnologias Utilizadas](#tecnologias-utilizadas)
+5. [Como Executar o Projeto](#como-executar-o-projeto)
 
 ---
 
@@ -132,7 +129,7 @@ simulador-loja-poo/
 
 #### **Passo a passo - Executando pela interface da IDE:**
 
-1.  **Clone o repositório:**
+1. **Clone o repositório:**
    ```sh
    git clone https://gitlab.com/projeto-poo1/simulador-loja-poo.git
    ```
@@ -141,12 +138,12 @@ simulador-loja-poo/
 4.  **Execute o projeto** para iniciar a aplicação.
 
 #### **Passo a passo - Executando pelo terminal:**
-1.  **Clone o repositório:**
+1. **Clone o repositório:**
    ```sh
    git clone https://gitlab.com/projeto-poo1/simulador-loja-poo.git
    ```
 2.  **Abra o terminal** na raiz do projeto.
-4. **Execute** o seguinte comando:
+3. **Execute** o seguinte comando:
 ```sh
 ./gradlew run
    ```
