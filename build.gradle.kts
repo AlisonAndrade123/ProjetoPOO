@@ -1,19 +1,20 @@
+// Import necessário para configurar a tarefa ShadowJar
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
 plugins {
     java
     application
-    id("org.javamodularity.moduleplugin") version "1.8.12"
-    id("org.openjfx.javafxplugin") version "0.0.13"
-    id("org.beryx.jlink") version "2.25.0"
+    id("org.openjfx.javafxplugin") version "0.1.0"
+    // Plugin para criar o Fat JAR
+    id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
-group = "org.example"
-version = "1.0-SNAPSHOT"
+group = "br.edu.ifpb.lojavirtual"
+version = "1.0.0"
 
 repositories {
     mavenCentral()
 }
-
-val junitVersion = "5.10.2"
 
 java {
     toolchain {
@@ -26,8 +27,7 @@ tasks.withType<JavaCompile> {
 }
 
 application {
-    mainModule.set("br.edu.ifpb.lojavirtual")
-    mainClass.set("br.edu.ifpb.lojavirtual.MainApp")
+    mainClass.set("br.edu.ifpb.lojavirtual.Launcher")
 }
 
 javafx {
@@ -36,11 +36,11 @@ javafx {
 }
 
 dependencies {
-    // Dependência para SQLite JDBC
     implementation("org.xerial:sqlite-jdbc:3.45.1.0")
-    // Dependência para OpenPDF
-    implementation ("com.github.librepdf:openpdf:1.3.30")
-    implementation ("org.slf4j:slf4j-simple:1.7.32")
+    implementation("com.github.librepdf:openpdf:1.3.30")
+    implementation("org.slf4j:slf4j-simple:1.7.32")
+
+    val junitVersion = "5.10.2"
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
 }
@@ -49,10 +49,12 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 
-jlink {
-    imageZip.set(layout.buildDirectory.file("/distributions/app-${javafx.platform.classifier}.zip"))
-    options.set(listOf("--strip-debug", "--compress", "2", "--no-header-files", "--no-man-pages"))
-    launcher {
-        name = "app"
+tasks.withType<ShadowJar> {
+    archiveBaseName.set("simulador-loja-poo")
+    archiveClassifier.set("")
+    archiveVersion.set(project.version.toString())
+
+    manifest {
+        attributes("Main-Class" to "br.edu.ifpb.lojavirtual.Launcher")
     }
 }
