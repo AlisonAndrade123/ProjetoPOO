@@ -16,7 +16,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-
 import java.sql.SQLException;
 import java.util.List;
 
