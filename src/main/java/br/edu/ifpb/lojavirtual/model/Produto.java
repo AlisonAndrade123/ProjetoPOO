@@ -98,7 +98,7 @@ public class Produto {
 
     private void loadPlaceholder() {
         try {
-            this.image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/org/example/pooprojeto/imagens/placeholder.png")));
+            this.image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/br/edu/ifpb/lojavirtual/imagens/placeholder.png")));
         } catch (Exception e) {
             e.printStackTrace();
             this.image = null;
