@@ -30,6 +30,7 @@
 3. [Estrutura do Projeto](#estrutura-do-projeto)
 4. [Tecnologias Utilizadas](#tecnologias-utilizadas)
 5. [Como Executar o Projeto](#como-executar-o-projeto)
+6. [Como criar o excutável JAR](#como-criar-o-executável-jar)
 
 ---
 
@@ -144,9 +145,24 @@ simulador-loja-poo/
    ```
 2.  **Abra o terminal** na raiz do projeto.
 3. **Execute** o seguinte comando:
-```sh
-./gradlew run
+    ```sh
+    ./gradlew run
+       ```
+### **Como criar o executável JAR**
+1. **Mude** para a branch `criando-jar`:
+   1. Pelo terminal:
+      ```sh
+      git checkout criando-jar
+      ```
+   2. Ou pela interface da IDE, selecionando a branch `criando-jar`.
+2. **Abra o terminal** na raiz do projeto.
+3. **Execute** o seguinte comando:
+   ```sh
+    ./gradlew shadowJar
    ```
-
-
+4. **Localize o arquivo JAR** gerado em `build/libs/simulador-loja-poo-1.0.0.jar`.
+5. **Execute o JAR** com o comando:
+   ```sh
+   java -jar build/libs/simulador-loja-poo-1.0.0.jar
+   ```
 
