@@ -145,9 +145,9 @@ simulador-loja-poo/
    ```
 2.  **Abra o terminal** na raiz do projeto.
 3. **Execute** o seguinte comando:
-    ```sh
+   ```sh
     ./gradlew run
-       ```
+   ```
 ### **Como criar o executável JAR**
 1. **Mude** para a branch `criando-jar`:
    1. Pelo terminal:
