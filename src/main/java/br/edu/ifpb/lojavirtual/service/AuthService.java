@@ -6,6 +6,8 @@ import br.edu.ifpb.lojavirtual.util.AppException;
 
 import java.util.Optional;
 
+
+
 /**
  * Serviço de Autenticação (Singleton).
  * Gerencia a lógica de login/registro e a sessão do usuário logado.
