@@ -80,25 +80,39 @@ public class ProdutosController {
     private VBox createProductCard(Produto produto) {
         VBox card = new VBox(10);
         card.setAlignment(javafx.geometry.Pos.TOP_CENTER);
-        card.setPrefHeight(400.0);
+
+        card.setPrefWidth(280.0);
+        card.setPrefHeight(380.0);
+
         card.setStyle("-fx-background-color: white; -fx-border-color: #00A60E; -fx-border-radius: 10; -fx-border-width: 1; -fx-padding: 15;");
+
         ImageView imageView = new ImageView(produto.getImage());
         imageView.setFitHeight(150.0);
         imageView.setFitWidth(180.0);
         imageView.setPickOnBounds(true);
         imageView.setPreserveRatio(true);
+
         Label nameLabel = new Label(produto.getNome());
         nameLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-padding: 5px 0;");
         nameLabel.setWrapText(true);
+
         Label descriptionLabel = new Label(produto.getDescricao());
         descriptionLabel.setStyle("-fx-font-size: 13px; -fx-padding: 5px 0; -fx-text-fill: #555555;");
         descriptionLabel.setWrapText(true);
+
+        descriptionLabel.setMaxHeight(60);
+
         Label priceLabel = new Label("R$ " + String.format("%.2f", produto.getPreco()).replace('.', ','));
-        priceLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #00A60E; -fx-padding: 5px 0 15px 0;");
+        priceLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #00A60E;");
+
+        javafx.scene.layout.Region spacer = new javafx.scene.layout.Region();
+        VBox.setVgrow(spacer, javafx.scene.layout.Priority.ALWAYS);
+
         Button buyButton = new Button("Comprar");
         buyButton.setStyle("-fx-background-color: #00A60E; -fx-text-fill: white; -fx-font-weight: bold; -fx-border-radius: 5; -fx-padding: 8px 16px; -fx-cursor: hand;");
         buyButton.setOnAction(event -> handleComprarProduto(produto));
-        card.getChildren().addAll(imageView, nameLabel, descriptionLabel, priceLabel, buyButton);
+
+        card.getChildren().addAll(imageView, nameLabel, descriptionLabel, priceLabel, spacer, buyButton);
         return card;
     }
 
