@@ -130,31 +130,46 @@ public class AdminController {
     private VBox createProductCard(Produto produto) {
         VBox card = new VBox(10);
         card.setAlignment(javafx.geometry.Pos.TOP_CENTER);
+
         card.setPrefHeight(400.0);
         card.setStyle("-fx-background-color: white; -fx-border-color: #00A60E; -fx-border-radius: 10; -fx-border-width: 1; -fx-padding: 15;");
+
         ImageView imageView = new ImageView(produto.getImage());
         imageView.setFitHeight(150.0);
         imageView.setFitWidth(180.0);
         imageView.setPickOnBounds(true);
         imageView.setPreserveRatio(true);
+
         Label nameLabel = new Label(produto.getNome());
         nameLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-padding: 5px 0;");
         nameLabel.setWrapText(true);
+
         Label descriptionLabel = new Label(produto.getDescricao());
         descriptionLabel.setStyle("-fx-font-size: 13px; -fx-padding: 5px 0; -fx-text-fill: #555555;");
         descriptionLabel.setWrapText(true);
+        descriptionLabel.setPrefHeight(100);
+
         Label priceLabel = new Label("R$ " + String.format("%.2f", produto.getPreco()).replace('.', ','));
         priceLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #00A60E; -fx-padding: 5px 0 15px 0;");
+
+        javafx.scene.layout.Region spacer = new javafx.scene.layout.Region();
+        VBox.setVgrow(spacer, javafx.scene.layout.Priority.ALWAYS);
+
         HBox actionButtons = new HBox(5);
         actionButtons.setAlignment(javafx.geometry.Pos.CENTER);
+
         Button removeButton = new Button("Remover");
         removeButton.setStyle("-fx-background-color: #F43C3C; -fx-text-fill: white; -fx-font-weight: bold; -fx-border-radius: 5; -fx-padding: 6px 12px; -fx-cursor: hand;");
         removeButton.setOnAction(e -> handleRemoveProduct(produto));
+
         Button editButton = new Button("Editar");
         editButton.setStyle("-fx-background-color: #00A60E; -fx-text-fill: white; -fx-font-weight: bold; -fx-border-radius: 5; -fx-padding: 6px 12px; -fx-cursor: hand;");
         editButton.setOnAction(e -> handleEditProduct(produto));
+
         actionButtons.getChildren().addAll(removeButton, editButton);
+
         card.getChildren().addAll(imageView, nameLabel, descriptionLabel, priceLabel, actionButtons);
+
         return card;
     }
     private void loadAllProducts() {
