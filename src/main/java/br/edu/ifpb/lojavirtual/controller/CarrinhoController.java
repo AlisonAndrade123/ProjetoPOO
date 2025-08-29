@@ -18,6 +18,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
 import java.util.Map;
+
 public class CarrinhoController {
     @FXML
     private VBox itensCarrinhoVBox;
@@ -59,22 +60,12 @@ public class CarrinhoController {
 
     @FXML
     private void handleIrParaPagamento(ActionEvent event) {
-        if (ruaField.getText().trim().isEmpty() || numeroField.getText().trim().isEmpty() ||
-                bairroField.getText().trim().isEmpty() || cidadeField.getText().trim().isEmpty() ||
-                estadoField.getText().trim().isEmpty() || cepField.getText().trim().isEmpty()) {
+        if (ruaField.getText().trim().isEmpty() || numeroField.getText().trim().isEmpty() || bairroField.getText().trim().isEmpty() || cidadeField.getText().trim().isEmpty() || estadoField.getText().trim().isEmpty() || cepField.getText().trim().isEmpty()) {
             showAlert(Alert.AlertType.WARNING, "Campos Incompletos", "Por favor, preencha todos os campos de endereço antes de prosseguir.");
             return;
         }
 
-        Endereco enderecoDeEntrega = new Endereco(
-                ruaField.getText(),
-                numeroField.getText(),
-                complementoField.getText(),
-                bairroField.getText(),
-                cidadeField.getText(),
-                estadoField.getText(),
-                cepField.getText()
-        );
+        Endereco enderecoDeEntrega = new Endereco(ruaField.getText(), numeroField.getText(), complementoField.getText(), bairroField.getText(), cidadeField.getText(), estadoField.getText(), cepField.getText());
 
         carrinhoManager.setEnderecoEntrega(enderecoDeEntrega);
 
@@ -127,50 +118,81 @@ public class CarrinhoController {
     private HBox criarItemCarrinhoNode(Produto produto, int quantidade) {
         HBox hBox = new HBox();
         hBox.setAlignment(Pos.CENTER_LEFT);
-        hBox.setPrefHeight(110.0);
+        hBox.setMinHeight(110.0);
+        hBox.setMaxHeight(150.0);
         hBox.setStyle("-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-color: #00A60E; -fx-border-width: 2; -fx-border-radius: 12;");
-        hBox.setPadding(new Insets(10, 0, 10, 0));
+
         ImageView imageView = new ImageView(produto.getImage());
         imageView.setFitHeight(90.0);
         imageView.setFitWidth(90.0);
         imageView.setPreserveRatio(true);
         HBox.setMargin(imageView, new Insets(0, 0, 0, 15));
+
         VBox infoVBox = new VBox();
         HBox.setHgrow(infoVBox, javafx.scene.layout.Priority.ALWAYS);
         infoVBox.setPadding(new Insets(0, 0, 0, 20));
+
         Label nomeLabel = new Label(produto.getNome());
         nomeLabel.setFont(new Font("System Bold", 18.0));
         VBox.setMargin(nomeLabel, new Insets(0, 0, 5, 0));
+
         Label precoLabel = new Label(String.format("R$ %.2f", produto.getPreco()).replace('.', ','));
         precoLabel.setTextFill(javafx.scene.paint.Color.valueOf("#00a60e"));
         precoLabel.setFont(new Font("System Bold", 16.0));
-        infoVBox.getChildren().addAll(nomeLabel, precoLabel);
-        HBox controlesHBox = new HBox(5.0);
-        controlesHBox.setAlignment(Pos.CENTER_RIGHT);
-        controlesHBox.setPadding(new Insets(0, 15, 0, 0));
+
+        Label descricaoLabel = new Label(produto.getDescricao());
+        descricaoLabel.setFont(new Font("System", 14.0));
+        descricaoLabel.setMaxWidth(450.0);
+        descricaoLabel.setWrapText(true);
+
+        infoVBox.getChildren().addAll(nomeLabel, descricaoLabel, precoLabel);
+
+        VBox controlesVBox = new VBox(5.0);
+
+        controlesVBox.setAlignment(Pos.CENTER_RIGHT);
+        controlesVBox.setPadding(new Insets(0, 15, 0, 0));
+
+        // inicio: box elementos da quantidade
+        HBox qtdHBox = new HBox(5.0);
+        qtdHBox.setAlignment(Pos.CENTER);
+
         Label qtdLabel = new Label("Quantidade:");
         qtdLabel.setTextFill(javafx.scene.paint.Color.valueOf("#333333"));
         qtdLabel.setFont(new Font(15.0));
-        VBox qtdVBox = new VBox(2.0);
-        qtdVBox.setAlignment(Pos.CENTER);
-        Button upButton = new Button("▲");
+
+        Button upButton = new Button("+");
+
+        upButton.setPrefSize(18, 18);
+
         upButton.setStyle("-fx-background-color: #00A60E; -fx-background-radius: 5; -fx-cursor: hand;");
+
         upButton.setTextFill(javafx.scene.paint.Color.WHITE);
+        upButton.setFont(new Font("System Bold", 16.0)); // Um pouco menor pode centralizar melhor no botão
+
         upButton.setOnAction(e -> {
             carrinhoManager.incrementarQuantidade(produto);
             popularItensCarrinho();
         });
+
         TextField qtdTextField = new TextField(String.valueOf(quantidade));
         qtdTextField.setAlignment(Pos.CENTER);
-        qtdTextField.setPrefSize(40.0, 30.0);
-        Button downButton = new Button("▼");
+        qtdTextField.setPrefSize(30.0, 30.0);
+
+        Button downButton = new Button("-");
+        downButton.setPrefSize(18, 18);
         downButton.setStyle("-fx-background-color: #DC3545; -fx-background-radius: 5; -fx-cursor: hand;");
+
+        downButton.setFont(new Font("System Bold", 16.0));
+
         downButton.setTextFill(javafx.scene.paint.Color.WHITE);
         downButton.setOnAction(e -> {
             carrinhoManager.decrementarQuantidade(produto);
             popularItensCarrinho();
         });
-        qtdVBox.getChildren().addAll(upButton, qtdTextField, downButton);
+
+        // final: box elementos da quantidade
+        qtdHBox.getChildren().addAll(qtdLabel, downButton, qtdTextField, upButton);
+
         Button removerButton = new Button("Remover");
         removerButton.setStyle("-fx-background-color: #DC3545; -fx-background-radius: 8; -fx-cursor: hand;");
         removerButton.setTextFill(javafx.scene.paint.Color.WHITE);
@@ -179,9 +201,11 @@ public class CarrinhoController {
             carrinhoManager.removerProduto(produto);
             popularItensCarrinho();
         });
+
         HBox.setMargin(removerButton, new Insets(0, 15, 0, 0));
-        controlesHBox.getChildren().addAll(qtdLabel, qtdVBox, removerButton);
-        hBox.getChildren().addAll(imageView, infoVBox, controlesHBox);
+        controlesVBox.getChildren().addAll(qtdHBox, removerButton);
+
+        hBox.getChildren().addAll(imageView, infoVBox, controlesVBox);
         return hBox;
     }
 

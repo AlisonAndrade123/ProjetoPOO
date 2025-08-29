@@ -5,88 +5,201 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080" prefWidth="1920" style="-fx-background-color: #00A60E;" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.edu.ifpb.lojavirtual.controller.CarrinhoController">
-    <children>
-        <HBox alignment="CENTER_LEFT" spacing="30.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="30.0">
+<!--
+  PROBLEMA 1 CORRIGIDO:
+  Trocado AnchorPane de tamanho fixo por um BorderPane fluido.
+  Ele se expandirá para preencher o tamanho da janela automaticamente.
+-->
+<BorderPane style="-fx-background-color: #00A60E;" xmlns="http://javafx.com/javafx/24.0.1"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.edu.ifpb.lojavirtual.controller.CarrinhoController">
+    <padding>
+        <Insets bottom="30.0" left="30.0" right="30.0" top="30.0"/>
+    </padding>
+
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="30.0" BorderPane.alignment="CENTER">
             <children>
                 <Label text="Meu carrinho de compras" textFill="WHITE" HBox.hgrow="ALWAYS">
-                    <font><Font name="System Bold" size="30.0" /></font>
+                    <font>
+                        <Font name="System Bold" size="30.0"/>
+                    </font>
                 </Label>
-                <Button fx:id="limparCarrinhoButton" mnemonicParsing="false" prefHeight="45.0" prefWidth="300.0" style="-fx-background-color: #DC3545; -fx-background-radius: 10; -fx-cursor: hand;" text="Remover todos os produtos" textFill="WHITE">
-                    <font><Font name="System Bold" size="16.0" /></font>
+                <Button fx:id="limparCarrinhoButton" mnemonicParsing="false" prefHeight="45.0" prefWidth="300.0"
+                        style="-fx-background-color: #DC3545; -fx-background-radius: 10; -fx-cursor: hand;"
+                        text="Remover todos os produtos" textFill="WHITE">
+                    <font>
+                        <Font name="System Bold" size="16.0"/>
+                    </font>
                 </Button>
+            </children>
+            <BorderPane.margin>
+                <Insets bottom="30.0"/>
+            </BorderPane.margin>
+        </HBox>
+    </top>
+
+    <center>
+        <!--
+          PROBLEMA 2 CORRIGIDO:
+          Usando um HBox para gerenciar as duas colunas (lista de itens e resumo).
+          Isso é muito mais robusto do que usar âncoras fixas.
+        -->
+        <HBox spacing="20.0">
+            <children>
+                <!-- Coluna 1: Lista de Itens -->
+                <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" HBox.hgrow="ALWAYS">
+                    <content>
+                        <VBox fx:id="itensCarrinhoVBox" spacing="20.0"
+                              style="-fx-background-color: transparent; -fx-padding: 10;"/>
+                    </content>
+                </ScrollPane>
+
+                <!-- Coluna 2: Resumo do Pedido -->
+                <!--
+                  PROBLEMA 3 CORRIGIDO:
+                  O HBox.hgrow="ALWAYS" na ScrollPane acima garante que esta VBox (resumo)
+                  manterá sua largura preferencial, enquanto a lista de itens cresce para preencher o espaço.
+                  Adicionado minWidth para evitar que seja esmagado em telas muito pequenas.
+                -->
+                <ScrollPane fitToWidth="true" hbarPolicy="NEVER" minWidth="380.0" prefWidth="400.0">
+
+                    <content>
+                        <VBox alignment="TOP_CENTER" spacing="10.0"
+                              style="-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-color: #00A60E; -fx-border-width: 2; -fx-border-radius: 12;">
+                            <children>
+                                <Label text="RESUMO DO PEDIDO" textFill="#00a60e">
+                                    <font>
+                                        <Font name="System Bold" size="20.0"/>
+                                    </font>
+                                    <VBox.margin>
+                                        <Insets top="15.0"/>
+                                    </VBox.margin>
+                                </Label>
+                                <HBox alignment="CENTER" spacing="10.0">
+                                    <children>
+                                        <Label text="Subtotal:" textFill="#333333">
+                                            <font>
+                                                <Font size="16.0"/>
+                                            </font>
+                                        </Label>
+                                        <Label fx:id="subtotalLabel" text="R$ 0,00" textFill="#333333">
+                                            <font>
+                                                <Font name="System Bold" size="16.0"/>
+                                            </font>
+                                        </Label>
+                                    </children>
+                                </HBox>
+                                <HBox alignment="CENTER" spacing="10.0">
+                                    <children>
+                                        <Label text="Frete:" textFill="#333333">
+                                            <font>
+                                                <Font size="16.0"/>
+                                            </font>
+                                        </Label>
+                                        <Label fx:id="freteLabel" text="R$ 0,00" textFill="#333333">
+                                            <font>
+                                                <Font name="System Bold" size="16.0"/>
+                                            </font>
+                                        </Label>
+                                    </children>
+                                </HBox>
+                                <Label text="Total:" textFill="#00a60e">
+                                    <font>
+                                        <Font name="System Bold" size="24.0"/>
+                                    </font>
+                                    <VBox.margin>
+                                        <Insets top="10.0"/>
+                                    </VBox.margin>
+                                </Label>
+                                <Label fx:id="totalLabel" text="R$ 0,00" textFill="#00a60e">
+                                    <font>
+                                        <Font name="System Bold" size="24.0"/>
+                                    </font>
+                                </Label>
+                                <Label text="INFORMAÇÕES DE ENTREGA" textFill="#00a60e">
+                                    <font>
+                                        <Font name="System Bold" size="18.0"/>
+                                    </font>
+                                    <VBox.margin>
+                                        <Insets top="20.0"/>
+                                    </VBox.margin>
+                                </Label>
+                                <TextField fx:id="cepField" promptText="CEP"
+                                           style="-fx-background-radius: 8; -fx-border-color: #CCCCCC; -fx-border-radius: 8; -fx-padding: 10;">
+                                    <VBox.margin>
+                                        <Insets left="20.0" right="20.0"/>
+                                    </VBox.margin>
+                                </TextField>
+                                <TextField fx:id="ruaField" promptText="Rua"
+                                           style="-fx-background-radius: 8; -fx-border-color: #CCCCCC; -fx-border-radius: 8; -fx-padding: 10;">
+                                    <VBox.margin>
+                                        <Insets left="20.0" right="20.0"/>
+                                    </VBox.margin>
+                                </TextField>
+                                <HBox spacing="10.0">
+                                    <children>
+                                        <TextField fx:id="numeroField" prefWidth="100.0" promptText="Número"
+                                                   style="-fx-background-radius: 8; -fx-border-color: #CCCCCC; -fx-border-radius: 8; -fx-padding: 10;"
+                                                   HBox.hgrow="ALWAYS"/>
+                                        <TextField fx:id="complementoField" promptText="Complemento (Opcional)"
+                                                   style="-fx-background-radius: 8; -fx-border-color: #CCCCCC; -fx-border-radius: 8; -fx-padding: 10;"
+                                                   HBox.hgrow="ALWAYS"/>
+                                    </children>
+                                    <VBox.margin>
+                                        <Insets left="20.0" right="20.0"/>
+                                    </VBox.margin>
+                                </HBox>
+                                <TextField fx:id="bairroField" promptText="Bairro"
+                                           style="-fx-background-radius: 8; -fx-border-color: #CCCCCC; -fx-border-radius: 8; -fx-padding: 10;">
+                                    <VBox.margin>
+                                        <Insets left="20.0" right="20.0"/>
+                                    </VBox.margin>
+                                </TextField>
+                                <HBox spacing="10.0">
+                                    <children>
+                                        <TextField fx:id="cidadeField" promptText="Cidade"
+                                                   style="-fx-background-radius: 8; -fx-border-color: #CCCCCC; -fx-border-radius: 8; -fx-padding: 10;"
+                                                   HBox.hgrow="ALWAYS"/>
+                                        <TextField fx:id="estadoField" prefWidth="80.0" promptText="Estado"
+                                                   style="-fx-background-radius: 8; -fx-border-color: #CCCCCC; -fx-border-radius: 8; -fx-padding: 10;"/>
+                                    </children>
+                                    <VBox.margin>
+                                        <Insets left="20.0" right="20.0"/>
+                                    </VBox.margin>
+                                </HBox>
+                                <Button fx:id="pagamentoButton" mnemonicParsing="false"
+                                        onAction="#handleIrParaPagamento" prefHeight="45.0" prefWidth="300.0"
+                                        style="-fx-background-color: #DC3545; -fx-background-radius: 10; -fx-cursor: hand;"
+                                        text="Ir para o Pagamento" textFill="WHITE">
+                                    <font>
+                                        <Font name="System Bold" size="16.0"/>
+                                    </font>
+                                    <VBox.margin>
+                                        <Insets top="20.0"/>
+                                    </VBox.margin>
+                                </Button>
+                                <Button fx:id="continuarComprandoButton" mnemonicParsing="false" prefHeight="45.0"
+                                        prefWidth="300.0"
+                                        style="-fx-background-color: #00A60E; -fx-background-radius: 10; -fx-cursor: hand;"
+                                        text="Continuar Comprando" textFill="WHITE">
+                                    <font>
+                                        <Font name="System Bold" size="16.0"/>
+                                    </font>
+                                </Button>
+                            </children>
+                            <padding>
+                                <Insets bottom="10.0"/>
+                            </padding>
+                        </VBox>
+                    </content>
+                </ScrollPane>
+
             </children>
         </HBox>
-
-        <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="450.0" AnchorPane.topAnchor="100.0">
-            <content>
-                <VBox fx:id="itensCarrinhoVBox" spacing="20.0" style="-fx-background-color: transparent; -fx-padding: 10;" />
-            </content>
-        </ScrollPane>
-
-        <VBox alignment="TOP_CENTER" prefWidth="400.0" spacing="10.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-color: #00A60E; -fx-border-width: 2; -fx-border-radius: 12;" AnchorPane.bottomAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="100.0">
-            <children>
-                <Label text="RESUMO DO PEDIDO" textFill="#00a60e">
-                    <font><Font name="System Bold" size="20.0" /></font>
-                    <VBox.margin><Insets top="15.0" /></VBox.margin>
-                </Label>
-                <HBox alignment="CENTER" spacing="10.0">
-                    <children>
-                        <Label text="Subtotal:" textFill="#333333"><font><Font size="16.0" /></font></Label>
-                        <Label fx:id="subtotalLabel" text="R$ 0,00" textFill="#333333"><font><Font name="System Bold" size="16.0" /></font></Label>
-                    </children>
-                </HBox>
-                <HBox alignment="CENTER" spacing="10.0">
-                    <children>
-                        <Label text="Frete:" textFill="#333333"><font><Font size="16.0" /></font></Label>
-                        <Label fx:id="freteLabel" text="R$ 0,00" textFill="#333333"><font><Font name="System Bold" size="16.0" /></font></Label>
-                    </children>
-                </HBox>
-                <Label text="Total:" textFill="#00a60e"><font><Font name="System Bold" size="24.0" /></font><VBox.margin><Insets top="10.0" /></VBox.margin></Label>
-                <Label fx:id="totalLabel" text="R$ 0,00" textFill="#00a60e"><font><Font name="System Bold" size="24.0" /></font></Label>
-
-                <Label text="INFORMAÇÕES DE ENTREGA" textFill="#00a60e">
-                    <font><Font name="System Bold" size="18.0" /></font>
-                    <VBox.margin><Insets top="20.0" /></VBox.margin>
-                </Label>
-                <TextField fx:id="cepField" promptText="CEP" style="-fx-background-radius: 8; -fx-border-color: #CCCCCC; -fx-border-radius: 8; -fx-padding: 10;">
-                    <VBox.margin><Insets left="20.0" right="20.0" /></VBox.margin>
-                </TextField>
-                <TextField fx:id="ruaField" promptText="Rua" style="-fx-background-radius: 8; -fx-border-color: #CCCCCC; -fx-border-radius: 8; -fx-padding: 10;">
-                    <VBox.margin><Insets left="20.0" right="20.0" /></VBox.margin>
-                </TextField>
-                <HBox spacing="10.0">
-                    <children>
-                        <TextField fx:id="numeroField" prefWidth="100.0" promptText="Número" style="-fx-background-radius: 8; -fx-border-color: #CCCCCC; -fx-border-radius: 8; -fx-padding: 10;" HBox.hgrow="ALWAYS" />
-                        <TextField fx:id="complementoField" promptText="Complemento (Opcional)" style="-fx-background-radius: 8; -fx-border-color: #CCCCCC; -fx-border-radius: 8; -fx-padding: 10;" HBox.hgrow="ALWAYS" />
-                    </children>
-                    <VBox.margin><Insets left="20.0" right="20.0" /></VBox.margin>
-                </HBox>
-                <TextField fx:id="bairroField" promptText="Bairro" style="-fx-background-radius: 8; -fx-border-color: #CCCCCC; -fx-border-radius: 8; -fx-padding: 10;">
-                    <VBox.margin><Insets left="20.0" right="20.0" /></VBox.margin>
-                </TextField>
-                <HBox spacing="10.0">
-                    <children>
-                        <TextField fx:id="cidadeField" promptText="Cidade" style="-fx-background-radius: 8; -fx-border-color: #CCCCCC; -fx-border-radius: 8; -fx-padding: 10;" HBox.hgrow="ALWAYS" />
-                        <TextField fx:id="estadoField" prefWidth="80.0" promptText="Estado" style="-fx-background-radius: 8; -fx-border-color: #CCCCCC; -fx-border-radius: 8; -fx-padding: 10;" />
-                    </children>
-                    <VBox.margin><Insets left="20.0" right="20.0" /></VBox.margin>
-                </HBox>
-
-                <Button fx:id="pagamentoButton" mnemonicParsing="false" onAction="#handleIrParaPagamento" prefHeight="45.0" prefWidth="300.0" style="-fx-background-color: #DC3545; -fx-background-radius: 10; -fx-cursor: hand;" text="Ir para o Pagamento" textFill="WHITE">
-                    <font><Font name="System Bold" size="16.0" /></font>
-                    <VBox.margin><Insets top="20.0" /></VBox.margin>
-                </Button>
-                <Button fx:id="continuarComprandoButton" mnemonicParsing="false" prefHeight="45.0" prefWidth="300.0" style="-fx-background-color: #00A60E; -fx-background-radius: 10; -fx-cursor: hand;" text="Continuar Comprando" textFill="WHITE">
-                    <font><Font name="System Bold" size="16.0" /></font>
-                </Button>
-            </children>
-            <padding><Insets bottom="10.0" /></padding>
-        </VBox>
-    </children>
-</AnchorPane>
+    </center>
+</BorderPane>
