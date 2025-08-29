@@ -1,6 +1,7 @@
 package br.edu.ifpb.lojavirtual.model;
 
 import javafx.scene.image.Image;
+
 import java.io.File;
 import java.util.Objects;
 
@@ -103,6 +104,18 @@ public class Produto {
             e.printStackTrace();
             this.image = null;
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Produto produto = (Produto) o;
+        return id == produto.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 
     @Override
