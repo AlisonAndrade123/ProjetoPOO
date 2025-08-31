@@ -57,7 +57,6 @@
 ---
 
 ### **Funcionalidades Planejadas**
-<br>
 
 #### **Visão do Cliente**
 
@@ -68,7 +67,6 @@
  <li>Cálculo do valor total do carrinho.</li>
  <li>Simulação do processo de finalização de pedido (coleta de informações básicas).</li>
 </ul>
-<br>
 
 #### **Visão do Administrador**
 
