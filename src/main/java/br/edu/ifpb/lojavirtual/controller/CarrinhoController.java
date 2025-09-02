@@ -155,6 +155,7 @@ public class CarrinhoController {
         // inicio: box elementos da quantidade
         HBox qtdHBox = new HBox(5.0);
         qtdHBox.setAlignment(Pos.CENTER);
+        qtdHBox.setMinWidth(180.0);
 
         Label qtdLabel = new Label("Quantidade:");
         qtdLabel.setTextFill(javafx.scene.paint.Color.valueOf("#333333"));
@@ -167,7 +168,7 @@ public class CarrinhoController {
         upButton.setStyle("-fx-background-color: #00A60E; -fx-background-radius: 5; -fx-cursor: hand;");
 
         upButton.setTextFill(javafx.scene.paint.Color.WHITE);
-        upButton.setFont(new Font("System Bold", 16.0)); // Um pouco menor pode centralizar melhor no botão
+        upButton.setFont(new Font("System Bold", 16.0));
 
         upButton.setOnAction(e -> {
             carrinhoManager.incrementarQuantidade(produto);

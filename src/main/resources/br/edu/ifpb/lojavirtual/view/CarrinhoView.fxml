@@ -10,11 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<!--
-  PROBLEMA 1 CORRIGIDO:
-  Trocado AnchorPane de tamanho fixo por um BorderPane fluido.
-  Ele se expandirá para preencher o tamanho da janela automaticamente.
--->
+
 <BorderPane style="-fx-background-color: #00A60E;" xmlns="http://javafx.com/javafx/24.0.1"
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.edu.ifpb.lojavirtual.controller.CarrinhoController">
     <padding>
@@ -44,14 +40,9 @@
     </top>
 
     <center>
-        <!--
-          PROBLEMA 2 CORRIGIDO:
-          Usando um HBox para gerenciar as duas colunas (lista de itens e resumo).
-          Isso é muito mais robusto do que usar âncoras fixas.
-        -->
+
         <HBox spacing="20.0">
             <children>
-                <!-- Coluna 1: Lista de Itens -->
                 <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" HBox.hgrow="ALWAYS">
                     <content>
                         <VBox fx:id="itensCarrinhoVBox" spacing="20.0"
@@ -59,13 +50,6 @@
                     </content>
                 </ScrollPane>
 
-                <!-- Coluna 2: Resumo do Pedido -->
-                <!--
-                  PROBLEMA 3 CORRIGIDO:
-                  O HBox.hgrow="ALWAYS" na ScrollPane acima garante que esta VBox (resumo)
-                  manterá sua largura preferencial, enquanto a lista de itens cresce para preencher o espaço.
-                  Adicionado minWidth para evitar que seja esmagado em telas muito pequenas.
-                -->
                 <ScrollPane fitToWidth="true" hbarPolicy="NEVER" minWidth="380.0" prefWidth="400.0">
 
                     <content>

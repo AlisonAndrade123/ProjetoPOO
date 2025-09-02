@@ -4,14 +4,14 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="1080.0" prefWidth="1920.0"  style="-fx-background-color: #00A60E;" xmlns="http://javafx.com/javafx/21.0.3" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="br.edu.ifpb.lojavirtual.controller.HistoricoController">
-    <children>
-        <HBox alignment="CENTER_LEFT" prefHeight="80.0" spacing="20.0" style="-fx-padding: 0 30 0 30;">
+<BorderPane style="-fx-background-color: #f4f4f4;" xmlns="http://javafx.com/javafx/21.0.3" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.edu.ifpb.lojavirtual.controller.HistoricoController">
+    <top>
+        <HBox alignment="CENTER_LEFT" prefHeight="80.0" spacing="20.0" style="-fx-background-color: #00A60E; -fx-padding: 0 30 0 30;">
             <children>
                 <Label text="Meu Histórico de Compras" textFill="WHITE">
                     <font><Font name="System Bold" size="28.0" /></font>
@@ -25,24 +25,30 @@
                 </HBox>
             </children>
         </HBox>
-
-        <VBox style="-fx-background-color: #f4f4f4; -fx-padding: 20;" VBox.vgrow="ALWAYS">
+    </top>
+    <center>
+        <VBox style="-fx-background-color: white; -fx-background-radius: 8;" BorderPane.alignment="CENTER">
+            <BorderPane.margin>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            </BorderPane.margin>
+            <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            </padding>
             <children>
-                <VBox style="-fx-background-color: white; -fx-background-radius: 8; -fx-padding: 20;" VBox.vgrow="ALWAYS">
-                    <children>
-                        <Label fx:id="tituloListaLabel" text="Meus Pedidos Anteriores">
-                            <font><Font name="System Bold" size="20.0" /></font>
-                            <VBox.margin><Insets bottom="15.0" /></VBox.margin>
-                        </Label>
+                <Label fx:id="tituloListaLabel" text="Meus Pedidos Anteriores">
+                    <font><Font name="System Bold" size="20.0" /></font>
+                    <VBox.margin>
+                        <Insets bottom="15.0" />
+                    </VBox.margin>
+                </Label>
 
-                        <ScrollPane fitToWidth="true" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS">
-                            <content>
-                                <VBox fx:id="pedidosContainerVBox" spacing="15.0" />
-                            </content>
-                        </ScrollPane>
-                    </children>
-                </VBox>
+
+                <ScrollPane fitToWidth="true" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS">
+                    <content>
+                        <VBox fx:id="pedidosContainerVBox" spacing="15.0" />
+                    </content>
+                </ScrollPane>
             </children>
         </VBox>
-    </children>
-</VBox>
+    </center>
+</BorderPane>

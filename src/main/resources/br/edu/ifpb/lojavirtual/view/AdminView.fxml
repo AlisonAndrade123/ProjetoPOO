@@ -13,18 +13,8 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<!--
-  PROBLEMA 1 CORRIGIDO:
-  Trocado AnchorPane de tamanho fixo por um BorderPane fluido.
--->
-
 <BorderPane style="-fx-background-color: #00A60E;" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.edu.ifpb.lojavirtual.controller.AdminController">
     <top>
-        <!--
-          PROBLEMA 2 CORRIGIDO:
-          Cabeçalho agora é um HBox dentro da região TOP. A propriedade HBox.hgrow
-          no AnchorPane da pesquisa garante que ele ocupe todo o espaço disponível.
-        -->
         <HBox alignment="CENTER_LEFT" spacing="15.0">
             <padding>
                 <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
