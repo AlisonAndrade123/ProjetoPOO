@@ -9,6 +9,7 @@ import br.edu.ifpb.lojavirtual.util.CategoriasUtil;
 import br.edu.ifpb.lojavirtual.util.NavigationManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.ImageView;
@@ -96,11 +97,7 @@ public class ProdutosController {
         nameLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-padding: 5px 0;");
         nameLabel.setWrapText(true);
 
-        Label descriptionLabel = new Label(produto.getDescricao());
-        descriptionLabel.setStyle("-fx-font-size: 13px; -fx-padding: 5px 0; -fx-text-fill: #555555;");
-        descriptionLabel.setWrapText(true);
-
-        descriptionLabel.setMaxHeight(60);
+        VBox.setMargin(nameLabel, new Insets(15, 0, 0, 0));
 
         Label priceLabel = new Label("R$ " + String.format("%.2f", produto.getPreco()).replace('.', ','));
         priceLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #00A60E;");
@@ -112,7 +109,7 @@ public class ProdutosController {
         buyButton.setStyle("-fx-background-color: #00A60E; -fx-text-fill: white; -fx-font-weight: bold; -fx-border-radius: 5; -fx-padding: 8px 16px; -fx-cursor: hand;");
         buyButton.setOnAction(event -> handleComprarProduto(produto));
 
-        card.getChildren().addAll(imageView, nameLabel, descriptionLabel, priceLabel, spacer, buyButton);
+        card.getChildren().addAll(imageView, nameLabel, priceLabel, spacer, buyButton);
         return card;
     }
 
