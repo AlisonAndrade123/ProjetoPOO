@@ -34,9 +34,12 @@ public class NavigationManager {
             Parent root = loader.load();
             Object controller = loader.getController();
 
-            Scene scene = new Scene(root);
+            Scene scene = getScene(root);
+
             primaryStage.setScene(scene);
             primaryStage.setTitle(title);
+            primaryStage.setMinWidth(960.0);
+            primaryStage.setMinHeight(540.0);
             primaryStage.show();
 
             return controller;
@@ -44,6 +47,20 @@ public class NavigationManager {
             e.printStackTrace();
             return null;
         }
+    }
+
+    private Scene getScene(Parent root) {
+        Scene scene;
+        // Verifica se o Stage (janela) JÁ TEM uma Scene.
+        if (primaryStage.getScene() == null) {
+            // Se for a primeira vez (ex: abrindo a tela de login), cria a cena normalmente.
+            scene = new Scene(root);
+        } else {
+            // Se já estamos navegando, cria a nova cena USANDO O TAMANHO DA CENA ANTIGA.
+            // Isso preserva o estado da janela (maximizada, redimensionada, etc.).
+            scene = new Scene(root, primaryStage.getScene().getWidth(), primaryStage.getScene().getHeight());
+        }
+        return scene;
     }
 
     public Object setupModal(String fxmlPath, String title, Window ownerWindow) {
