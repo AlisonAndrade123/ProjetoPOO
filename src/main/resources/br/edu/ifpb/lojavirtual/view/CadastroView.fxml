@@ -1,82 +1,101 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: #00A60E;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="br.edu.ifpb.lojavirtual.controller.CadastroController">
-   <children>
-      <Label alignment="CENTER" text="SEJA BEM VINDO" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
-         <font>
-            <Font size="48.0" />
-         </font>
-      </Label>
+<!--
+  PROBLEMA 3 CORRIGIDO:
+  A raiz agora é um ScrollPane para garantir que o formulário nunca seja cortado verticalmente.
+-->
 
-      <AnchorPane style="-fx-background-color: #FFFFFF; -fx-background-radius: 15;"
-                  AnchorPane.topAnchor="150.0" AnchorPane.bottomAnchor="80.0"
-                  AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="150.0">
-         <children>
-            <Label alignment="CENTER" text="Realize seu cadastro" textFill="#00a60e" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
-               <font>
-                  <Font size="36.0" />
-               </font>
-            </Label>
+<ScrollPane fitToWidth="true" hbarPolicy="NEVER" xmlns="http://javafx.com/javafx/24.0.1"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.edu.ifpb.lojavirtual.controller.CadastroController">
+    <content>
+        <!--
+          Este VBox centraliza todo o conteúdo na tela.
+        -->
+        <VBox alignment="CENTER" spacing="30.0" style="-fx-background-color: #00A60E;">
+            <padding>
+                <Insets bottom="50.0" top="50.0"/>
+            </padding>
+            <children>
+                <Label text="SEJA BEM VINDO" textFill="WHITE">
+                    <font>
+                        <Font size="48.0"/>
+                    </font>
+                </Label>
 
-            <VBox alignment="CENTER" spacing="25.0"
-                  AnchorPane.topAnchor="150.0" AnchorPane.bottomAnchor="50.0"
-                  AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0">
-               <children>
-                  <Label text="Nome:" textFill="#00a60e">
-                     <font>
-                        <Font size="28.0" />
-                     </font>
-                  </Label>
-                  <TextField fx:id="nameField" maxWidth="500.0" prefHeight="50.0" promptText="Seu nome completo" style="-fx-font-size: 24;">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                  </TextField>
+                <VBox alignment="CENTER" maxWidth="800.0" spacing="20.0"
+                      style="-fx-background-color: #FFFFFF; -fx-background-radius: 15;">
+                    <padding>
+                        <Insets bottom="40.0" left="50.0" right="50.0" top="40.0"/>
+                    </padding>
+                    <children>
+                        <Label text="Realize seu cadastro" textFill="#00a60e">
+                            <font>
+                                <Font size="36.0"/>
+                            </font>
+                        </Label>
 
-                  <Label text="E-mail:" textFill="#00a60e">
-                     <font>
-                        <Font size="28.0" />
-                     </font>
-                  </Label>
-                  <TextField fx:id="emailField" maxWidth="500.0" prefHeight="50.0" promptText="seu.email@exemplo.com" style="-fx-font-size: 24;">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                  </TextField>
+                        <Label text="Nome:" textFill="#00a60e">
+                            <font>
+                                <Font size="28.0"/>
+                            </font>
+                            <VBox.margin>
+                                <Insets top="20.0"/>
+                            </VBox.margin>
+                        </Label>
+                        <!--
+                          PROBLEMA 2 CORRIGIDO:
+                          Removido maxWidth="500.0". O campo agora preenche a largura do VBox pai.
+                        -->
+                        <TextField fx:id="nameField" prefHeight="50.0" promptText="Seu nome completo"
+                                   style="-fx-font-size: 24;"/>
 
-                  <Label text="Senha:" textFill="#00a60e">
-                     <font>
-                        <Font size="28.0" />
-                     </font>
-                  </Label>
-                  <PasswordField fx:id="passwordField" maxWidth="500.0" prefHeight="50.0" promptText="********" style="-fx-font-size: 24;">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                  </PasswordField>
+                        <Label text="E-mail:" textFill="#00a60e">
+                            <font>
+                                <Font size="28.0"/>
+                            </font>
+                        </Label>
+                        <TextField fx:id="emailField" prefHeight="50.0" promptText="seu.email@exemplo.com"
+                                   style="-fx-font-size: 24;"/>
 
-                  <Button fx:id="registerButton" maxWidth="300.0" prefHeight="60.0" onAction="#handleRegisterButtonAction" style="-fx-background-color: #00A60E; -fx-background-radius: 10; -fx-text-fill: white;" text="Criar conta">
-                     <font>
-                        <Font size="28.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="backToLoginButton" maxWidth="300.0" prefHeight="60.0" onAction="#handleBackToLoginButtonAction" style="-fx-background-color: #6C757D; -fx-background-radius: 10; -fx-text-fill: white;" text="Voltar ao Login">
-                     <font>
-                        <Font size="28.0" />
-                     </font>
-                  </Button>
-               </children>
-            </VBox>
-         </children>
-      </AnchorPane>
-   </children>
-</AnchorPane>
+                        <Label text="Senha:" textFill="#00a60e">
+                            <font>
+                                <Font size="28.0"/>
+                            </font>
+                        </Label>
+                        <PasswordField fx:id="passwordField" prefHeight="50.0" promptText="********"
+                                       style="-fx-font-size: 24;"/>
+
+                        <Button fx:id="registerButton" maxWidth="300.0" onAction="#handleRegisterButtonAction"
+                                prefHeight="60.0"
+                                style="-fx-background-color: #00A60E; -fx-background-radius: 10; -fx-text-fill: white;"
+                                text="Criar conta">
+                            <font>
+                                <Font size="28.0"/>
+                            </font>
+                            <VBox.margin>
+                                <Insets top="20.0"/>
+                            </VBox.margin>
+                        </Button>
+                        <Button fx:id="backToLoginButton" maxWidth="300.0" onAction="#handleBackToLoginButtonAction"
+                                prefHeight="60.0"
+                                style="-fx-background-color: #6C757D; -fx-background-radius: 10; -fx-text-fill: white;"
+                                text="Voltar ao Login">
+                            <font>
+                                <Font size="28.0"/>
+                            </font>
+                        </Button>
+                    </children>
+                </VBox>
+            </children>
+        </VBox>
+    </content>
+</ScrollPane>

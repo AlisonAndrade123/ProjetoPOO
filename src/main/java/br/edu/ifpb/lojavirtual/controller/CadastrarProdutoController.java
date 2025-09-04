@@ -4,10 +4,7 @@ import br.edu.ifpb.lojavirtual.dao.ProdutoDAO;
 import br.edu.ifpb.lojavirtual.model.Produto;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import java.io.File;
@@ -27,6 +24,7 @@ public class CadastrarProdutoController {
     @FXML private TextField descricaoTextField;
     @FXML private TextField precoTextField;
     @FXML private Button finalizarCadastroButton;
+    @FXML private Label tituloModal;
 
     private Stage stage;
     private ProdutoDAO produtoDAO;
@@ -50,6 +48,7 @@ public class CadastrarProdutoController {
     }
 
     public void carregarDadosParaEdicao(Produto produto) {
+        this.tituloModal.setText("Editar produto");
         this.produtoParaEditar = produto;
         nomeTextField.setText(produto.getNome());
         descricaoTextField.setText(produto.getDescricao());
@@ -71,7 +70,7 @@ public class CadastrarProdutoController {
     void handleProcurarImagem(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Selecionar Imagem do Produto");
-        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Imagens", "*.png", "*.jpg", "*.jpeg", "*.gif"));
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Imagens", "*.png", "*.jpg", "*.jpeg"));
         File file = fileChooser.showOpenDialog(this.stage);
         if (file != null) {
             imagemSelecionada = file;

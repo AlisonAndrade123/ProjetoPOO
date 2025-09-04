@@ -10,7 +10,6 @@ import java.util.Objects;
 
 public class Produto {
 
-    // Seus atributos existentes...
     private int id;
     private String nome;
     private String descricao;
@@ -102,15 +101,24 @@ public class Produto {
      */
     private void loadPlaceholder() {
         try {
-            // Garanta que você tem um arquivo 'placeholder.png' nesta localização
-            String placeholderPath = "/br/edu/ifpb/lojavirtual/imagens/placeholder.png";
-            InputStream stream = Objects.requireNonNull(getClass().getResourceAsStream(placeholderPath));
-            this.image = new Image(stream);
+            this.image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/br/edu/ifpb/lojavirtual/imagens/placeholder.png")));
         } catch (Exception e) {
             System.err.println("Falha ao carregar a imagem placeholder!");
             e.printStackTrace();
             this.image = null; // Retorna nulo se nem o placeholder puder ser carregado
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Produto produto = (Produto) o;
+        return id == produto.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 
     @Override
