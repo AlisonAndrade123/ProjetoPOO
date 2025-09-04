@@ -5,6 +5,7 @@ build/
 !**/src/test/**/build/
 
 ### IntelliJ IDEA ###
+.idea/
 .idea/gradle.xml
 .idea/modules.xml
 .idea/jarRepositories.xml
@@ -40,4 +41,6 @@ bin/
 .vscode/
 
 ### Mac OS ###
-.DS_Store
+
+### Banco de dados ###
+loja_virtual.db
